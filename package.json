@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "express": "^4.19.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
+    "mongodb": "^6.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
