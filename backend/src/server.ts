@@ -1,6 +1,11 @@
 import express, { json, NextFunction, Request, Response } from 'express';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
 const port = process.env.PORT || 3000;
+const SECRET_KEY = process.env.SECRET_KEY || '42';
+
 const app = express();
 app.use(json());
 
@@ -36,17 +41,6 @@ app.use(json());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
-});
-
-// Error middleware
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack);
-
-  if (err instanceof ServerError) {
-    return res.status(err.status).json({ error: err.message });
-  }
-
-  return res.status(500).send('Internal Server Error');
 });
 
 app.listen(port, () => {
