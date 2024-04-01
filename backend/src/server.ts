@@ -1,9 +1,8 @@
-import express from 'express';
-
+import express, { json, NextFunction, Request, Response } from 'express';
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+app.use(json());
 
 /*
   Interface sketch
@@ -39,6 +38,12 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err.stack);
+  return res.status(500).send('Internal Server Error');
+});
+
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`UNSWipe-backend listening at http://localhost:${port}`);
 });
