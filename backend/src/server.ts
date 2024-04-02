@@ -1,8 +1,9 @@
 import express, { Application, NextFunction, Request, Response, Router } from "express";
 import cors from 'cors';
 import { PORT, DB_URI, SECRET_KEY } from './env';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import userRouter from "./user/user.route";
+
 
 const app: Application = express();
 app.use(cors());
@@ -13,6 +14,7 @@ const server = app.listen(PORT, async () => {
   console.log(`🗄️ Server Fire on http://localhost:${PORT}`);
 });
 
+// Token middleware
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) {
@@ -21,7 +23,8 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    // req.user = 2;
+    req.userId = (decoded as JwtPayload)._id;
+
     next();
   } catch (error) {
     res.status(403).send('Bad Token');
@@ -33,7 +36,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/protected', verifyToken, (req: Request, res: Response) => {
-  res.status(200).send('Protected route accessed');
+  res.status(200).send(`Protected route accessed. Hello User ID ${req.userId}`);
 });
 
 app.use('', userRouter);
