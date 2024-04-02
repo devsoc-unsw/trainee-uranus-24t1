@@ -1,13 +1,42 @@
-import express, { json, NextFunction, Request, Response } from 'express';
-import dotenv from 'dotenv';
+import express, { Application, NextFunction, Request, Response, Router } from "express";
+import cors from 'cors';
+import { PORT, DB_URI, SECRET_KEY } from './env';
+import jwt from 'jsonwebtoken';
+import userRouter from "./user/user.route";
 
+const app: Application = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-dotenv.config();
-const port = process.env.PORT || 3000;
-const SECRET_KEY = process.env.SECRET_KEY || '42';
+const server = app.listen(PORT, async () => {
+  console.log(`🗄️ Server Fire on http://localhost:${PORT}`);
+});
 
-const app = express();
-app.use(json());
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) {
+    return res.status(401).send('Please provide token');
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    // req.user = 2;
+    next();
+  } catch (error) {
+    res.status(403).send('Bad Token');
+  }
+};
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Welcome to JWT Authentication');
+});
+
+app.get('/protected', verifyToken, (req: Request, res: Response) => {
+  res.status(200).send('Protected route accessed');
+});
+
+app.use('', userRouter);
 
 /*
   Interface sketch
@@ -38,11 +67,8 @@ app.use(json());
   - Messaging Socket.IO magic
 */
 
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-  console.log(`UNSWipe-backend listening at http://localhost:${port}`);
+process.on('SIGINT', () => {
+  server.close(() => {
+    console.log('Server Closed.');
+  });
 });
