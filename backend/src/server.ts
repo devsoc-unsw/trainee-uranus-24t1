@@ -23,7 +23,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    req.userId = (decoded as JwtPayload)._id;
+    req._id = (decoded as JwtPayload)._id;
 
     next();
   } catch (error) {
@@ -36,7 +36,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/protected', verifyToken, (req: Request, res: Response) => {
-  res.status(200).send(`Protected route accessed. Hello User ID ${req.userId}`);
+  res.status(200).send(`Protected route accessed. Hello User ID ${req._id}`);
 });
 
 app.use('', userRouter);
@@ -72,6 +72,6 @@ app.use('', userRouter);
 
 process.on('SIGINT', () => {
   server.close(() => {
-    console.log('Server Closed.');
+    console.log('\nServer Closed.');
   });
 });

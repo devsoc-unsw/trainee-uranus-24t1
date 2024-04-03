@@ -9,7 +9,7 @@ export {};
 declare global {
   namespace Express {
     interface Request {
-      userId: number;
+      _id: number;
     }
   }
 }
