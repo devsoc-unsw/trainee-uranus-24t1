@@ -4,9 +4,9 @@ import { collections } from '../services/database.service';
 import User from '../models/user';
 import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../env';
-import { tokenVerifier } from '../middleware/token';
+import { tokenVerifier } from '../middleware/token.middleware';
 import { ObjectId } from 'mongodb';
-import staticValidation from '../services/staticValidation.service';
+import staticValidation from '../services/static-validation.service';
 
 // Global Config
 export const usersRouter = express.Router();
