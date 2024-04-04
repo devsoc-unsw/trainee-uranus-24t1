@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import "./App.css";
 import AppProvider from "./contexts/AppContext";
+import RegisterPage from "./pages/register/RegisterPage";
+import LoginPage from "./pages/login/Login";
 
 const router = createBrowserRouter([
     {
@@ -9,6 +11,7 @@ const router = createBrowserRouter([
             <div>
                 <h1 className="text-3xl text-primary-500">Hello World</h1>
                 <Link to="about">About Us</Link>
+                <Link to="register">Register</Link>
             </div>
         ),
     },
@@ -16,12 +19,22 @@ const router = createBrowserRouter([
         path: "about",
         element: <div>About</div>,
     },
+    {
+        path: "register",
+        element: <RegisterPage />,
+    },
+    {
+        path: "login",
+        element: <LoginPage />,
+    },
 ]);
 
 function App() {
     return (
         <AppProvider>
-            <RouterProvider router={router} />
+            <div className="p-10 text-black">
+                <RouterProvider router={router} />
+            </div>
         </AppProvider>
     );
 }
