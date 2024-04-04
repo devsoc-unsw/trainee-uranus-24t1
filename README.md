@@ -1,5 +1,7 @@
 # Project: UNSWipe
 
+![UNSWipe logo](./public/UNSWipe.png)
+
 ## 🪴 1. Inspiration
 
 DevSoc projects like Circles, Notangles and Unielectives take care of the hassle that comes with being a university student looking for courses to study ☝️🤓. But what if they want someone to work/study/hangout with in that course?
