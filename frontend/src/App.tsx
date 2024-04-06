@@ -11,7 +11,9 @@ const router = createBrowserRouter([
                 <h1 className="text-3xl text-primary-500">Hello World</h1>
                 <Link to="about">About Us</Link>
                 <br/>
-                <CourseButton course='1531'/>
+                <CourseButton course='COMP1531' disabled={false}/>
+                <CourseButton course='COMP1511' disabled={true}/>
+
             </div>
         ),
     },
