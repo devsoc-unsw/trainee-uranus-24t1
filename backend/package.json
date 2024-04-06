@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "nodemon",
     "test": "jest",
-    "lint": "eslint"
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -37,6 +37,7 @@
     "nodemon": "^3.1.0",
     "pkgroll": "^2.0.2",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "typescript-eslint": "^7.5.0"
   }
 }
