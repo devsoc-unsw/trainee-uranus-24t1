@@ -1,1 +1,1 @@
--   Use json files instead of MongoDB for testing
+- Use json files instead of MongoDB for testing

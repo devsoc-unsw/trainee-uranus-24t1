@@ -1,5 +1,5 @@
-import assert from 'assert';
-import dotenv from 'dotenv';
+import assert from "assert";
+import dotenv from "dotenv";
 
 dotenv.config();
 

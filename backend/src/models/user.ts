@@ -25,6 +25,6 @@ export default class User {
     public preferredWamRange: [string, string],
     public preferredAcademicSocialRatio: number,
 
-    public _id?: ObjectId
+    public _id?: ObjectId,
   ) {}
 }
