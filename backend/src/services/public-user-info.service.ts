@@ -5,7 +5,7 @@ import User from "../models/user";
  * preparaing it to be sent to some other user.
  * 
  * @param user The user to process
- * @returns A JavaScript object with non-sensitive the properties
+ * @returns A JavaScript object with the non-sensitive properties
  */
 export function publicUserInfo(user: User) {
   const { 
