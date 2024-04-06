@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export default class User implements UserInfo {
+export default class User {
   constructor(
     public firstName: string,
     public lastName: string,
