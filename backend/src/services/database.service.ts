@@ -18,9 +18,9 @@ export async function connectToDatabase() {
 
   collections.users = usersCollection;
 
-  console.log(
-    `Successfully connected to database: ${db.databaseName} and collection: ${usersCollection.collectionName}`,
-  );
+  // console.log(
+  //   `Successfully connected to database: ${db.databaseName} and collection: ${usersCollection.collectionName}`,
+  // );
 }
 
 // Initialize Connection
