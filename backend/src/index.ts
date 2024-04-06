@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import { connectToDatabase } from './services/database.service';
-import { usersRouter } from './routes/users.routes';
+import { authenticationRouter } from './routes/authentication.routes';
 import { superRouter } from './routes/super.routes';
 import { PORT } from './env';
 
@@ -16,7 +16,7 @@ const server = app.listen(PORT, async () => {
   console.log(`🗄️ Server Fire on http://localhost:${PORT}`);
 });
 
-app.use('/users', usersRouter);
+app.use('/authentication', authenticationRouter);
 app.use('/super', superRouter);
 
 process.on('SIGINT', () => {

@@ -9,10 +9,10 @@ import { ObjectId } from 'mongodb';
 import staticValidation from '../services/static-validation.service';
 
 // Global Config
-export const usersRouter = express.Router();
-usersRouter.use(express.json());
+export const authenticationRouter = express.Router();
+authenticationRouter.use(express.json());
 
-usersRouter.post('/register', async (req: Request, res: Response) => {
+authenticationRouter.post('/register', async (req: Request, res: Response) => {
   try {
     const newUser = req.body as User;
 
@@ -35,7 +35,7 @@ usersRouter.post('/register', async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.post('/login', async (req: Request, res: Response) => {
+authenticationRouter.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user: User = await collections.users?.findOne({ email }) as unknown as User;
@@ -60,13 +60,9 @@ usersRouter.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.get('/hi', tokenVerifier, async (req: Request, res: Response) => {
+authenticationRouter.get('/hi', tokenVerifier, async (req: Request, res: Response) => {
   try {
-    const user = await collections.users?.findOne({ _id: new ObjectId(req._id) }) as unknown as User;
-    if (!user) {
-      res.status(400).send('!!!');
-    }
-    res.status(200).send(`Hello, ${user.firstName}`);
+    res.status(200).send(`Hello, ${req.user.firstName}`);
   } catch (error: any) {
     console.error(error);
     res.status(400).send(error.message);

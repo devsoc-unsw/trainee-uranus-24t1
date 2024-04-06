@@ -1,3 +1,5 @@
+import User from "./models/user";
+
 export {};
 
 /*
@@ -9,7 +11,7 @@ export {};
 declare global {
   namespace Express {
     interface Request {
-      _id: string;
+      user: User;
     }
   }
 }
