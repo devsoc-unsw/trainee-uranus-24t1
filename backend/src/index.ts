@@ -3,6 +3,7 @@ import { connectToDatabase } from './services/database.service';
 import { authenticationRouter } from './routes/authentication.routes';
 import { superRouter } from './routes/super.routes';
 import { PORT } from './env';
+import { usersRouter } from './routes/users.routes';
 
 try {
   await connectToDatabase();
@@ -18,6 +19,7 @@ const server = app.listen(PORT, async () => {
 
 app.use('/authentication', authenticationRouter);
 app.use('/super', superRouter);
+app.use('/users', usersRouter);
 
 process.on('SIGINT', () => {
   server.close(() => {
