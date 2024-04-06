@@ -16,10 +16,6 @@ usersRouter.post('/register', async (req: Request, res: Response) => {
   try {
     const newUser = req.body as User;
 
-    if (!staticValidation.email(newUser.email)) {
-      return res.status(400).send('Invalid email');
-    }
-
     const existingUser = await collections.users?.findOne({ email: newUser.email }) as unknown as User;
 
     if (existingUser) {
