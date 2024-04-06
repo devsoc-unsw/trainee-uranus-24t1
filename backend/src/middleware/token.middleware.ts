@@ -5,7 +5,7 @@ import { collections } from "../services/database.service";
 import { ObjectId } from "mongodb";
 import User from "../models/user";
 
-export async function tokenVerifier(req: Request, res: Response, next: NextFunction) {
+export async function requireToken(req: Request, res: Response, next: NextFunction) {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) {
     return res.status(401).send('Please provide token');

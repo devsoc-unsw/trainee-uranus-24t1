@@ -4,7 +4,7 @@ import { collections } from '../services/database.service';
 import User from '../models/user';
 import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../env';
-import { tokenVerifier } from '../middleware/token.middleware';
+import { requireToken } from '../middleware/token.middleware';
 import { ObjectId } from 'mongodb';
 import staticValidation from '../services/static-validation.service';
 
@@ -60,7 +60,7 @@ authenticationRouter.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-authenticationRouter.get('/hi', tokenVerifier, async (req: Request, res: Response) => {
+authenticationRouter.get('/hi', requireToken, async (req: Request, res: Response) => {
   try {
     res.status(200).send(`Hello, ${req.user.firstName}`);
   } catch (error: any) {

@@ -1,6 +1,5 @@
 // External Dependencies
 import mongodb from 'mongodb';
-import dotenv from 'dotenv';
 import { DB_CONN_STRING, DB_NAME, USERS_COLLECTION_NAME } from '../env';
 
 // Global Variables

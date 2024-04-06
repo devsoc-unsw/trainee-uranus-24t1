@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { tokenVerifier } from '../middleware/token.middleware';
+import { requireToken } from '../middleware/token.middleware';
 import { ObjectId } from 'mongodb';
 import { collections } from '../services/database.service';
 import User from '../models/user';
@@ -8,7 +8,7 @@ import { publicUserInfo } from '../services/public-user-info';
 export const usersRouter = express.Router();
 usersRouter.use(express.json());
 
-usersRouter.get('/profile/:id', tokenVerifier, async (req: Request, res: Response) => {
+usersRouter.get('/profile/:id', requireToken, async (req: Request, res: Response) => {
   const id: string = req.params.id;
 
   try {
