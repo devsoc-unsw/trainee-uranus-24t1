@@ -4,6 +4,7 @@ import { authenticationRouter } from './routes/authentication.routes';
 import { superRouter } from './routes/super.routes';
 import { PORT } from './env';
 import { usersRouter } from './routes/users.routes';
+import { selfRouter } from './routes/self.routes';
 
 try {
   await connectToDatabase();
@@ -20,6 +21,7 @@ const server = app.listen(PORT, async () => {
 app.use('/authentication', authenticationRouter);
 app.use('/super', superRouter);
 app.use('/users', usersRouter);
+app.use('/self', selfRouter);
 
 process.on('SIGINT', () => {
   server.close(() => {
