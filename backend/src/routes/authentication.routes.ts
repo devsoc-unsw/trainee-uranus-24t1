@@ -46,10 +46,7 @@ authenticationRouter.post("/login", async (req: Request, res: Response) => {
       email,
     })) as unknown as User;
 
-    if (!user) {
-      return res.status(400).send("Invalid email or password");
-    }
-    if (user.password !== password) {
+    if (!user || user.password !== password) {
       return res.status(400).send("Invalid email or password");
     }
 
