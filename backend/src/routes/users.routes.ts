@@ -3,7 +3,7 @@ import { requireToken } from "../middleware/token.middleware";
 import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import User from "../models/user";
-import { publicUserInfo } from "../services/user-info.service";
+import { filterPublic } from "../services/user-filter";
 
 export const usersRouter = express.Router();
 usersRouter.use(express.json());
@@ -20,7 +20,7 @@ usersRouter.get(
         query,
       )) as unknown as User;
       if (result) {
-        res.status(200).send(publicUserInfo(result));
+        res.status(200).send(filterPublic(result));
       } else {
         res.status(400).send("Could not find user");
       }
