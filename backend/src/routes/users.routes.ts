@@ -4,6 +4,8 @@ import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import User from "../models/user";
 import { filterPublic } from "../services/user-filter";
+import BadRequestError from "../errors/bad-request-error";
+import "express-async-errors"  // Apply async error patch
 
 export const usersRouter = express.Router();
 usersRouter.use(express.json());
@@ -14,21 +16,14 @@ usersRouter.get(
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
 
-    try {
-      const query = { _id: new ObjectId(id) };
-      const result = (await collections.users?.findOne(
-        query,
-      )) as unknown as User;
-      if (result) {
-        res.status(200).send(filterPublic(result));
-      } else {
-        res.status(400).send("Could not find user");
-      }
-    } catch (error) {
-      console.error(error);
-      if (error instanceof Error) {
-        res.status(400).send(error.message);
-      }
+    const query = { _id: new ObjectId(id) };
+    const result = (await collections.users?.findOne(
+      query,
+    )) as unknown as User;
+    if (!result) {
+      throw new BadRequestError({ message: "Could not find user" });
     }
+
+    res.status(200).send(filterPublic(result));
   },
 );
