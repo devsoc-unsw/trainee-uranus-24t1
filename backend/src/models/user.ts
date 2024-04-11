@@ -4,6 +4,7 @@ export default class User {
   constructor(
     public firstName: string,
     public lastName: string,
+    
     public email: string,
     public password: string,
 
@@ -27,4 +28,24 @@ export default class User {
 
     public _id?: ObjectId,
   ) {}
+}
+
+export function unpackUser(user: User) {
+  const { firstName, lastName, email, password, courses, futureCourses, hobbies, languages, programmingLanguages, gender, age, wam, academicSocialRatio } = user;
+
+  console.log({
+    firstName,
+    lastName,
+    email,
+    password,
+    courses,
+    futureCourses,
+    hobbies,
+    languages,
+    programmingLanguages,
+    gender,
+    age,
+    wam,
+    academicSocialRatio
+  });
 }
