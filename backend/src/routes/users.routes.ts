@@ -3,7 +3,7 @@ import { requireToken } from "../middleware/token.middleware";
 import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import User from "../models/user";
-import { publicUserInfo } from "../services/public-user-info.service";
+import { publicUserInfo } from "../services/user-info.service";
 
 export const usersRouter = express.Router();
 usersRouter.use(express.json());
