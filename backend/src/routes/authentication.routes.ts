@@ -9,7 +9,7 @@ import { filterAll } from "../services/user-filter";
 import { assertValidAll } from "../services/user-validation.service";
 import BadRequestError from "../errors/bad-request-error";
 import bcrypt from "bcrypt";
-import "express-async-errors"  // Apply async error patch
+import "express-async-errors"; // Apply async error patch
 
 // Global Config
 export const authenticationRouter = express.Router();
@@ -18,7 +18,7 @@ authenticationRouter.use(express.json());
 authenticationRouter.post("/register", async (req: Request, res: Response) => {
   const newUser = filterAll(req.body) as User;
   assertValidAll(newUser);
-  
+
   const existingUser = (await collections.users?.findOne({
     email: newUser.email,
   })) as unknown as User;

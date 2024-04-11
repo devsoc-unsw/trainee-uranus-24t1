@@ -15,7 +15,7 @@ export function filterPublic(user: unknown) {
     gender,
     age,
     wam,
-    academicSocialRatio
+    academicSocialRatio,
   } = user as User;
 
   return {
@@ -58,7 +58,7 @@ export function filterPrivate(user: unknown) {
     preferredWamRange,
     preferredAcademicSocialRatio,
     _id,
-  }
+  };
 }
 
 export function filterAll(user: unknown) {

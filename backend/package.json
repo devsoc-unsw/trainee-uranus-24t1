@@ -12,7 +12,7 @@
     "test": "jest",
     "lint": "eslint .",
     "prettier": "prettier . --check",
-    "prettierfix": "prettier . --fix"
+    "prettierfix": "prettier . --write"
   },
   "author": "",
   "license": "ISC",

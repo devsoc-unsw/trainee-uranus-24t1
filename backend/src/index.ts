@@ -19,7 +19,6 @@ const server = app.listen(PORT, async () => {
   console.log(`🗄️ Server Fire on http://localhost:${PORT}`);
 });
 
-
 app.use("/authentication", authenticationRouter);
 app.use("/super", superRouter);
 app.use("/users", usersRouter);

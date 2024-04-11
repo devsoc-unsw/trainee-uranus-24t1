@@ -5,57 +5,77 @@ import BadRequestError from "../errors/bad-request-error";
 const assertValidHelper = {
   course: (input: string) => {
     if (!/^[A-Z]{4}\d{4}$/.test(input)) {
-      throw new BadRequestError({ message: 'Course should be 4 uppercase letters followed by 4 numbers' });
+      throw new BadRequestError({
+        message: "Course should be 4 uppercase letters followed by 4 numbers",
+      });
     }
   },
 
   wam: (input: string) => {
     if (!/^(HD|DN|CR|PS|FL)$/.test(input)) {
-      throw new BadRequestError({ message: 'Wam should be HD, DN, CR, PS, or FL' });
+      throw new BadRequestError({
+        message: "Wam should be HD, DN, CR, PS, or FL",
+      });
     }
   },
 
   age: (input: number) => {
     if (!Number.isInteger(input) || input < 0) {
-      throw new BadRequestError({ message: 'Age should be a non-negative integer' });
+      throw new BadRequestError({
+        message: "Age should be a non-negative integer",
+      });
     }
   },
-  
+
   academicSocialRatio: (input: number) => {
     if (!input || input < 0 || input > 1) {
-      throw new BadRequestError({ message: 'Academic social ratio should range from 0 to 1' });
+      throw new BadRequestError({
+        message: "Academic social ratio should range from 0 to 1",
+      });
     }
   },
 
   default: (input: string) => {
     if (!/^[\w ,.'-]{2,}$/.test(input)) {
-      throw new BadRequestError({ message: 'Should be at least two characters consisting of letters, numbers, and "_ ,.\'-"' });
+      throw new BadRequestError({
+        message:
+          'Should be at least two characters consisting of letters, numbers, and "_ ,.\'-"',
+      });
     }
-  }
+  },
 };
 
 export const assertValid = {
   firstName: (input: string) => {
     if (!/^[a-z ,.'-]{2,}$/i.test(input)) {
-      throw new BadRequestError({ message: 'Name should be at least 2 characters consisting of letters and " ./\'-"' });
+      throw new BadRequestError({
+        message:
+          'Name should be at least 2 characters consisting of letters and " ./\'-"',
+      });
     }
   },
 
   lastName: (input: string) => {
     if (!/^[a-z ,.'-]{2,}$/i.test(input)) {
-      throw new BadRequestError({ message: 'Name should be at least 2 characters consisting of letters and " ./\'-"' });
+      throw new BadRequestError({
+        message:
+          'Name should be at least 2 characters consisting of letters and " ./\'-"',
+      });
     }
   },
 
   email: (input: string) => {
     if (!validator.isEmail(input)) {
-      throw new BadRequestError({ message: 'Invalid email' });
+      throw new BadRequestError({ message: "Invalid email" });
     }
   },
 
   password: (input: string) => {
     if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*~=+]).{8,25}$/.test(input)) {
-      throw new BadRequestError({ message: 'Password should be 8 to 25 long and have at least one letter, number, and special character' });
+      throw new BadRequestError({
+        message:
+          "Password should be 8 to 25 long and have at least one letter, number, and special character",
+      });
     }
   },
 
@@ -78,7 +98,7 @@ export const assertValid = {
   programmingLanguages: (input: string[]) => {
     input.forEach(assertValidHelper.default);
   },
-  
+
   gender: (input: string) => {
     assertValidHelper.default(input);
   },
@@ -86,7 +106,7 @@ export const assertValid = {
   age: (input: number) => {
     assertValidHelper.age(input);
   },
-  
+
   wam: (input: string) => {
     assertValidHelper.wam(input);
   },
@@ -102,7 +122,7 @@ export const assertValid = {
   preferredLanguages: (input: string[]) => {
     input.forEach(assertValidHelper.default);
   },
-  
+
   preferredProgrammingLanguages: (input: string[]) => {
     input.forEach(assertValidHelper.default);
   },

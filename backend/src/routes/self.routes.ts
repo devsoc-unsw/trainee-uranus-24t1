@@ -4,8 +4,8 @@ import User from "../models/user";
 import { requireToken } from "../middleware/token.middleware";
 import { assertValidAll } from "../services/user-validation.service";
 import { filterAll } from "../services/user-filter";
-import bcrypt from 'bcrypt';
-import "express-async-errors"  // Apply async error patch
+import bcrypt from "bcrypt";
+import "express-async-errors"; // Apply async error patch
 
 export const selfRouter = express.Router();
 selfRouter.use(express.json());
@@ -21,7 +21,7 @@ selfRouter.put("/", async (req: Request, res: Response) => {
   const hash = await bcrypt.hash(updatedUser.password, 5);
   updatedUser.password = hash;
 
-  const { _id, ...withoutId } = updatedUser;  // Do not update _id
+  const { _id, ...withoutId } = updatedUser; // Do not update _id
   const result = await collections.users?.updateOne(
     { _id: req.user._id! },
     { $set: withoutId },
