@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import { collections } from "../services/database.service";
 import User from "../models/user";
 import { requireToken } from "../middleware/token.middleware";
+import { assertValidAll } from "../services/user-validation.service";
+import { filterAll } from "../services/user-filter";
 
 export const selfRouter = express.Router();
 selfRouter.use(express.json());
@@ -12,9 +14,10 @@ selfRouter.get("/", requireToken, async (req: Request, res: Response) => {
 
 selfRouter.put("/", requireToken, async (req: Request, res: Response) => {
   try {
-    const updatedUser: User = req.body as User;
-    // Do not update _id
-    const { _id, ...withoutId } = updatedUser;
+    const updatedUser: User = filterAll(req.body) as User;
+    assertValidAll(updatedUser);
+
+    const { _id, ...withoutId } = updatedUser;  // Do not update _id
     const result = await collections.users?.updateOne(
       { _id: req.user._id! },
       { $set: withoutId },

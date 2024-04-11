@@ -1,4 +1,5 @@
 import validator from "validator";
+import User from "../models/user";
 
 const assertValidHelper = {
   course: (input: string) => {
@@ -20,7 +21,7 @@ const assertValidHelper = {
   },
   
   academicSocialRatio: (input: number) => {
-    if (input < 0 || input > 1) {
+    if (!input || input < 0 || input > 1) {
       throw new Error('Academic social ratio should range from 0 to 1');
     }
   },
@@ -32,7 +33,7 @@ const assertValidHelper = {
   }
 };
 
-const assertValid = {
+export const assertValid = {
   firstName: (input: string) => {
     if (!/^[a-z ,.'-]{2,}$/i.test(input)) {
       throw new Error('Name should be at least 2 characters consisting of letters and " ./\'-"');
@@ -122,4 +123,28 @@ const assertValid = {
   },
 };
 
-export default assertValid;
+export const assertValidAll = (user: User) => {
+  assertValid.firstName(user.firstName);
+  assertValid.lastName(user.lastName);
+
+  assertValid.email(user.email);
+  assertValid.password(user.password);
+
+  assertValid.courses(user.courses);
+  assertValid.futureCourses(user.futureCourses);
+  assertValid.hobbies(user.hobbies);
+  assertValid.languages(user.languages);
+  assertValid.programmingLanguages(user.programmingLanguages);
+  assertValid.gender(user.gender);
+  assertValid.age(user.age);
+  assertValid.wam(user.wam);
+  assertValid.academicSocialRatio(user.academicSocialRatio);
+
+  assertValid.preferredCourses(user.preferredCourses);
+  assertValid.preferredLanguages(user.preferredLanguages);
+  assertValid.preferredProgrammingLanguages(user.preferredProgrammingLanguages);
+  assertValid.preferredGenders(user.preferredGenders);
+  assertValid.preferredAgeRange(user.preferredAgeRange);
+  assertValid.preferredWamRange(user.preferredWamRange);
+  assertValid.preferredAcademicSocialRatio(user.preferredAcademicSocialRatio);
+};

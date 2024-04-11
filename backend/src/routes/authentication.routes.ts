@@ -5,6 +5,8 @@ import User from "../models/user";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../env";
 import { requireToken } from "../middleware/token.middleware";
+import { filterAll } from "../services/user-filter";
+import { assertValidAll } from "../services/user-validation.service";
 
 // Global Config
 export const authenticationRouter = express.Router();
@@ -12,8 +14,9 @@ authenticationRouter.use(express.json());
 
 authenticationRouter.post("/register", async (req: Request, res: Response) => {
   try {
-    const newUser = req.body as User;
-
+    const newUser = filterAll(req.body) as User;
+    assertValidAll(newUser);
+    
     const existingUser = (await collections.users?.findOne({
       email: newUser.email,
     })) as unknown as User;

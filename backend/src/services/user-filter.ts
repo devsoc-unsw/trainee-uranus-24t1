@@ -1,9 +1,9 @@
 import User from "../models/user";
 
 // These functions go out of their way to remove any extra fields
-// to prevent adding extra fields to the database
+// to prevent adding unexpected stuff to the database
 
-export function filterPublic(user: User) {
+export function filterPublic(user: unknown) {
   const {
     firstName,
     lastName,
@@ -16,7 +16,7 @@ export function filterPublic(user: User) {
     age,
     wam,
     academicSocialRatio
-  } = user;
+  } = user as User;
 
   return {
     firstName,
@@ -33,7 +33,7 @@ export function filterPublic(user: User) {
   };
 }
 
-export function filterPrivate(user: User) {
+export function filterPrivate(user: unknown) {
   const {
     email,
     password,
@@ -45,7 +45,7 @@ export function filterPrivate(user: User) {
     preferredWamRange,
     preferredAcademicSocialRatio,
     _id,
-  } = user;
+  } = user as User;
 
   return {
     email,
@@ -61,7 +61,7 @@ export function filterPrivate(user: User) {
   }
 }
 
-export function filterAll(user: User) {
+export function filterAll(user: unknown) {
   const {
     firstName,
     lastName,
@@ -84,7 +84,7 @@ export function filterAll(user: User) {
     preferredWamRange,
     preferredAcademicSocialRatio,
     _id,
-  } = user;
+  } = user as User;
 
   return {
     firstName,
