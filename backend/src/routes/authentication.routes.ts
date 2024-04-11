@@ -8,6 +8,7 @@ import { requireToken } from "../middleware/token.middleware";
 import { filterAll } from "../services/user-filter";
 import { assertValidAll } from "../services/user-validation.service";
 import BadRequestError from "../errors/bad-request-error";
+import bcrypt from "bcrypt";
 import "express-async-errors"  // Apply async error patch
 
 // Global Config
@@ -25,6 +26,9 @@ authenticationRouter.post("/register", async (req: Request, res: Response) => {
     throw new BadRequestError({ message: "Email already in use" });
   }
 
+  const hash = await bcrypt.hash(newUser.password, 5);
+  newUser.password = hash;
+
   const result = await collections.users?.insertOne(newUser);
   if (!result) {
     throw new BadRequestError({ message: "Failed to create a new user" });
@@ -41,7 +45,7 @@ authenticationRouter.post("/login", async (req: Request, res: Response) => {
     email,
   })) as unknown as User;
 
-  if (!user || user.password !== password) {
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new BadRequestError({ message: "Invalid email or password" });
   }
 
