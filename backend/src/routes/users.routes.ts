@@ -7,10 +7,10 @@ import { filterPublic } from "../services/user-filter";
 
 export const usersRouter = express.Router();
 usersRouter.use(express.json());
+usersRouter.use(requireToken);
 
 usersRouter.get(
   "/profile/:id",
-  requireToken,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
 

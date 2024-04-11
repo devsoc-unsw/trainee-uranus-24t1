@@ -7,12 +7,13 @@ import { filterAll } from "../services/user-filter";
 
 export const selfRouter = express.Router();
 selfRouter.use(express.json());
+selfRouter.use(requireToken);
 
-selfRouter.get("/", requireToken, async (req: Request, res: Response) => {
+selfRouter.get("/", async (req: Request, res: Response) => {
   res.status(200).json(req.user);
 });
 
-selfRouter.put("/", requireToken, async (req: Request, res: Response) => {
+selfRouter.put("/", async (req: Request, res: Response) => {
   try {
     const updatedUser: User = filterAll(req.body) as User;
     assertValidAll(updatedUser);
