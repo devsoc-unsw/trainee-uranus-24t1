@@ -9,6 +9,36 @@ import User from "../models/user";
  */
 export function publicUserInfo(user: User) {
   const {
+    firstName,
+    lastName,
+    courses,
+    futureCourses,
+    hobbies,
+    languages,
+    programmingLanguages,
+    gender,
+    age,
+    wam,
+    academicSocialRatio
+  } = user;
+
+  return {
+    firstName,
+    lastName,
+    courses,
+    futureCourses,
+    hobbies,
+    languages,
+    programmingLanguages,
+    gender,
+    age,
+    wam,
+    academicSocialRatio,
+  };
+}
+
+export function privateUserInfo(user: User) {
+  const {
     email,
     password,
     preferredCourses,
@@ -19,8 +49,18 @@ export function publicUserInfo(user: User) {
     preferredWamRange,
     preferredAcademicSocialRatio,
     _id,
-    ...sanitised
   } = user;
 
-  return sanitised;
+  return {
+    email,
+    password,
+    preferredCourses,
+    preferredLanguages,
+    preferredProgrammingLanguages,
+    preferredGenders,
+    preferredAgeRange,
+    preferredWamRange,
+    preferredAcademicSocialRatio,
+    _id,
+  }
 }
