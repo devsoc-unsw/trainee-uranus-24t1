@@ -9,6 +9,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon",
+    "build": "npx tsc && ./add-js-extension.sh",
+    "clean": "npx tsc --build --clean",
     "test": "jest",
     "lint": "eslint .",
     "prettier": "prettier . --check",
