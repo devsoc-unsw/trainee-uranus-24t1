@@ -1,24 +1,21 @@
-import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import AppProvider from "./contexts/AppContext";
-import CourseButton from "./components/CourseButton";
 import RegisterPage from "./pages/register/RegisterPage";
 import LoginPage from "./pages/login/Login";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <div>
-        <h1 className="text-3xl text-primary-500">Hello World</h1>
-        <Link to="about">About Us</Link>
-        <br />
-        <CourseButton course="COMP1531" disabled={false} />
-        <CourseButton course="COMP1511" disabled={true} />
-
-        <Link to="register">Register</Link>
-      </div>
-    ),
+    element: <ProtectedRoutes></ProtectedRoutes>,
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
+    ],
   },
   {
     path: "about",
