@@ -9,6 +9,7 @@ import { AUTH_PATH, LOCAL_HOST, LOGIN_PATH } from "../../utils/constants";
 import axios from "axios";
 import { AppContext } from "../../contexts/AppContext";
 import { Spinner } from "react-bootstrap";
+import CustomButton from "../../components/CustomButton";
 
 const LoginPage = () => {
   const { token, updateToken } = useContext(AppContext);
@@ -64,9 +65,9 @@ const LoginPage = () => {
               type="password"
               forwardedRef={passwordRef}
             />
-            <button className="my-4" type="submit">
+            <CustomButton disabled={loginLoading} type="submit">
               {loginLoading ? <Spinner animation="border" /> : "LOGIN"}
-            </button>
+            </CustomButton>
           </form>
           <p className="font-light">
             Don't have an account?{" "}

@@ -16,6 +16,7 @@ const Input = ({ placeholder, type, forwardedRef }: InputProps) => {
       type={type}
       placeholder={placeholder}
       ref={forwardedRef}
+      autoComplete={type === "password" ? "on" : "off"}
     />
   );
 };

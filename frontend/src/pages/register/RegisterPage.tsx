@@ -14,6 +14,7 @@ import {
 } from "../../utils/constants";
 import CatMascot from "../../assets/UNSWipe-cat.png";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
+import CustomButton from "../../components/CustomButton";
 
 const RegisterPage = () => {
   const { token, updateToken } = useContext(AppContext);
@@ -109,9 +110,9 @@ const RegisterPage = () => {
                 type="password"
                 forwardedRef={confirmPasswordRef}
               />
-              <button className="my-4" disabled={registerLoading} type="submit">
+              <CustomButton disabled={registerLoading} type="submit">
                 {registerLoading ? <Spinner /> : "SIGN UP"}
-              </button>
+              </CustomButton>
             </form>
             <p className="m-0">
               Already have an account?{" "}
