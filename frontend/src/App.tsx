@@ -9,7 +9,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoutes></ProtectedRoutes>,
+    element: <ProtectedRoutes />,
     children: [
       {
         path: "/",

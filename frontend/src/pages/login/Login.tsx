@@ -3,7 +3,7 @@ import Heading from "../../components/Heading";
 import { Link, Navigate } from "react-router-dom";
 import CatMascot from "../../assets/UNSWipe-cat.png";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
-import { useContext, useRef, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
 import { AUTH_PATH, LOCAL_HOST, LOGIN_PATH } from "../../utils/constants";
 import axios from "axios";
@@ -22,7 +22,8 @@ const LoginPage = () => {
     return <Navigate to="/" />;
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     if (!email) {
