@@ -20,8 +20,12 @@ const AdaptableButton: React.FC<AdaptableButtonProps> = ({
         }
     };
 
+    const hoverEffects = !showDash && !disabled ? 'hover:bg-secondary-bg-500 hover:text-white' : '';
+
     const dynamicStyle = disabled ? 'text-tertiary-500 bg-tertiary-bg-500 border-tertiary-bg-500' : 
-    isClicked ? 'bg-secondary-bg-500 border-secondary-bg-500 text-white' : 'text-secondary-bg-500 border-secondary-bg-500 bg-white hover:bg-secondary-bg-500 hover:text-white';
+        isClicked ? 'bg-secondary-bg-500 border-secondary-bg-500 text-white' : 
+        `text-secondary-bg-500 border-secondary-bg-500 bg-white ${hoverEffects}`;
+
 
     return (
         <button
