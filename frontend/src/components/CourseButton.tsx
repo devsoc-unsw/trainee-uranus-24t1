@@ -1,13 +1,13 @@
 import dashCircle from '../../images/dashCircle.svg'
 import { useState } from 'react';
 
-interface AdaptableButtonProps {
+interface CourseButtonProps {
   label: string;
   disabled?: boolean;
   showDash?: boolean;
 }
 
-const AdaptableButton: React.FC<AdaptableButtonProps> = ({label, disabled = false, showDash = false}) => {
+const CourseButton: React.FC<CourseButtonProps> = ({label, disabled = false, showDash = false}) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
@@ -16,10 +16,9 @@ const AdaptableButton: React.FC<AdaptableButtonProps> = ({label, disabled = fals
     }   
   };
 
-  const hoverEffects = !showDash && !disabled ? 'hover:bg-secondary-bg-500 hover:text-white' : '';
 
   const dynamicStyle = disabled ? 'text-tertiary-500 bg-tertiary-bg-500 border-tertiary-bg-500' : 
-  isClicked ? 'bg-secondary-bg-500 border-secondary-bg-500 text-white' : `text-secondary-bg-500 bg-white ${hoverEffects}`;
+  isClicked ? 'bg-secondary-bg-500 border-secondary-bg-500 text-white' : `text-secondary-bg-500 bg-whit`;
 
   return (
     <button className={`rounded-full transition-all duration-250 px-4 py-2 border-2 border-secondary-bg-500 relative ${dynamicStyle}`} 
@@ -31,4 +30,4 @@ const AdaptableButton: React.FC<AdaptableButtonProps> = ({label, disabled = fals
     </button>
   )
 } 
-export default AdaptableButton
+export default CourseButton

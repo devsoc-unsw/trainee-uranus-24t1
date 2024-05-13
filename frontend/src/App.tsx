@@ -3,6 +3,8 @@ import "./App.css";
 import AppProvider from "./contexts/AppContext";
 import RegisterPage from "./pages/register/RegisterPage";
 import LoginPage from "./pages/login/Login";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
