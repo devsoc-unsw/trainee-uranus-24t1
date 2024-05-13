@@ -50,11 +50,11 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="flex flex-col h-svh w-svw items-center justify-center p-10">
+      <div className="flex flex-col h-svh w-svw items-center p-10">
+        <div className="flex w-full mt-5 mb-20">
+          <img src={UNSWipeLogo} alt="UNSWipe Logo Design" />
+        </div>
         <div className="flex justify-center items-center flex-col w-full">
-          <div className="flex w-full mb-40">
-            <img src={UNSWipeLogo} alt="UNSWipe Logo Design" />
-          </div>
           <Heading>Log in</Heading>
           <form
             onSubmit={handleLogin}

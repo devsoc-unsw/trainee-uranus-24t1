@@ -80,9 +80,11 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="flex h-svh w-svw justify-center items-center p-10">
+      <div className="flex flex-col h-svh w-svw items-center p-10">
+        <div className="flex w-full mt-5 mb-20">
+          <img src={UNSWipeLogo} alt="UNSWipe Logo Design" />
+        </div>
         <div className="flex h-screen w-full flex-col items-center justify-evenly">
-          <img src={UNSWipeLogo} alt="UNSWipe logo" className="h-14" />
           <div className="w-full">
             <Heading>Sign up</Heading>
             <form
