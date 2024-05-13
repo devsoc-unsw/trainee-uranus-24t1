@@ -5,6 +5,7 @@ import CourseButton from "./components/CourseButton";
 import RegisterPage from "./pages/register/RegisterPage";
 import LoginPage from "./pages/login/Login";
 import BackButton from "./components/BackButton";
+import AdaptableButton from "./components/AdaptableButton";
 
 const router = createBrowserRouter([
     {
@@ -16,7 +17,15 @@ const router = createBrowserRouter([
                 <br/>
                 <CourseButton course='COMP1531' disabled={false}/>
                 <CourseButton course='COMP1511' disabled={true}/>
+                <br/>
+
                 <BackButton/>
+                <br/>
+                <AdaptableButton label="hi" showDash/>
+                <AdaptableButton label="goodsoup"/>
+
+                <br/>
+
                 <Link to="register">Register</Link>
             </div>
         ),
