@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import "./App.css";
 import AppProvider from "./contexts/AppContext";
-import CourseButton from "./components/CourseButton";
+import CourseButton from "./components/AdaptableButton";
 import RegisterPage from "./pages/register/RegisterPage";
 import LoginPage from "./pages/login/Login";
 import BackButton from "./components/BackButton";
@@ -15,13 +15,13 @@ const router = createBrowserRouter([
                 <h1 className="text-3xl text-primary-500">Hello World</h1>
                 <Link to="about">About Us</Link>
                 <br/>
-                <CourseButton course='COMP1531' disabled={false}/>
-                <CourseButton course='COMP1511' disabled={true}/>
+                <AdaptableButton label='COMP1531' disabled={false}/>
+                <AdaptableButton label='COMP1511' disabled={true}/>
                 <br/>
 
                 <BackButton/>
                 <br/>
-                <AdaptableButton label="hi" showDash/>
+                <AdaptableButton label="hi" disabled={false} showDash/>
                 <AdaptableButton label="goodsoup"/>
 
                 <br/>
