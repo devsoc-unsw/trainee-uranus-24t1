@@ -4,6 +4,7 @@ import AppProvider from "./contexts/AppContext";
 import CourseButton from "./components/CourseButton";
 import RegisterPage from "./pages/register/RegisterPage";
 import LoginPage from "./pages/login/Login";
+import BackButton from "./components/BackButton";
 
 const router = createBrowserRouter([
     {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
                 <br/>
                 <CourseButton course='COMP1531' disabled={false}/>
                 <CourseButton course='COMP1511' disabled={true}/>
-
+                <BackButton/>
                 <Link to="register">Register</Link>
             </div>
         ),
