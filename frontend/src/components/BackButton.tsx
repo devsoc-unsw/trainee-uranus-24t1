@@ -1,4 +1,4 @@
-import BackIcon from "../../images/backIcon.png";
+import BackIcon from "../assets/backIcon.png";
 
 const BackButton = () => {
   return (
