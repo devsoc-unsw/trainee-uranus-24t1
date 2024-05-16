@@ -28,7 +28,7 @@ const CourseButton: React.FC<CourseButtonProps> = ({ course, disabled }) => {
 
   return (
     <button
-      className={`rounded-full  transition-all duration-250  px-6 py-2  border-2 border-secondary-bg-500 outline-none ${dynamicStyle}`}
+      className='rounded-full  transition-all duration-250  px-6 py-2  border-2 border-secondary-bg-500 outline-none ${dynamicStyle}'
       onClick={!disabled ? handleClick : undefined}
     >
       {course}
