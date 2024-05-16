@@ -1,8 +1,8 @@
 // ProgressBar.js
-import { FC } from 'react';
+import { FC } from "react";
 
 interface ProgressBarProps {
-    progress: number;
+  progress: number;
 }
 
 const ProgressBar: FC<ProgressBarProps> = ({ progress }) => {
@@ -13,28 +13,29 @@ const ProgressBar: FC<ProgressBarProps> = ({ progress }) => {
           flex
           items-center
           justify-center
-          bg-indigo-600
+          bg-secondary-bg-500
           rounded-full
           transition-width
           duration-300
-          ease-in-out"
-        style={{ width: `${progress}%`, height: '8px' }}
+          ease-in-out
+          h-[8px]"
+        style={{ width: `${progress}%` }}
       />
       <div
         className="
-          bg-indigo-600
+          bg-secondary-bg-500
           rounded-full
           absolute
           transform
           translate-x-1/2
           transition-width
           duration-300
-          ease-in-out"
+          ease-in-out
+          h-[12px]
+          w-[12px]
+          top-[-2px]"
         style={{
-          width: '12px',
-          height: '12px',
-          top: '-2px',
-          left: `${Math.max(progress - 2, -1)}%`
+          left: `clamp(-8px, calc(${progress}% - 16px), calc(100% - 8px))`,
         }}
       />
     </div>

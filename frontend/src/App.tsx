@@ -4,44 +4,48 @@ import AppProvider from "./contexts/AppContext";
 import CourseButton from "./components/CourseButton";
 import RegisterPage from "./pages/register/RegisterPage";
 import LoginPage from "./pages/login/Login";
+import ProgressBar from "./components/ProgressBar";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: (
-            <div>
-                <h1 className="text-3xl text-primary-500">Hello World</h1>
-                <Link to="about">About Us</Link>
-                <br/>
-                <CourseButton course='COMP1531' disabled={false}/>
-                <CourseButton course='COMP1511' disabled={true}/>
+  {
+    path: "/",
+    element: (
+      <div>
+        <h1 className="text-3xl text-primary-500">Hello World</h1>
+        <Link to="about">About Us</Link>
+        <br />
+        <CourseButton course="COMP1531" disabled={false} />
+        <CourseButton course="COMP1511" disabled={true} />
+        <ProgressBar progress={20} />
+        <ProgressBar progress={0} />
+        <ProgressBar progress={100} />
 
-                <Link to="register">Register</Link>
-            </div>
-        ),
-    },
-    {
-        path: "about",
-        element: <div>About</div>,
-    },
-    {
-        path: "register",
-        element: <RegisterPage />,
-    },
-    {
-        path: "login",
-        element: <LoginPage />,
-    },
+        <Link to="register">Register</Link>
+      </div>
+    ),
+  },
+  {
+    path: "about",
+    element: <div>About</div>,
+  },
+  {
+    path: "register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "login",
+    element: <LoginPage />,
+  },
 ]);
 
 function App() {
-    return (
-        <AppProvider>
-            <div className="p-10 text-black">
-                <RouterProvider router={router} />
-            </div>
-        </AppProvider>
-    );
+  return (
+    <AppProvider>
+      <div className="p-10 text-black">
+        <RouterProvider router={router} />
+      </div>
+    </AppProvider>
+  );
 }
 
 export default App;
