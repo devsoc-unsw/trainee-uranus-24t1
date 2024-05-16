@@ -1,11 +1,16 @@
-import backIcon from '../../images/backIcon.png'
+import BackIcon from "../assets/backIcon.png";
+
 const BackButton = () => {
   return (
-    <button style={{ width: '45px', height: '45px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-    className={"rounded-full bg-secondary-bg-500"}>
-    <img src={backIcon} alt="Back" style={{ width: '60%', height: '35%', filter: 'invert(100%)'}} className="fill-white"/> 
+    <button className="w-11 h-11 inline-flex items-center justify-center rounded-full bg-secondary-bg-500"
+    >
+      <img
+        src={BackIcon}
+        alt="Back"
+        className="w-3/5 h-2/5 filter invert"
+      />
     </button>
-  )
-}
+  );
+};
 
-export default BackButton
+export default BackButton;
