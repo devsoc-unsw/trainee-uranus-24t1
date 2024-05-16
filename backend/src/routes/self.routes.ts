@@ -2,33 +2,33 @@ import express, { Request, Response } from "express";
 import { collections } from "../services/database.service";
 import User from "../models/user";
 import { requireToken } from "../middleware/token.middleware";
+import { assertValidAll } from "../services/user-validation.service";
+import { filterAll } from "../services/user-filter";
+import bcrypt from "bcrypt";
+import "express-async-errors"; // Apply async error patch
 
 export const selfRouter = express.Router();
 selfRouter.use(express.json());
+selfRouter.use(requireToken);
 
-selfRouter.get("/", requireToken, async (req: Request, res: Response) => {
+selfRouter.get("/", async (req: Request, res: Response) => {
   res.status(200).json(req.user);
 });
 
-selfRouter.put("/", requireToken, async (req: Request, res: Response) => {
-  try {
-    const updatedUser: User = req.body as User;
-    // Do not update _id
-    const { _id, ...withoutId } = updatedUser;
-    const result = await collections.users?.updateOne(
-      { _id: req.user._id! },
-      { $set: withoutId },
-    );
+selfRouter.put("/", async (req: Request, res: Response) => {
+  const updatedUser: User = filterAll(req.body) as User;
+  assertValidAll(updatedUser);
+  const hash = await bcrypt.hash(updatedUser.password, 5);
+  updatedUser.password = hash;
 
-    if (result) {
-      res.status(200).send("Successfully updated user");
-    } else {
-      res.status(304).send("Could not update user");
-    }
-  } catch (error) {
-    console.error(error);
-    if (error instanceof Error) {
-      res.status(400).send(error.message);
-    }
+  const { _id, ...withoutId } = updatedUser; // Do not update _id
+  const result = await collections.users?.updateOne(
+    { _id: req.user._id! },
+    { $set: withoutId },
+  );
+  if (!result) {
+    return res.status(304).send("Could not update user");
   }
+
+  res.status(200).send("Successfully updated user");
 });
