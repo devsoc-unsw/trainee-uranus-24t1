@@ -5,77 +5,63 @@ import User from "../models/user";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../env";
 import { requireToken } from "../middleware/token.middleware";
+import { filterAll } from "../services/user-filter";
+import { assertValidAll } from "../services/user-validation.service";
+import BadRequestError from "../errors/bad-request-error";
+import bcrypt from "bcrypt";
+import "express-async-errors"; // Apply async error patch
 
 // Global Config
 export const authenticationRouter = express.Router();
 authenticationRouter.use(express.json());
 
 authenticationRouter.post("/register", async (req: Request, res: Response) => {
-  try {
-    const newUser = req.body as User;
+  const newUser = filterAll(req.body) as User;
+  assertValidAll(newUser);
 
-    const existingUser = (await collections.users?.findOne({
-      email: newUser.email,
-    })) as unknown as User;
-
-    if (existingUser) {
-      return res.status(400).send("Email already in use");
-    }
-
-    const result = await collections.users?.insertOne(newUser);
-
-    if (result) {
-      res
-        .status(201)
-        .send(`Successfully created a new user with id ${result.insertedId}`);
-    } else {
-      res.status(400).send("Failed to create a new user");
-    }
-  } catch (error) {
-    console.error(error);
-    if (error instanceof Error) {
-      res.status(400).send(error.message);
-    }
+  const existingUser = (await collections.users?.findOne({
+    email: newUser.email,
+  })) as unknown as User;
+  if (existingUser) {
+    throw new BadRequestError({ message: "Email already in use" });
   }
+
+  const hash = await bcrypt.hash(newUser.password, 5);
+  newUser.password = hash;
+
+  const result = await collections.users?.insertOne(newUser);
+  if (!result) {
+    throw new BadRequestError({ message: "Failed to create a new user" });
+  }
+
+  res
+    .status(201)
+    .send(`Successfully created a new user with id ${result.insertedId}`);
 });
 
 authenticationRouter.post("/login", async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    const user: User = (await collections.users?.findOne({
-      email,
-    })) as unknown as User;
+  const { email, password } = req.body;
+  const user: User = (await collections.users?.findOne({
+    email,
+  })) as unknown as User;
 
-    if (!user || user.password !== password) {
-      return res.status(400).send("Invalid email or password");
-    }
-
-    const token = jwt.sign(
-      { _id: user._id?.toString(), email: user.email },
-      SECRET_KEY,
-      { expiresIn: "2 hours" },
-    );
-
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error(error);
-    if (error instanceof Error) {
-      res.status(400).send(error.message);
-    }
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    throw new BadRequestError({ message: "Invalid email or password" });
   }
+
+  const token = jwt.sign(
+    { _id: user._id?.toString(), email: user.email },
+    SECRET_KEY,
+    { expiresIn: "2 hours" },
+  );
+
+  res.status(200).json({ token });
 });
 
 authenticationRouter.get(
   "/hi",
   requireToken,
   async (req: Request, res: Response) => {
-    try {
-      res.status(200).send(`Hello, ${req.user.firstName}`);
-    } catch (error) {
-      console.error(error);
-      if (error instanceof Error) {
-        res.status(400).send(error.message);
-      }
-    }
+    res.status(200).send(`Hello, ${req.user.firstName}`);
   },
 );
