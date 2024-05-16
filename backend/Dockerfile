@@ -20,7 +20,7 @@ RUN chmod +x add-js-extension.sh
 # Build your TypeScript app
 RUN npm run build
 
-# Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
+# Your app binds to port 8008 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 8008
 
 # Define the command to run your app using CMD which defines your runtime
