@@ -1,4 +1,4 @@
-export const LOCAL_HOST = "http://localhost:3000/";
+export const LOCAL_HOST = "https://backend-3y9ja.ondigitalocean.app/";
 
 export const AUTH_PATH = "authentication/";
 export const REGISTER_PATH = "register/";
