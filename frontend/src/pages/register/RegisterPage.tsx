@@ -1,6 +1,6 @@
 import Input from "../../components/Input";
 import Heading from "../../components/Heading";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FormEvent, useContext, useRef, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
 import { Spinner } from "react-bootstrap";
@@ -25,6 +25,7 @@ const RegisterPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate()
 
   if (token) {
     return <Navigate to="/" />;
