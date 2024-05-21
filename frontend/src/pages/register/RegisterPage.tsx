@@ -5,27 +5,20 @@ import { FormEvent, useContext, useRef, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
 import { Spinner } from "react-bootstrap";
 import { AppContext } from "../../contexts/AppContext";
-import axios from "axios";
-import {
-  AUTH_PATH,
-  LOCAL_HOST,
-  LOGIN_PATH,
-  REGISTER_PATH,
-} from "../../utils/constants";
 import CatMascot from "../../assets/UNSWipe-cat.png";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import CustomButton from "../../components/CustomButton";
 
 const RegisterPage = () => {
-  const { token, updateToken } = useContext(AppContext);
+  const { token } = useContext(AppContext);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [registerLoading, setRegisterLoading] = useState<boolean>(false);
+  const [registerLoading] = useState<boolean>(false);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   if (token) {
     return <Navigate to="/" />;
@@ -57,26 +50,11 @@ const RegisterPage = () => {
       setErrorMessage("Passwords do not match.");
       return;
     }
-
-    try {
-      setRegisterLoading(true);
-      await axios.post(LOCAL_HOST + AUTH_PATH + REGISTER_PATH, {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-      const response = await axios.post(LOCAL_HOST + AUTH_PATH + LOGIN_PATH, {
-        email,
-        password,
-      });
-      updateToken(response.data.token);
-      console.log(response);
-    } catch {
-      setErrorMessage("Failed to register.");
-    } finally {
-      setRegisterLoading(false);
-    }
+    localStorage.setItem("email", email);
+    localStorage.setItem("firstName", firstName);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("password", password);
+    navigate("/register/current-courses");
   };
 
   return (
@@ -95,17 +73,25 @@ const RegisterPage = () => {
               <Input
                 placeholder="first name"
                 type="text"
+                initialValue={localStorage.getItem("firstName") || ""}
                 forwardedRef={firstNameRef}
               />
               <Input
                 placeholder="last name"
                 type="text"
+                initialValue={localStorage.getItem("lastName") || ""}
                 forwardedRef={lastNameRef}
               />
-              <Input placeholder="email" type="text" forwardedRef={emailRef} />
+              <Input
+                placeholder="email"
+                type="text"
+                forwardedRef={emailRef}
+                initialValue={localStorage.getItem("email") || ""}
+              />
               <Input
                 placeholder="password"
                 type="password"
+                initialValue={localStorage.getItem("password") || ""}
                 forwardedRef={passwordRef}
               />
               <Input

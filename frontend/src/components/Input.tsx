@@ -4,9 +4,15 @@ type InputProps = {
   placeholder: string;
   type: string;
   forwardedRef: RefObject<HTMLInputElement>;
+  initialValue?: string;
 };
 
-const Input = ({ placeholder, type, forwardedRef }: InputProps) => {
+const Input = ({
+  placeholder,
+  type,
+  forwardedRef,
+  initialValue,
+}: InputProps) => {
   return (
     <input
       className="rounded-md border-tertiary-200 border bg-transparent outline-none
@@ -17,6 +23,7 @@ const Input = ({ placeholder, type, forwardedRef }: InputProps) => {
       placeholder={placeholder}
       ref={forwardedRef}
       autoComplete={type === "password" ? "on" : "off"}
+      value={initialValue}
     />
   );
 };

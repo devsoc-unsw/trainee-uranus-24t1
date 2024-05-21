@@ -7,6 +7,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Messages from "./pages/messages/Messages";
 import Matches from "./pages/matches/Matches";
+import CurrentCourses from "./pages/courses/CurrentCourses";
 
 const router = createBrowserRouter([
   {
@@ -24,25 +25,29 @@ const router = createBrowserRouter([
     element: <div>About</div>,
   },
   {
-    path: "register",
+    path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/register/current-courses",
+    element: <CurrentCourses />,
   },
   {
     path: "login",
     element: <LoginPage />,
   },
-  
+
   {
     path: "dashboard",
     element: <Dashboard />,
   },
   {
     path: "matches",
-    element: <Matches />
+    element: <Matches />,
   },
   {
     path: "messages",
-    element: <Messages />
+    element: <Messages />,
   },
 ]);
 
