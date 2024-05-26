@@ -22,10 +22,10 @@ export async function requireToken(
       _id: new ObjectId(_id),
     })) as unknown as User;
     if (!user) {
-      res.status(403).send("Bad token");
+      return res.status(403).send("Bad token");
     }
-    req.user = user;
 
+    req.user = user;
     next();
   } catch (error) {
     res.status(403).send("Bad token");

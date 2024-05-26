@@ -1,6 +1,6 @@
 import Input from "../../components/Input";
 import Heading from "../../components/Heading";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import CatMascot from "../../assets/UNSWipe-cat.png";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import { FormEvent, useContext, useRef, useState } from "react";
@@ -17,7 +17,6 @@ const LoginPage = () => {
   const [loginLoading, setLoginLoading] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate()
 
   if (token) {
     return <Navigate to="/" />;

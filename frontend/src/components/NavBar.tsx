@@ -11,24 +11,21 @@ interface NavBarProps {
 const NavBar: FC<NavBarProps> = ({ navigate, index }) => {
   const activeIndex = index;
 
-  const paths = [
-    "/dashboard",
-    "/matches",
-    "/messages"
-  ];
+  const paths = ["/", "/profile", "/messages"];
 
   const handleClickFactory = (index: number) => {
     return () => {
       navigate(paths[index]);
     };
-  }
+  };
 
   const dynamicStyleFactory = (index: number) => {
     return index === activeIndex ? "text-primary-9000" : "text-white";
-  }
+  };
 
   return (
-    <div className="
+    <div
+      className="
       flex
       flex-row
       justify-around
@@ -38,11 +35,20 @@ const NavBar: FC<NavBarProps> = ({ navigate, index }) => {
       [&>*]:w-[30px]
       [&>*]:h-[30px]"
     >
-      <FaHouse onClick={handleClickFactory(0)} className={dynamicStyleFactory(0)}/>
-      <FaUser onClick={handleClickFactory(1)} className={dynamicStyleFactory(1)}/>
-      <FaMessage onClick={handleClickFactory(2)} className={dynamicStyleFactory(2)}/>
+      <FaHouse
+        onClick={handleClickFactory(0)}
+        className={dynamicStyleFactory(0)}
+      />
+      <FaUser
+        onClick={handleClickFactory(1)}
+        className={dynamicStyleFactory(1)}
+      />
+      <FaMessage
+        onClick={handleClickFactory(2)}
+        className={dynamicStyleFactory(2)}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default NavBar;
