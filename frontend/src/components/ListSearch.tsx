@@ -1,6 +1,5 @@
 import { row } from "../resources";
 
-
 interface ListSearchProps {
   contents: string[];
   selected: boolean[];
@@ -8,11 +7,20 @@ interface ListSearchProps {
   onSelect: (index: number) => void;
 }
 
-const ListSearch: React.FC<ListSearchProps> = ({ contents, selected, searchInput, onSelect }) => {
+const ListSearch: React.FC<ListSearchProps> = ({
+  contents,
+  selected,
+  searchInput,
+  onSelect,
+}) => {
   return (
-    <div className={`${row} flex-wrap h-full justify-between content-start overflow-y-auto`}>
+    <div
+      className={`${row} flex-wrap h-full justify-between content-start overflow-y-auto`}
+    >
       {contents.map((content, index) => {
-        if (!content.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())) {
+        if (
+          !content.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())
+        ) {
           return undefined;
         }
 
@@ -34,13 +42,15 @@ const ListSearch: React.FC<ListSearchProps> = ({ contents, selected, searchInput
               justify-center
 
               ${
-                selected[index] 
+                selected[index]
                   ? "bg-secondary-bg-500 text-white"
                   : " text-secondary-bg-500 bg-white"
               }
             `}
             onClick={() => onSelect(index)}
-          >{content}</button>
+          >
+            {content}
+          </button>
         );
       })}
     </div>

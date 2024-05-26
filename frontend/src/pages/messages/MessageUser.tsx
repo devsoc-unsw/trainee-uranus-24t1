@@ -7,7 +7,12 @@ import ErrorModal from "../../components/ErrorModal";
 import { center, column, row } from "../../resources";
 import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
-import { Message, getSelfData, getSelfMessages, getUsersFromId } from "../../backendCommunication";
+import {
+  Message,
+  getSelfData,
+  getSelfMessages,
+  getUsersFromId,
+} from "../../backendCommunication";
 import { messagesByMongodbTimestamp } from "../../sorting";
 import { Socket, io } from "socket.io-client";
 import { LOCAL_HOST, SOCKET_PATH } from "../../utils/constants";
@@ -47,13 +52,15 @@ const MessageUser = () => {
 
         const self = await getSelfData(token);
         selfIdRef.current = self._id;
-        
+
         socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
         socketRef.current.emit("token", token);
-        socketRef.current.on("chat message out", message => {
-          setMessages(prevMessages => prevMessages.concat([message]));
+        socketRef.current.on("chat message out", (message) => {
+          setMessages((prevMessages) => prevMessages.concat([message]));
         });
-        socketRef.current.on("disconnect", () => setErrorMessage("Could not connect to chat server"));
+        socketRef.current.on("disconnect", () =>
+          setErrorMessage("Could not connect to chat server"),
+        );
 
         setMessages(messages);
       } catch {
@@ -62,7 +69,7 @@ const MessageUser = () => {
         setLoading(false);
       }
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -78,7 +85,7 @@ const MessageUser = () => {
   if (loading) {
     return (
       <div className={`h-svh w-svw ${center}`}>
-        <Spinner/>
+        <Spinner />
       </div>
     );
   }
@@ -86,26 +93,33 @@ const MessageUser = () => {
   return (
     <div className={`${column} relative w-svw h-svh p-4 overflow-clip`}>
       <div className="w-full relative flex items-center justify-center gap-2">
-        <BackButton onBack={() => navigate("/messages")}/>
-        <img src={avatarUrl} className="w-[55px] h-[55px] rounded-full object-cover"/>
+        <BackButton onBack={() => navigate("/messages")} />
+        <img
+          src={avatarUrl}
+          className="w-[55px] h-[55px] rounded-full object-cover"
+        />
         <div className="flex-grow font-bold">{name}</div>
         <button onClick={() => setErrorMessage("🛠️")}>
-          <IoMdInformationCircleOutline className="text-4xl text-secondary-bg-400"/>
+          <IoMdInformationCircleOutline className="text-4xl text-secondary-bg-400" />
         </button>
       </div>
 
-      <div className={`flex-grow ${column} overflow-y-auto`} ref={messageContainerRef}>
-        {messages.map(message => {
-          const senderStyle = message.sender === selfIdRef.current
-            ? "self-end text-white bg-secondary-bg-400"
-            : "self-start bg-primary-50";
+      <div
+        className={`flex-grow ${column} overflow-y-auto`}
+        ref={messageContainerRef}
+      >
+        {messages.map((message) => {
+          const senderStyle =
+            message.sender === selfIdRef.current
+              ? "self-end text-white bg-secondary-bg-400"
+              : "self-start bg-primary-50";
           return (
             <div className={`p-2.5 my-1 rounded-full ${senderStyle}`}>
               {message.content}
             </div>
           );
         })}
-        <div ref={messageContainerEndRef}/>
+        <div ref={messageContainerEndRef} />
       </div>
 
       <div className={`${row} items-center h-[40px] gap-2`}>
@@ -114,26 +128,26 @@ const MessageUser = () => {
           type="text"
           placeholder="Message"
           value={inputContent}
-          onChange={e => setInputContent(e.target.value)}
+          onChange={(e) => setInputContent(e.target.value)}
         />
-        <button onClick={async e => {
-          e.preventDefault();
-          if (inputContent.length === 0) {
-            return;
-          }
-          
-          socketRef.current?.emit(
-            "chat message in",
-            {
+        <button
+          onClick={async (e) => {
+            e.preventDefault();
+            if (inputContent.length === 0) {
+              return;
+            }
+
+            socketRef.current?.emit("chat message in", {
               sender: selfIdRef.current,
               receiver: userId,
-              content: inputContent
-            }
-          );
-          setInputContent("");
-        }}>
+              content: inputContent,
+            });
+            setInputContent("");
+          }}
+        >
           <div className="aspect-square h-full">
-            <PiPaperPlaneRightFill className="
+            <PiPaperPlaneRightFill
+              className="
               rounded-full
               bg-secondary-bg-400
               p-2.5
@@ -146,7 +160,10 @@ const MessageUser = () => {
         </button>
       </div>
 
-      <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage("")}/>
+      <ErrorModal
+        errorMessage={errorMessage}
+        handleClose={() => setErrorMessage("")}
+      />
     </div>
   );
 };

@@ -6,7 +6,11 @@ import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
 import ErrorModal from "../../components/ErrorModal";
 import { useNavigate } from "react-router-dom";
-import { getSelfData, getStaticData, putSelfData } from "../../backendCommunication";
+import {
+  getSelfData,
+  getStaticData,
+  putSelfData,
+} from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
 
@@ -17,10 +21,15 @@ const RegisterFutureCoursesPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [futureCourseSelection, setFutureCourseSelection] = useState([] as boolean[]);
+  const [futureCourseSelection, setFutureCourseSelection] = useState(
+    [] as boolean[],
+  );
 
   const futureCoursesRef = useRef([] as string[]);
-  const toggleFutureCourseSelection = (index: number) => setFutureCourseSelection(prevState => prevState.map((value, i) => i === index ? !value : value));
+  const toggleFutureCourseSelection = (index: number) =>
+    setFutureCourseSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
 
   useEffect(() => {
     (async () => {
@@ -30,21 +39,27 @@ const RegisterFutureCoursesPage = () => {
         const staticData = await getStaticData(token);
         const selfData = await getSelfData(token);
         const courses = selfData.courses || [];
-        futureCoursesRef.current = staticData.courses.filter((course: string) => !courses.includes(course));
-        setFutureCourseSelection(futureCoursesRef.current.map(course => selfData.futureCourses?.includes(course)));
+        futureCoursesRef.current = staticData.courses.filter(
+          (course: string) => !courses.includes(course),
+        );
+        setFutureCourseSelection(
+          futureCoursesRef.current.map((course) =>
+            selfData.futureCourses?.includes(course),
+          ),
+        );
       } catch {
         setErrorMessage("Could not retrieve server data");
       } finally {
         setLoading(false);
       }
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
     return (
       <div className={`h-svh w-svw ${center}`}>
-        <Spinner/>
+        <Spinner />
       </div>
     );
   }
@@ -53,31 +68,31 @@ const RegisterFutureCoursesPage = () => {
     <div className={`${column} relative w-svw h-svh p-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
-          <BackButton onBack={() => navigate("/register-courses")}/>
+          <BackButton onBack={() => navigate("/register-courses")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png"/>
+          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
         </div>
       </div>
 
       <div className="flex justify-end">2 of 5</div>
 
-      <div className="h-[10px]"/>
+      <div className="h-[10px]" />
 
       <div className={center}>
-        <ProgressBar progress={40}/>
+        <ProgressBar progress={40} />
       </div>
 
-      <div className="h-[30px]"/>
+      <div className="h-[30px]" />
 
       <div className="text-[2.5rem] font-bold">Future Courses?</div>
       <div>Select all the courses you are doing in the future</div>
 
-      <div className="h-[60px]"/>
+      <div className="h-[60px]" />
 
       <input
         className={searchBar}
-        onChange={e => {
+        onChange={(e) => {
           e.preventDefault();
           setSearchInput(e.target.value);
         }}
@@ -85,41 +100,53 @@ const RegisterFutureCoursesPage = () => {
         type="input"
       />
 
-      <div className="h-[90px]"/>
+      <div className="h-[90px]" />
 
       <ListSearch
         contents={futureCoursesRef.current}
         selected={futureCourseSelection}
         searchInput={searchInput}
-        onSelect={i => toggleFutureCourseSelection(i)}
+        onSelect={(i) => toggleFutureCourseSelection(i)}
       />
 
       <div className={`${center}`}>
-        <button className={bigButton} onClick={async (e: FormEvent) => {
-          e.preventDefault()
+        <button
+          className={bigButton}
+          onClick={async (e: FormEvent) => {
+            e.preventDefault();
 
-          if (futureCourseSelection.every(selection => !selection)) {
-            setErrorMessage("Please select at least one course");
-            return;
-          }
-
-          try {
-            setLoading(true);
-            
-            await putSelfData(token, { futureCourses: futureCoursesRef.current.filter((_, i) => futureCourseSelection[i]) });
-            navigate("/register-hobbies");
-          } catch (e: unknown) {
-            setLoading(false);
-            if (e instanceof AxiosError) {
-              setErrorMessage(e.response?.data.errors[0].message);
-            } else {
-              setErrorMessage("Internal error");
+            if (futureCourseSelection.every((selection) => !selection)) {
+              setErrorMessage("Please select at least one course");
+              return;
             }
-          }
-        }}>Next</button>
+
+            try {
+              setLoading(true);
+
+              await putSelfData(token, {
+                futureCourses: futureCoursesRef.current.filter(
+                  (_, i) => futureCourseSelection[i],
+                ),
+              });
+              navigate("/register-hobbies");
+            } catch (e: unknown) {
+              setLoading(false);
+              if (e instanceof AxiosError) {
+                setErrorMessage(e.response?.data.errors[0].message);
+              } else {
+                setErrorMessage("Internal error");
+              }
+            }
+          }}
+        >
+          Next
+        </button>
       </div>
 
-      <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage("")}/>
+      <ErrorModal
+        errorMessage={errorMessage}
+        handleClose={() => setErrorMessage("")}
+      />
     </div>
   );
 };

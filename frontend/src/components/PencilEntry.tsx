@@ -7,14 +7,18 @@ interface PencilEntryProps {
   onEdit: () => void;
 }
 
-const PencilEntry: React.FC<PencilEntryProps> = ({ descriptor, text, onEdit }) => {
+const PencilEntry: React.FC<PencilEntryProps> = ({
+  descriptor,
+  text,
+  onEdit,
+}) => {
   return (
     <div className={column}>
       <div className="text-sm text-primary-300">{descriptor}</div>
       <div className={row}>
         <div className="font-bold text-2xl">{text}</div>
         <button onClick={onEdit}>
-          <FaPencil className="text-secondary-bg-400 mx-2 h-[32px]"/>
+          <FaPencil className="text-secondary-bg-400 mx-2 h-[32px]" />
         </button>
       </div>
     </div>

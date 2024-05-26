@@ -113,9 +113,12 @@ export function filterAll(user: unknown) {
 
 export function filterNullish<T>(obj: { [key: string]: any }) {
   return Object.keys(obj)
-    .filter(key => obj[key] != null)
-    .reduce((acc, key) => {
-      acc[key] = obj[key];
-      return acc
-    }, {} as { [key: string]: any }) as T;
+    .filter((key) => obj[key] != null)
+    .reduce(
+      (acc, key) => {
+        acc[key] = obj[key];
+        return acc;
+      },
+      {} as { [key: string]: any },
+    ) as T;
 }

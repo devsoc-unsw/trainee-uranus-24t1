@@ -143,10 +143,10 @@ export const assertValid = {
   all: (user: User) => {
     assertValid.firstName(user.firstName);
     assertValid.lastName(user.lastName);
-  
+
     assertValid.email(user.email);
     assertValid.password(user.password);
-  
+
     assertValid.courses(user.courses);
     assertValid.futureCourses(user.futureCourses);
     assertValid.hobbies(user.hobbies);
@@ -156,10 +156,12 @@ export const assertValid = {
     assertValid.age(user.age);
     assertValid.wam(user.wam);
     assertValid.academicSocialRatio(user.academicSocialRatio);
-  
+
     assertValid.preferredCourses(user.preferredCourses);
     assertValid.preferredLanguages(user.preferredLanguages);
-    assertValid.preferredProgrammingLanguages(user.preferredProgrammingLanguages);
+    assertValid.preferredProgrammingLanguages(
+      user.preferredProgrammingLanguages,
+    );
     assertValid.preferredGenders(user.preferredGenders);
     assertValid.preferredAgeRange(user.preferredAgeRange);
     assertValid.preferredWamRange(user.preferredWamRange);
@@ -168,25 +170,36 @@ export const assertValid = {
   allPossiblyUndefined: (user: User) => {
     if (user.firstName != undefined) assertValid.firstName(user.firstName);
     if (user.lastName != undefined) assertValid.lastName(user.lastName);
-  
+
     if (user.email != undefined) assertValid.email(user.email);
     if (user.password != undefined) assertValid.password(user.password);
-  
+
     if (user.courses != undefined) assertValid.courses(user.courses);
-    if (user.futureCourses != undefined) assertValid.futureCourses(user.futureCourses);
+    if (user.futureCourses != undefined)
+      assertValid.futureCourses(user.futureCourses);
     if (user.hobbies != undefined) assertValid.hobbies(user.hobbies);
     if (user.languages != undefined) assertValid.languages(user.languages);
-    if (user.programmingLanguages != undefined) assertValid.programmingLanguages(user.programmingLanguages);
+    if (user.programmingLanguages != undefined)
+      assertValid.programmingLanguages(user.programmingLanguages);
     if (user.gender != undefined) assertValid.gender(user.gender);
     if (user.age != undefined) assertValid.age(user.age);
     if (user.wam != undefined) assertValid.wam(user.wam);
-    if (user.academicSocialRatio != undefined) assertValid.academicSocialRatio(user.academicSocialRatio);
-  
-    if (user.preferredCourses != undefined) assertValid.preferredCourses(user.preferredCourses);
-    if (user.preferredLanguages != undefined) assertValid.preferredLanguages(user.preferredLanguages);
-    if (user.preferredProgrammingLanguages != undefined) assertValid.preferredProgrammingLanguages(user.preferredProgrammingLanguages);
-    if (user.preferredGenders != undefined) assertValid.preferredGenders(user.preferredGenders);
-    if (user.preferredAgeRange != undefined) assertValid.preferredAgeRange(user.preferredAgeRange);
-    if (user.preferredWamRange != undefined) assertValid.preferredWamRange(user.preferredWamRange);
+    if (user.academicSocialRatio != undefined)
+      assertValid.academicSocialRatio(user.academicSocialRatio);
+
+    if (user.preferredCourses != undefined)
+      assertValid.preferredCourses(user.preferredCourses);
+    if (user.preferredLanguages != undefined)
+      assertValid.preferredLanguages(user.preferredLanguages);
+    if (user.preferredProgrammingLanguages != undefined)
+      assertValid.preferredProgrammingLanguages(
+        user.preferredProgrammingLanguages,
+      );
+    if (user.preferredGenders != undefined)
+      assertValid.preferredGenders(user.preferredGenders);
+    if (user.preferredAgeRange != undefined)
+      assertValid.preferredAgeRange(user.preferredAgeRange);
+    if (user.preferredWamRange != undefined)
+      assertValid.preferredWamRange(user.preferredWamRange);
   },
 };

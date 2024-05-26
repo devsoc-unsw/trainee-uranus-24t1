@@ -7,7 +7,11 @@ interface ListViewProps {
   onSelect: (index: number) => void;
 }
 
-const ListView: React.FC<ListViewProps> = ({ contents, selected, onSelect }) => {
+const ListView: React.FC<ListViewProps> = ({
+  contents,
+  selected,
+  onSelect,
+}) => {
   return (
     <div className={`${row} flex-wrap`}>
       {contents.map((content, index) => {
@@ -16,9 +20,7 @@ const ListView: React.FC<ListViewProps> = ({ contents, selected, onSelect }) => 
         }
         return (
           <div className="relative inline-block">
-            <div
-              className={cardStyle}
-            >{content}</div>
+            <div className={cardStyle}>{content}</div>
             <button
               className="
                 absolute
@@ -35,7 +37,9 @@ const ListView: React.FC<ListViewProps> = ({ contents, selected, onSelect }) => 
                 justify-center
               "
               onClick={() => onSelect(index)}
-            >-</button>
+            >
+              -
+            </button>
           </div>
         );
       })}

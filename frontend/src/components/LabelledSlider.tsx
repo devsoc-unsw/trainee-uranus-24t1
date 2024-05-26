@@ -9,7 +9,14 @@ interface LabelledSliderProps {
   label: string;
 }
 
-const LabelledSlider: React.FC<LabelledSliderProps> = ({ min, max, step, value, onSlide, label }) => {
+const LabelledSlider: React.FC<LabelledSliderProps> = ({
+  min,
+  max,
+  step,
+  value,
+  onSlide,
+  label,
+}) => {
   return (
     <div className={column}>
       <input
@@ -19,16 +26,16 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({ min, max, step, value, 
           cursor-pointer
           h-2
           my-3
-        " 
+        "
         type="range"
         min={min}
         max={max}
         step={step || 1}
         value={value}
-        onChange={e => onSlide(Number(e.target.value))}
+        onChange={(e) => onSlide(Number(e.target.value))}
       />
       <div
-      className="
+        className="
         h-auto
         flex
         relative
@@ -46,7 +53,7 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({ min, max, step, value, 
             translate-y-[-50%]
             text-secondary-bg-500
           "
-          style={{left: `${(value - min) / (max - min) * 100}%`}}
+          style={{ left: `${((value - min) / (max - min)) * 100}%` }}
         >
           {label}
         </div>

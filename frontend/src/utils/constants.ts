@@ -1,14 +1,14 @@
 export const LOCAL_HOST = "http://localhost:8008/";
 
 export const AUTH_PATH = "authentication/";
-export const STATIC_DATA_PATH = "static-data/"
+export const STATIC_DATA_PATH = "static-data/";
 export const REGISTER_PATH = "register/";
 export const LOGIN_PATH = "login/";
 
 export const SUPER_PATH = "super/";
 export const USERS_PATH = "users/";
 export const SELF_PATH = "self/";
-export const AVATAR_PATH = "avatar/"
+export const AVATAR_PATH = "avatar/";
 
 export const MESSAGES_PATH = "messages/";
 export const FROM_ID_PATH = "from-id/";

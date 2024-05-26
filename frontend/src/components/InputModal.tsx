@@ -5,10 +5,15 @@ interface InputModalProps {
   title: string;
   show: boolean;
   onHide: () => void;
-  children?: Array<ReactElement | string> | ReactElement | string; 
+  children?: Array<ReactElement | string> | ReactElement | string;
 }
 
-const InputModal: React.FC<InputModalProps> = ({ title, show, onHide, children }) => {
+const InputModal: React.FC<InputModalProps> = ({
+  title,
+  show,
+  onHide,
+  children,
+}) => {
   return (
     <Modal show={show} onHide={onHide} centered={true}>
       <Modal.Header>
@@ -18,11 +23,9 @@ const InputModal: React.FC<InputModalProps> = ({ title, show, onHide, children }
       </Modal.Header>
 
       <Modal.Body>
-        <div className="flex justify-center">
-          {children}
-        </div>
+        <div className="flex justify-center">{children}</div>
       </Modal.Body>
-      
+
       <Modal.Footer>
         <button
           onClick={() => onHide()}
@@ -37,7 +40,9 @@ const InputModal: React.FC<InputModalProps> = ({ title, show, onHide, children }
             hover:bg-primary-500
             hover:text-primary-500
           "
-        >Close</button>
+        >
+          Close
+        </button>
       </Modal.Footer>
     </Modal>
   );

@@ -24,13 +24,20 @@ authenticationRouter.post("/register", async (req: Request, res: Response) => {
   }
 
   password = await bcrypt.hash(password, 5);
-  const result = await collections.users?.insertOne({ firstName, lastName, email, password });
+  const result = await collections.users?.insertOne({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
 
   if (!result) {
     throw new BadRequestError({ message: "Failed to create a new user" });
   }
 
-  res.status(201).send(`Successfullly created a new user with id ${result.insertedId}`);
+  res
+    .status(201)
+    .send(`Successfullly created a new user with id ${result.insertedId}`);
 });
 
 authenticationRouter.post("/login", async (req: Request, res: Response) => {

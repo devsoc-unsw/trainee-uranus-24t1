@@ -25,36 +25,36 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />
+        element: <Profile />,
       },
       {
         path: "messages",
-        element: <Messages />
+        element: <Messages />,
       },
       {
         path: "messages/:user",
-        element: <MessageUser />
+        element: <MessageUser />,
       },
       {
         path: "register-courses",
-        element: <RegisterCoursesPage />
+        element: <RegisterCoursesPage />,
       },
       {
         path: "register-future-courses",
-        element: <RegisterFutureCoursesPage />
+        element: <RegisterFutureCoursesPage />,
       },
       {
         path: "register-hobbies",
-        element: <RegisterHobbies />
+        element: <RegisterHobbies />,
       },
       {
         path: "register-preferences",
-        element: <RegisterPreferencesPage />
-      }, 
+        element: <RegisterPreferencesPage />,
+      },
       {
         path: "register-info",
-        element: <RegisterInfoPage />
-      }
+        element: <RegisterInfoPage />,
+      },
     ],
   },
   {
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
   {
     path: "login",
     element: <LoginPage />,
-  }
+  },
 ]);
 
 function App() {

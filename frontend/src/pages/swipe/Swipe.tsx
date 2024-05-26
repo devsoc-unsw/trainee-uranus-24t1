@@ -3,7 +3,11 @@ import NavBar from "../../components/NavBar";
 import UserCard from "../../components/UserCard";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
-import { UserInfo, getSelfMatches, startConversation } from "../../backendCommunication";
+import {
+  UserInfo,
+  getSelfMatches,
+  startConversation,
+} from "../../backendCommunication";
 import { Spinner } from "react-bootstrap";
 import { center } from "../../resources";
 import ErrorModal from "../../components/ErrorModal";
@@ -28,21 +32,21 @@ const Swipe = () => {
         setLoading(false);
       }
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
     return (
       <div className={`h-svh w-svw ${center}`}>
-        <Spinner/>
+        <Spinner />
       </div>
     );
   }
-  
+
   return (
     <div className="relative flex flex-col h-svh w-svw">
       <div className="content-center grow overflow-auto w-full">
-        {matches.map(match => (
+        {matches.map((match) => (
           <UserCard
             avatarUrl={match.avatarUrl}
             currentCourses={match.courses}
@@ -55,12 +59,15 @@ const Swipe = () => {
           />
         ))}
       </div>
-      
+
       <div className="w-full">
-        <NavBar navigate={navigate} index={0}/>
+        <NavBar navigate={navigate} index={0} />
       </div>
 
-      <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage("")}/>
+      <ErrorModal
+        errorMessage={errorMessage}
+        handleClose={() => setErrorMessage("")}
+      />
     </div>
   );
 };

@@ -5,11 +5,17 @@ import { center, column, row, searchBar } from "../../resources";
 import { AppContext } from "../../contexts/AppContext";
 import ErrorModal from "../../components/ErrorModal";
 import { Spinner } from "react-bootstrap";
-import { Message, UserInfo, getSelfData, getSelfMessages, getUsersFromId } from "../../backendCommunication";
+import {
+  Message,
+  UserInfo,
+  getSelfData,
+  getSelfMessages,
+  getUsersFromId,
+} from "../../backendCommunication";
 import { messagesByMongodbTimestamp } from "../../sorting";
 
-type ConversationMap = { [id: string] : Message[] };
-type NameMap = { [id: string] : string };
+type ConversationMap = { [id: string]: Message[] };
+type NameMap = { [id: string]: string };
 type AvatarMap = NameMap;
 
 const Messages = () => {
@@ -31,37 +37,38 @@ const Messages = () => {
         const selfId: string = selfData._id;
         const messages: Message[] = await getSelfMessages(token);
 
-        const conversationMap: { [id: string] : Message[] } = {};
-        messages.forEach(message => {
-          const user = message.members.find(id => id !== selfId);
+        const conversationMap: { [id: string]: Message[] } = {};
+        messages.forEach((message) => {
+          const user = message.members.find((id) => id !== selfId);
           if (user == undefined) {
             return;
           }
           conversationMap[user] ??= [];
           conversationMap[user].push(message);
         });
-        Object.keys(conversationMap).forEach(user => {
+        Object.keys(conversationMap).forEach((user) => {
           conversationMap[user].sort(messagesByMongodbTimestamp);
         });
         setConversations(conversationMap);
-        
-        const ids = Array.from(new Set(messages.flatMap(message => message.members)));
+
+        const ids = Array.from(
+          new Set(messages.flatMap((message) => message.members)),
+        );
         const users: UserInfo[] = await getUsersFromId(token, ids);
 
         const nameMap: NameMap = {};
         const avatarMap: AvatarMap = {};
-        users.forEach(user => {
+        users.forEach((user) => {
           nameMap[user._id] = `${user.firstName} ${user.lastName}`;
           avatarMap[user._id] = user.avatarUrl;
         });
         setNames(nameMap);
         setAvatars(avatarMap);
-
       } catch {
         setErrorMessage("Could not retrieve server data");
       }
     };
-    
+
     const intervalId = setInterval(load, 20000);
     (async () => {
       setLoading(true);
@@ -69,14 +76,13 @@ const Messages = () => {
       setLoading(false);
     })();
     return () => clearInterval(intervalId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   if (loading) {
     return (
       <div className={`h-svh w-svw ${center}`}>
-        <Spinner/>
+        <Spinner />
       </div>
     );
   }
@@ -90,26 +96,36 @@ const Messages = () => {
           className={searchBar}
           placeholder="🔍 Search"
           type="input"
-          onChange={e => {
+          onChange={(e) => {
             e.preventDefault();
             setSearchInput(e.target.value);
           }}
         />
-        
+
         <div className={`${column} gap-2 mt-4 overflow-auto`}>
-          {Object.keys(conversations).map(user => {
-            if (!names[user].toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())) {
+          {Object.keys(conversations).map((user) => {
+            if (
+              !names[user]
+                .toLocaleLowerCase()
+                .includes(searchInput.toLocaleLowerCase())
+            ) {
               return undefined;
             }
 
             return (
               <button onClick={() => navigate(`/messages/${user}`)}>
                 <div className={`${row} items-center gap-2`}>
-                  <img src={avatars[user]} className="w-[55px] h-[55px] rounded-full object-cover" />
+                  <img
+                    src={avatars[user]}
+                    className="w-[55px] h-[55px] rounded-full object-cover"
+                  />
                   <div className={`${column} items-start flex-grow`}>
                     <div className="font-bold">{names[user]}</div>
                     <div className="text-primary-300">
-                      {conversations[user][conversations[user].length - 1].content}
+                      {
+                        conversations[user][conversations[user].length - 1]
+                          .content
+                      }
                     </div>
                   </div>
                   <div>notif dot</div>
@@ -121,10 +137,13 @@ const Messages = () => {
       </div>
 
       <div className="w-full">
-        <NavBar navigate={navigate} index={2}/>
+        <NavBar navigate={navigate} index={2} />
       </div>
 
-      <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage("")}/>
+      <ErrorModal
+        errorMessage={errorMessage}
+        handleClose={() => setErrorMessage("")}
+      />
     </div>
   );
 };

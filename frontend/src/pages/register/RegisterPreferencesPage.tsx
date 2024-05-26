@@ -6,7 +6,11 @@ import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
 import ErrorModal from "../../components/ErrorModal";
 import { useNavigate } from "react-router-dom";
-import { getSelfData, getStaticData, putSelfData } from "../../backendCommunication";
+import {
+  getSelfData,
+  getStaticData,
+  putSelfData,
+} from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
@@ -17,8 +21,12 @@ const RegisterPreferencesPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [preferredLanguageSelection, setPreferredLanguageSelection] = useState([] as boolean[]);
-  const [preferredGenderSelection, setPreferredGenderSelection] = useState([] as boolean[]);
+  const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
+    [] as boolean[],
+  );
+  const [preferredGenderSelection, setPreferredGenderSelection] = useState(
+    [] as boolean[],
+  );
   const [preferredAgeRangeMin, setPreferredAgeRangeMin] = useState(17);
   const [preferredAgeRangeMax, setPreferredAgeRangeMax] = useState(27);
   const [preferredWamRangeMin, setPreferredWamRangeMin] = useState(0);
@@ -28,9 +36,15 @@ const RegisterPreferencesPage = () => {
   const languagesRef = useRef([] as string[]);
   const gendersRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
-  
-  const togglePreferredLanguageSelection = (index: number) => setPreferredLanguageSelection(prevState => prevState.map((value, i) => i === index ? !value : value));
-  const togglePreferredGenderSelection = (index: number) => setPreferredGenderSelection(prevState => prevState.map((value, i) => i === index ? !value : value));
+
+  const togglePreferredLanguageSelection = (index: number) =>
+    setPreferredLanguageSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
+  const togglePreferredGenderSelection = (index: number) =>
+    setPreferredGenderSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
 
   useEffect(() => {
     (async () => {
@@ -41,12 +55,24 @@ const RegisterPreferencesPage = () => {
         gendersRef.current = staticData.genders;
         wamsRef.current = staticData.wams;
         const selfData = await getSelfData(token);
-        setPreferredLanguageSelection(languagesRef.current.map(language => selfData.preferredLanguages?.includes(language)));
-        setPreferredGenderSelection(gendersRef.current.map(gender => selfData.preferredGenders?.includes(gender)));
+        setPreferredLanguageSelection(
+          languagesRef.current.map((language) =>
+            selfData.preferredLanguages?.includes(language),
+          ),
+        );
+        setPreferredGenderSelection(
+          gendersRef.current.map((gender) =>
+            selfData.preferredGenders?.includes(gender),
+          ),
+        );
         setPreferredAgeRangeMin(selfData.preferredAgeRange?.[0] || 17);
         setPreferredAgeRangeMax(selfData.preferredAgeRange?.[1] || 27);
-        setPreferredWamRangeMin(wamsRef.current.indexOf(selfData.preferredWamRange?.[0] ?? 0));
-        setPreferredWamRangeMax(wamsRef.current.indexOf(selfData.preferredWamRange?.[1] ?? 4));
+        setPreferredWamRangeMin(
+          wamsRef.current.indexOf(selfData.preferredWamRange?.[0] ?? 0),
+        );
+        setPreferredWamRangeMax(
+          wamsRef.current.indexOf(selfData.preferredWamRange?.[1] ?? 4),
+        );
         setSocialAcademicRatio(selfData.academicSocialRatio || 0.5);
       } catch {
         setErrorMessage("Could not retrieve server data");
@@ -54,13 +80,13 @@ const RegisterPreferencesPage = () => {
         setLoading(false);
       }
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
     return (
       <div className={`h-svh w-svw ${center}`}>
-        <Spinner/>
+        <Spinner />
       </div>
     );
   }
@@ -69,27 +95,27 @@ const RegisterPreferencesPage = () => {
     <div className={`${column} relative w-svw h-svh p-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
-          <BackButton onBack={() => navigate("/register-hobbies")}/>
+          <BackButton onBack={() => navigate("/register-hobbies")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png"/>
+          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
         </div>
       </div>
 
       <div className="flex justify-end">4 of 5</div>
 
-      <div className="h-[10px]"/>
+      <div className="h-[10px]" />
 
       <div className={center}>
-        <ProgressBar progress={80}/>
+        <ProgressBar progress={80} />
       </div>
 
-      <div className="h-[30px]"/>
+      <div className="h-[30px]" />
 
       <div className="text-[2.5rem] font-bold">Preferences?</div>
       <div>What are you looking for in someone?</div>
 
-      <div className="h-[60px]"/>
+      <div className="h-[60px]" />
 
       <div className={`${column} h-full`}>
         <div>Preferred Languages:</div>
@@ -123,7 +149,7 @@ const RegisterPreferencesPage = () => {
           onSlide={setPreferredAgeRangeMax}
           label={preferredAgeRangeMax.toString()}
         />
-        
+
         <div>Preferred Minimum WAM:</div>
         <LabelledSlider
           min={0}
@@ -144,7 +170,11 @@ const RegisterPreferencesPage = () => {
 
         <div>Academic vs Social Ratio:</div>
         <div>What do you value?</div>
-        <div>With 0% being that you are completely looking for someone to fulfil your academic goals and 100% being you are looking for someone that matches your social aspirations!</div>
+        <div>
+          With 0% being that you are completely looking for someone to fulfil
+          your academic goals and 100% being you are looking for someone that
+          matches your social aspirations!
+        </div>
         <LabelledSlider
           min={0}
           max={1}
@@ -156,57 +186,69 @@ const RegisterPreferencesPage = () => {
       </div>
 
       <div className={center}>
-        <button className={bigButton} onClick={async (e: FormEvent) => {
-          e.preventDefault();
+        <button
+          className={bigButton}
+          onClick={async (e: FormEvent) => {
+            e.preventDefault();
 
-          if (preferredLanguageSelection.every(selection => !selection)) {
-            setErrorMessage("Please select at least one preferred language");
-            return;
-          }
-
-          if (preferredGenderSelection.every(selection => !selection)) {
-            setErrorMessage("Please select at least one preferred gender");
-            return;
-          }
-
-          if (preferredAgeRangeMax < preferredAgeRangeMin) {
-            setErrorMessage("Please select a non-empty age range");
-            return;
-          }
-
-          if (preferredWamRangeMax < preferredWamRangeMin) {
-            setErrorMessage("Please select a non-empty WAM range")
-            return;
-          }
-
-          try {
-            setLoading(true);
-            
-            await putSelfData(
-              token, 
-              {
-                preferredLanguages: languagesRef.current.filter((_, i) => preferredLanguageSelection[i]),
-                preferredGenders: gendersRef.current.filter((_, i) => preferredGenderSelection[i]),
-                preferredAgeRange: [preferredAgeRangeMin, preferredAgeRangeMax],
-                preferredWamRange: [wamsRef.current[preferredWamRangeMin], wamsRef.current[preferredWamRangeMax]],
-                academicSocialRatio: socialAcademicRatio,
-              }
-            );
-            navigate("/register-info");
-          } catch (e: unknown) {
-            setLoading(false);
-            if (e instanceof AxiosError) {
-              setErrorMessage(e.response?.data.errors[0].message);
-            } else {
-              setErrorMessage("Internal error");
+            if (preferredLanguageSelection.every((selection) => !selection)) {
+              setErrorMessage("Please select at least one preferred language");
+              return;
             }
-          }
-        }}>Next</button>
+
+            if (preferredGenderSelection.every((selection) => !selection)) {
+              setErrorMessage("Please select at least one preferred gender");
+              return;
+            }
+
+            if (preferredAgeRangeMax < preferredAgeRangeMin) {
+              setErrorMessage("Please select a non-empty age range");
+              return;
+            }
+
+            if (preferredWamRangeMax < preferredWamRangeMin) {
+              setErrorMessage("Please select a non-empty WAM range");
+              return;
+            }
+
+            try {
+              setLoading(true);
+
+              await putSelfData(token, {
+                preferredLanguages: languagesRef.current.filter(
+                  (_, i) => preferredLanguageSelection[i],
+                ),
+                preferredGenders: gendersRef.current.filter(
+                  (_, i) => preferredGenderSelection[i],
+                ),
+                preferredAgeRange: [preferredAgeRangeMin, preferredAgeRangeMax],
+                preferredWamRange: [
+                  wamsRef.current[preferredWamRangeMin],
+                  wamsRef.current[preferredWamRangeMax],
+                ],
+                academicSocialRatio: socialAcademicRatio,
+              });
+              navigate("/register-info");
+            } catch (e: unknown) {
+              setLoading(false);
+              if (e instanceof AxiosError) {
+                setErrorMessage(e.response?.data.errors[0].message);
+              } else {
+                setErrorMessage("Internal error");
+              }
+            }
+          }}
+        >
+          Next
+        </button>
       </div>
 
-      <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage("")}/>
+      <ErrorModal
+        errorMessage={errorMessage}
+        handleClose={() => setErrorMessage("")}
+      />
     </div>
   );
-}
+};
 
 export default RegisterPreferencesPage;

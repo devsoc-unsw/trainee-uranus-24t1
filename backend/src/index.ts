@@ -21,7 +21,7 @@ try {
 }
 
 const app: Application = express();
-app.use(cors())
+app.use(cors());
 const server = app.listen(PORT, async () => {
   console.log(`🗄️ Server Fire on http://localhost:${PORT}`);
 });
@@ -36,38 +36,38 @@ const io = new SocketIOServer(server, {
   path: "/socket.io",
   cors: {
     origin: "*",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
-const sendTo: { [key: string]: (arg0: Message) => void } = {}
+const sendTo: { [key: string]: (arg0: Message) => void } = {};
 
 io.on("connection", async (socket) => {
-  socket.on("token", async token => {
+  socket.on("token", async (token) => {
     const decoded = jwt.verify(token, SECRET_KEY);
     const _id: string = (decoded as JwtPayload)._id;
-    const user = (
-      await collections.users?.findOne({ _id: new ObjectId(_id) })
-    ) as unknown as User;
+    const user = (await collections.users?.findOne({
+      _id: new ObjectId(_id),
+    })) as unknown as User;
 
     if (!user) {
       socket.disconnect();
       return;
     }
 
-    sendTo[_id] = message => socket.emit("chat message out", message);
+    sendTo[_id] = (message) => socket.emit("chat message out", message);
 
-    socket.on("chat message in", async data => {
+    socket.on("chat message in", async (data) => {
       const packet: {
-        sender: string,
-        receiver: string,
-        content: string
+        sender: string;
+        receiver: string;
+        content: string;
       } = data;
 
       const message: Message = new Message(
         [new ObjectId(packet.sender), new ObjectId(packet.receiver)],
         new ObjectId(packet.sender),
-        packet.content
+        packet.content,
       );
       const result = await collections.messages?.insertOne(message);
       if (!result) {

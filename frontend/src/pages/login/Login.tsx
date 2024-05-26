@@ -60,7 +60,7 @@ const LoginPage = () => {
             onSubmit={handleLogin}
             className="flex flex-col items-center justify-center w-full"
           >
-            <Input placeholder="email" type="text" forwardedRef={emailRef}/>
+            <Input placeholder="email" type="text" forwardedRef={emailRef} />
             <Input
               placeholder="password"
               type="password"

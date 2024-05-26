@@ -8,7 +8,13 @@ interface UserCardProps {
   onMatch: () => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ avatarUrl, currentCourses, untakenCourses, languages, onMatch }) => {
+const UserCard: React.FC<UserCardProps> = ({
+  avatarUrl,
+  currentCourses,
+  untakenCourses,
+  languages,
+  onMatch,
+}) => {
   const sectionStyle = `
     font-bold
   `;
@@ -19,49 +25,64 @@ const UserCard: React.FC<UserCardProps> = ({ avatarUrl, currentCourses, untakenC
   `;
 
   return (
-    <div className="
+    <div
+      className="
       h-full
       w-full
       bg-secondary-bg-100
       flex
       justify-center
       items-center 
-    ">
-      <div className={`
+    "
+    >
+      <div
+        className={`
         ${column}
         bg-primary-50
         rounded-2xl
         w-full
         m-4
-      `}>
-        <img className="
+      `}
+      >
+        <img
+          className="
           rounded-t-2xl
           h-[40vh]
           object-cover
-          " src={avatarUrl || "/src/assets/frenchman.jpeg"}
+          "
+          src={avatarUrl || "/src/assets/frenchman.jpeg"}
         />
-        
+
         <div className={`${column} p-3`}>
           <div className={sectionStyle}>Current Courses</div>
           <div className={row}>
-            {currentCourses.map(course => (<div className={cardStyle}>{course}</div>))}
+            {currentCourses.map((course) => (
+              <div className={cardStyle}>{course}</div>
+            ))}
           </div>
 
-          <div className={spacerStyle}/>
+          <div className={spacerStyle} />
 
           <div className={sectionStyle}>Untaken Courses</div>
           <div className={row}>
-            {untakenCourses.map(course => (<div className={cardStyle}>{course}</div>))}
+            {untakenCourses.map((course) => (
+              <div className={cardStyle}>{course}</div>
+            ))}
           </div>
 
-          <div className={spacerStyle}/>
+          <div className={spacerStyle} />
 
           <div className={sectionStyle}>Languages</div>
           <div className={row}>
-            {languages.map(language => (<div className={cardStyle}>{language}</div>))}
+            {languages.map((language) => (
+              <div className={cardStyle}>{language}</div>
+            ))}
           </div>
 
-          <button className={`${bigButton} w-[350px] self-center`} onClick={onMatch}>
+          <button
+            className={`${bigButton} w-[350px] self-center`}
+            onClick={onMatch}
+          >
             I have a crush on you
           </button>
         </div>

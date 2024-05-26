@@ -76,7 +76,7 @@ const RegisterPage = () => {
       if (e instanceof AxiosError) {
         setErrorMessage(e.response?.data.errors[0].message);
       } else {
-        setErrorMessage("Internal error")
+        setErrorMessage("Internal error");
       }
     } finally {
       setRegisterLoading(false);

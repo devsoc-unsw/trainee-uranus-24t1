@@ -15,7 +15,8 @@ assert(process.env.USERS_COLLECTION_NAME != undefined);
 export const USERS_COLLECTION_NAME = process.env.USERS_COLLECTION_NAME;
 
 assert(process.env.STATIC_DATA_COLLECTION_NAME != undefined);
-export const STATIC_DATA_COLLECTION_NAME = process.env.STATIC_DATA_COLLECTION_NAME;
+export const STATIC_DATA_COLLECTION_NAME =
+  process.env.STATIC_DATA_COLLECTION_NAME;
 
 assert(process.env.MESSAGES_COLLECTION_NAME != undefined);
 export const MESSAGES_COLLECTION_NAME = process.env.MESSAGES_COLLECTION_NAME;

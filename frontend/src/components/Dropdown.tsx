@@ -7,9 +7,13 @@ interface DropdownProps {
   onSelect: (option: string, index: number) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ contents, selected, onSelect }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  contents,
+  selected,
+  onSelect,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <div className="relative inline-block text-left">
       <button
@@ -24,8 +28,11 @@ const Dropdown: React.FC<DropdownProps> = ({ contents, selected, onSelect }) => 
           flex
           items-center
           justify-center
-        " onClick={() => setIsOpen(!isOpen)}
-      >+</button>
+        "
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        +
+      </button>
 
       {isOpen && (
         <div className={column}>
@@ -40,14 +47,16 @@ const Dropdown: React.FC<DropdownProps> = ({ contents, selected, onSelect }) => 
                 onClick={() => {
                   onSelect(option, index);
                   setIsOpen(false);
-                } }
-              >{option}</button>
+                }}
+              >
+                {option}
+              </button>
             );
           })}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default Dropdown;
