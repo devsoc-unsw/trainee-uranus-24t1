@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "start": "serve -s dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -20,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.22.3",
+    "serve": "^14.2.3",
     "socket.io-client": "^4.7.5",
     "sort-by": "^1.2.0",
     "usehooks-ts": "^3.0.2"
