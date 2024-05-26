@@ -57,27 +57,8 @@ POST /authentication/register
 Body: {
   firstName: string
   lastName: string
-
   email: string
   password: string
-
-  courses: string[]
-  futureCourses: string[]
-  hobbies: string[]
-  languages: string[]
-  programmingLanguages: string[]
-  gender: string
-  age: number
-  wam: string
-  academicSocialRatio: number
-
-  preferredCourses: string[]
-  preferredLanguages: string[]
-  preferredProgrammingLanguages: string[]
-  preferredGenders: string[]
-  preferredAgeRange: [number, number]
-  preferredWamRange: [string, string]
-  preferredAcademicSocialRatio: number
 }
 ```
 
@@ -151,6 +132,8 @@ Returns: {
 
 ```
 PUT /self
+
+Note: accepts any combination of the following properties (i.e., {"lastName": "Coders"} is valid).
 
 Body: {
   firstName: string

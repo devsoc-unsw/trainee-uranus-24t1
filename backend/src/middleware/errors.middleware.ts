@@ -28,7 +28,11 @@ export const errorHandler = (
   }
 
   // Unhandled errors
-  console.error(JSON.stringify(err, null, 2));
+  try {
+    console.error(JSON.stringify(err, null, 2));
+  } catch {
+    console.error(err);
+  }
   return res
     .status(500)
     .send({ errors: [{ message: "Something went wrong" }] });

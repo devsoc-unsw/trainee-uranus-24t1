@@ -1,11 +1,11 @@
 import Input from "../../components/Input";
 import Heading from "../../components/Heading";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useContext, useRef, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
 import { Spinner } from "react-bootstrap";
 import { AppContext } from "../../contexts/AppContext";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {
   AUTH_PATH,
   LOCAL_HOST,
@@ -17,6 +17,8 @@ import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import CustomButton from "../../components/CustomButton";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const { token, updateToken } = useContext(AppContext);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [registerLoading, setRegisterLoading] = useState<boolean>(false);
@@ -25,10 +27,9 @@ const RegisterPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate()
 
   if (token) {
-    return <Navigate to="/" />;
+    navigate("/register-courses");
   }
 
   const handleRegister = async (e: FormEvent) => {
@@ -71,9 +72,12 @@ const RegisterPage = () => {
         password,
       });
       updateToken(response.data.token);
-      console.log(response);
-    } catch {
-      setErrorMessage("Failed to register.");
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        setErrorMessage(e.response?.data.errors[0].message);
+      } else {
+        setErrorMessage("Internal error")
+      }
     } finally {
       setRegisterLoading(false);
     }

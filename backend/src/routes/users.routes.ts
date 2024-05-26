@@ -2,23 +2,43 @@ import express, { Request, Response } from "express";
 import { requireToken } from "../middleware/token.middleware";
 import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
-import User from "../models/user";
 import { filterPublic } from "../services/user-filter";
-import BadRequestError from "../errors/bad-request-error";
 import "express-async-errors"; // Apply async error patch
+import Message from "../models/message";
+import BadRequestError from "../errors/bad-request-error";
 
 export const usersRouter = express.Router();
 usersRouter.use(express.json());
 usersRouter.use(requireToken);
 
-usersRouter.get("/profile/:id", async (req: Request, res: Response) => {
-  const id: string = req.params.id;
+usersRouter.post("/from-id", async (req: Request, res: Response) => {
+  const ids: string[] = req.body.ids;
+  const objectIds = ids.map(id => new ObjectId(id));
+  
+  const query = {  _id: { $in: objectIds }};
+  const users = await collections.users?.find(query).toArray();
+  return res.status(200).json(users?.map(filterPublic));
+});
 
-  const query = { _id: new ObjectId(id) };
-  const result = (await collections.users?.findOne(query)) as unknown as User;
-  if (!result) {
-    throw new BadRequestError({ message: "Could not find user" });
+usersRouter.post("/:id/start-conversation", async (req: Request, res: Response) => {
+  const id = new ObjectId(req.params.id);
+
+  const findResult = await collections.messages?.findOne({
+    members: { $all: [id, req.user._id!] }
+  });
+  if (findResult) {
+    return res.status(200).json("Conversation already exists");
   }
 
-  res.status(200).send(filterPublic(result));
+  const message = new Message(
+    [id, req.user._id!],
+    req.user._id!,
+    "Hi!"
+  );
+  const insertResult = await collections.messages?.insertOne(message);
+  if (!insertResult) {
+    throw new BadRequestError({ message: "Could not start conversation" });
+  }
+
+  return res.status(200).json(`Conversation started with ${id}`);
 });

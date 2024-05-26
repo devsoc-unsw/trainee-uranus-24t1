@@ -12,8 +12,8 @@ const NavBar: FC<NavBarProps> = ({ navigate, index }) => {
   const activeIndex = index;
 
   const paths = [
-    "/dashboard",
-    "/matches",
+    "/",
+    "/profile",
     "/messages"
   ];
 

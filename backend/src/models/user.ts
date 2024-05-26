@@ -24,7 +24,8 @@ export default class User {
     public preferredGenders: string[],
     public preferredAgeRange: [number, number],
     public preferredWamRange: [string, string],
-    public preferredAcademicSocialRatio: number,
+
+    public avatarUrl?: string,
 
     public _id?: ObjectId,
   ) {}
