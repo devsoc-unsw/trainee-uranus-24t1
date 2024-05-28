@@ -1,11 +1,11 @@
 import Input from "../../components/Input";
 import Heading from "../../components/Heading";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useContext, useRef, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
 import { Spinner } from "react-bootstrap";
 import { AppContext } from "../../contexts/AppContext";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {
   AUTH_PATH,
   LOCAL_HOST,
@@ -17,6 +17,8 @@ import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import CustomButton from "../../components/CustomButton";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const { token, updateToken } = useContext(AppContext);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [registerLoading, setRegisterLoading] = useState<boolean>(false);
@@ -27,7 +29,7 @@ const RegisterPage = () => {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   if (token) {
-    return <Navigate to="/" />;
+    navigate("/register-courses");
   }
 
   const handleRegister = async (e: FormEvent) => {
@@ -70,9 +72,12 @@ const RegisterPage = () => {
         password,
       });
       updateToken(response.data.token);
-      console.log(response);
-    } catch {
-      setErrorMessage("Failed to register.");
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        setErrorMessage(e.response?.data.errors[0].message);
+      } else {
+        setErrorMessage("Internal error");
+      }
     } finally {
       setRegisterLoading(false);
     }
@@ -80,9 +85,11 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="flex h-svh w-svw justify-center items-center p-10">
+      <div className="flex flex-col h-svh w-svw items-center p-10">
+        <div className="flex w-full mt-5 mb-20">
+          <img src={UNSWipeLogo} alt="UNSWipe Logo Design" />
+        </div>
         <div className="flex h-screen w-full flex-col items-center justify-evenly">
-          <img src={UNSWipeLogo} alt="UNSWipe logo" className="h-14" />
           <div className="w-full">
             <Heading>Sign up</Heading>
             <form
