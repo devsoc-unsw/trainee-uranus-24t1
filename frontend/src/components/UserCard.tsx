@@ -1,4 +1,5 @@
-import { bigButton, cardStyle, column, row } from "../resources";
+import { cardStyle, column, row } from "../resources";
+import CustomButton from "./CustomButton";
 
 interface UserCardProps {
   avatarUrl: string;
@@ -27,21 +28,19 @@ const UserCard: React.FC<UserCardProps> = ({
   return (
     <div
       className="
-      h-full
-      w-full
-      bg-secondary-bg-100
       flex
       justify-center
-      items-center 
+      items-center
     "
     >
       <div
         className={`
         ${column}
-        bg-primary-50
+        bg-white
         rounded-2xl
         w-full
         m-4
+        shadow-md
       `}
       >
         <img
@@ -55,36 +54,36 @@ const UserCard: React.FC<UserCardProps> = ({
 
         <div className={`${column} p-3`}>
           <div className={sectionStyle}>Current Courses</div>
-          <div className={row}>
-            {currentCourses.map((course) => (
-              <div className={cardStyle}>{course}</div>
-            ))}
+          <div className={`${row} max-w-[95%] flex-wrap`}>
+            {currentCourses &&
+              currentCourses.map((course) => (
+                <div className={cardStyle}>{course}</div>
+              ))}
           </div>
 
           <div className={spacerStyle} />
 
           <div className={sectionStyle}>Untaken Courses</div>
-          <div className={row}>
-            {untakenCourses.map((course) => (
-              <div className={cardStyle}>{course}</div>
-            ))}
+          <div className={`${row} max-w-[95%] flex-wrap`}>
+            {untakenCourses &&
+              untakenCourses.map((course) => (
+                <div className={cardStyle}>{course}</div>
+              ))}
           </div>
 
           <div className={spacerStyle} />
 
           <div className={sectionStyle}>Languages</div>
-          <div className={row}>
-            {languages.map((language) => (
-              <div className={cardStyle}>{language}</div>
-            ))}
+          <div className={`${row} max-w-[95%] flex-wrap`}>
+            {languages &&
+              languages.map((language) => (
+                <div className={cardStyle}>{language}</div>
+              ))}
           </div>
 
-          <button
-            className={`${bigButton} w-[350px] self-center`}
-            onClick={onMatch}
-          >
-            I have a crush on you
-          </button>
+          <CustomButton type="button" onClick={onMatch} disabled={false}>
+            Message
+          </CustomButton>
         </div>
       </div>
     </div>

@@ -65,21 +65,21 @@ const Profile = () => {
 
   const [courseSelection, setCourseSelection] = useState([] as boolean[]);
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   const [imgRefresh, setImgRefresh] = useState(0);
@@ -103,17 +103,17 @@ const Profile = () => {
         setGender(selfData.gender);
         setAvatarUrl(selfData.avatarUrl);
         setCourseSelection(
-          coursesRef.current.map((course) => selfData.courses.includes(course)),
+          coursesRef.current.map((course) => selfData.courses.includes(course))
         );
         setFutureCourseSelection(
           coursesRef.current.map((course) =>
-            selfData.futureCourses.includes(course),
-          ),
+            selfData.futureCourses.includes(course)
+          )
         );
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages.includes(language),
-          ),
+            selfData.languages.includes(language)
+          )
         );
       } catch {
         setErrorMessage("Could not retrieve server data");
@@ -289,13 +289,13 @@ const Profile = () => {
                   wam: wamsRef.current[wam],
                   gender,
                   courses: coursesRef.current.filter(
-                    (_, i) => courseSelection[i],
+                    (_, i) => courseSelection[i]
                   ),
                   futureCourses: coursesRef.current.filter(
-                    (_, i) => futureCourseSelection[i],
+                    (_, i) => futureCourseSelection[i]
                   ),
                   languages: languagesRef.current.filter(
-                    (_, i) => languageSelection[i],
+                    (_, i) => languageSelection[i]
                   ),
                 });
               } catch (e: unknown) {
