@@ -28,7 +28,7 @@ const assertValidHelper = {
   },
 
   academicSocialRatio: (input: number) => {
-    if (!input || input < 0 || input > 1) {
+    if (input == undefined || input < 0 || input > 1) {
       throw new BadRequestError({
         message: "Academic social ratio should range from 0 to 1",
       });
