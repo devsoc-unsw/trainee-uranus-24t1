@@ -13,6 +13,7 @@ import {
 } from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterHobbies = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const RegisterHobbies = () => {
   const hobbiesRef = useRef([] as string[]);
   const toggleHobbySelection = (index: number) =>
     setHobbySelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const RegisterHobbies = () => {
         hobbiesRef.current = staticData.hobbies;
         const selfData = await getSelfData(token);
         setHobbySelection(
-          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby)),
+          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby))
         );
       } catch {
         setErrorMessage("Could not retrieve server data");
@@ -58,13 +59,13 @@ const RegisterHobbies = () => {
   }
 
   return (
-    <div className={`${column} relative w-svw h-svh p-4`}>
+    <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
           <BackButton onBack={() => navigate("/register-future-courses")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
+          <img className="w-[100px]" src={UNSWipeCat} />
         </div>
       </div>
 

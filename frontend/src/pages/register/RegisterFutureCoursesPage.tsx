@@ -13,6 +13,7 @@ import {
 } from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterFutureCoursesPage = () => {
   const navigate = useNavigate();
@@ -22,13 +23,13 @@ const RegisterFutureCoursesPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
 
   const futureCoursesRef = useRef([] as string[]);
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   useEffect(() => {
@@ -40,12 +41,12 @@ const RegisterFutureCoursesPage = () => {
         const selfData = await getSelfData(token);
         const courses = selfData.courses || [];
         futureCoursesRef.current = staticData.courses.filter(
-          (course: string) => !courses.includes(course),
+          (course: string) => !courses.includes(course)
         );
         setFutureCourseSelection(
           futureCoursesRef.current.map((course) =>
-            selfData.futureCourses?.includes(course),
-          ),
+            selfData.futureCourses?.includes(course)
+          )
         );
       } catch {
         setErrorMessage("Could not retrieve server data");
@@ -65,33 +66,33 @@ const RegisterFutureCoursesPage = () => {
   }
 
   return (
-    <div className={`${column} relative w-svw h-svh p-4`}>
+    <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
           <BackButton onBack={() => navigate("/register-courses")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
+          <img className="w-[100px]" src={UNSWipeCat} />
         </div>
       </div>
 
-      <div className="flex justify-end">2 of 5</div>
+      <div className="flex justify-end opacity-60 text-sm pb-[10px]">
+        2 of 5
+      </div>
 
-      <div className="h-[10px]" />
-
-      <div className={center}>
+      <div className={`${center} pb-[20px]`}>
         <ProgressBar progress={40} />
       </div>
 
-      <div className="h-[30px]" />
-
-      <div className="text-[2.5rem] font-bold">Future Courses?</div>
-      <div>Select all the courses you are doing in the future</div>
-
-      <div className="h-[60px]" />
+      <div className="text-[2.5rem] font-extrabold text-primary-500">
+        Future Courses?
+      </div>
+      <div className="pb-3">
+        Select all the courses you are doing in the future
+      </div>
 
       <input
-        className={searchBar}
+        className={`${searchBar} mb-4`}
         onChange={(e) => {
           e.preventDefault();
           setSearchInput(e.target.value);
@@ -99,8 +100,6 @@ const RegisterFutureCoursesPage = () => {
         placeholder="🔍 Search"
         type="input"
       />
-
-      <div className="h-[90px]" />
 
       <ListSearch
         contents={futureCoursesRef.current}
@@ -125,7 +124,7 @@ const RegisterFutureCoursesPage = () => {
 
               await putSelfData(token, {
                 futureCourses: futureCoursesRef.current.filter(
-                  (_, i) => futureCourseSelection[i],
+                  (_, i) => futureCourseSelection[i]
                 ),
               });
               navigate("/register-hobbies");
