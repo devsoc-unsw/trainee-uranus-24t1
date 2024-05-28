@@ -51,10 +51,16 @@ export const putSelfAvatar = async (token: string | null, file: File) => {
   return response.data;
 };
 
+export enum MessageType {
+  Default,
+  Seen
+}
+
 export type Message = {
   _id: string;
   members: string[];
   sender: string;
+  type: MessageType;
   content: string;
 };
 

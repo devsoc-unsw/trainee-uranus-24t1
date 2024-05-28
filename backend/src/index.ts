@@ -10,7 +10,7 @@ import { selfRouter } from "./routes/self.routes";
 import { errorHandler } from "./middleware/errors.middleware";
 import { staticDataRouter } from "./routes/static_data.routes";
 import { ObjectId } from "mongodb";
-import Message from "./models/message";
+import Message, { MessageType } from "./models/message";
 import User from "./models/user";
 
 try {
@@ -19,6 +19,8 @@ try {
   console.error("Database connection failed", error);
   process.exit(1);
 }
+
+// await collections.messages?.deleteMany({});
 
 const app: Application = express();
 app.use(cors());
@@ -61,12 +63,14 @@ io.on("connection", async (socket) => {
       const packet: {
         sender: string;
         receiver: string;
+        type: MessageType;
         content: string;
       } = data;
 
       const message: Message = new Message(
         [new ObjectId(packet.sender), new ObjectId(packet.receiver)],
         new ObjectId(packet.sender),
+        packet.type,
         packet.content,
       );
       const result = await collections.messages?.insertOne(message);

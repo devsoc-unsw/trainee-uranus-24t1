@@ -9,6 +9,7 @@ import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
 import {
   Message,
+  MessageType,
   getSelfData,
   getSelfMessages,
   getUsersFromId,
@@ -57,13 +58,25 @@ const MessageUser = () => {
         socketRef.current.emit("token", token);
         socketRef.current.on("chat message out", (message) => {
           setMessages((prevMessages) => prevMessages.concat([message]));
+          if (message.type === MessageType.Default) {
+            socketRef.current?.emit("chat message in", {
+              sender: selfIdRef.current,
+              receiver: userId,
+              type: MessageType.Seen,
+              content: ""
+            });
+          }
         });
-        socketRef.current.on("disconnect", () => {
-          localStorage.clear();
-          navigate("/login");
+        socketRef.current?.emit("chat message in", {
+          sender: selfIdRef.current,
+          receiver: userId,
+          type: MessageType.Seen,
+          content: ""
         });
-
-        setMessages(messages);
+        // socketRef.current.on("disconnect", () => {
+        //   localStorage.clear();
+        //   navigate("/login");
+        // });
       } catch {
         localStorage.clear();
         location.reload();
@@ -71,6 +84,12 @@ const MessageUser = () => {
         setLoading(false);
       }
     })();
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -111,6 +130,18 @@ const MessageUser = () => {
         ref={messageContainerRef}
       >
         {messages.map((message) => {
+          if (messages.slice().reverse().find(m => m.sender !== selfIdRef.current && m.type === MessageType.Seen) === message) {
+            return (
+              <img
+                src={avatarUrl}
+                className="w-[17px] h-[17px] rounded-full object-cover"
+              />
+            );
+          }
+          if (message.type !== MessageType.Default) {
+            return undefined;
+          }
+
           const senderStyle =
             message.sender === selfIdRef.current
               ? "self-end text-white bg-secondary-bg-400"
@@ -142,6 +173,7 @@ const MessageUser = () => {
             socketRef.current?.emit("chat message in", {
               sender: selfIdRef.current,
               receiver: userId,
+              type: MessageType.Default,
               content: inputContent,
             });
             setInputContent("");

@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { GoDotFill } from "react-icons/go";
 import NavBar from "../../components/NavBar";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { center, column, row, searchBar } from "../../resources";
 import { AppContext } from "../../contexts/AppContext";
 import ErrorModal from "../../components/ErrorModal";
 import { Spinner } from "react-bootstrap";
 import {
   Message,
+  MessageType,
   UserInfo,
   getSelfData,
   getSelfMessages,
@@ -30,16 +32,18 @@ const Messages = () => {
   const [names, setNames] = useState({} as NameMap);
   const [avatars, setAvatars] = useState({} as AvatarMap);
 
+  const selfIdRef = useRef("");
+
   useEffect(() => {
     const load = async () => {
       try {
         const selfData = await getSelfData(token);
-        const selfId: string = selfData._id;
+        selfIdRef.current = selfData._id;
         const messages: Message[] = await getSelfMessages(token);
 
         const conversationMap: { [id: string]: Message[] } = {};
         messages.forEach((message) => {
-          const user = message.members.find((id) => id !== selfId);
+          const user = message.members.find((id) => id !== selfIdRef.current);
           if (user == undefined) {
             return;
           }
@@ -49,7 +53,6 @@ const Messages = () => {
         Object.keys(conversationMap).forEach((user) => {
           conversationMap[user].sort(messagesByMongodbTimestamp);
         });
-        setConversations(conversationMap);
 
         const ids = Array.from(
           new Set(messages.flatMap((message) => message.members)),
@@ -64,13 +67,14 @@ const Messages = () => {
         });
         setNames(nameMap);
         setAvatars(avatarMap);
+        setConversations(conversationMap);
       } catch {
         localStorage.clear();
         location.reload();
       }
     };
 
-    const intervalId = setInterval(load, 20000);
+    const intervalId = setInterval(load, 5000);
     (async () => {
       setLoading(true);
       await load();
@@ -124,12 +128,23 @@ const Messages = () => {
                     <div className="font-bold">{names[user]}</div>
                     <div className="text-primary-300">
                       {
-                        conversations[user][conversations[user].length - 1]
-                          .content
+                        conversations[user].filter((m) => m.type === MessageType.Default).pop()?.content
                       }
                     </div>
                   </div>
-                  <div>notif dot</div>
+                  {conversations[user]
+                    .filter(
+                      (m) => 
+                        (m.sender !== selfIdRef.current && m.type === MessageType.Default) ||
+                        (m.sender === selfIdRef.current && m.type === MessageType.Seen)
+                    )
+                    .pop()
+                    ?.type === MessageType.Default && (
+                    <div className={`${row} gap-1`}>
+                      <GoDotFill className="text-secondary-bg-400 h-[30px]" />
+                      <div className="text-secondary-bg-400 h-[30px] content-center">Unread message</div>
+                    </div>
+                  )}
                 </div>
               </button>
             );
