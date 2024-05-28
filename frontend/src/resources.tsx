@@ -28,7 +28,7 @@ export const cardStyle = `
   py-0.5
   px-1.5
   outline
-  outline-[4px]
+  outline-[3px]
   outline-secondary-bg-400
   text-secondary-bg-400
 `;

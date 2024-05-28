@@ -7,3 +7,8 @@
 .card {
   padding: 2em;
 }
+
+input:focus::placeholder {
+  color: transparent;
+  outline: none;
+}

@@ -23,6 +23,7 @@ import ListView from "../../components/ListView";
 import PencilEntry from "../../components/PencilEntry";
 import LabelledSlider from "../../components/LabelledSlider";
 import { AxiosError } from "axios";
+import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 
 const groupTitleStyle = `
   font-bold
@@ -142,10 +143,12 @@ const Profile = () => {
         overflow-auto
         w-full
         h-full
-        bg-secondary-bg-500
         p-4
       "
       >
+        <div className="flex justify-center items-center my-4">
+          <img src={UNSWipeLogo} alt="UNSWipe logo" />
+        </div>
         <div
           className={`
           ${column}

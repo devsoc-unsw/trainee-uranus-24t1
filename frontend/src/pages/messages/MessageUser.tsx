@@ -46,12 +46,20 @@ const MessageUser = () => {
         setName(`${user.firstName} ${user.lastName}`);
         setAvatarUrl(user.avatarUrl);
 
-        const messages = await getSelfMessages(token);
-        messages.sort(messagesByMongodbTimestamp);
-        setMessages(messages);
-
         const self = await getSelfData(token);
         selfIdRef.current = self._id;
+
+        const messages = await getSelfMessages(token);
+
+        setMessages(
+          messages
+            .filter(
+              (message) =>
+                message.members.includes(user._id) &&
+                message.members.includes(self._id)
+            )
+            .sort(messagesByMongodbTimestamp)
+        );
 
         socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
         socketRef.current.emit("token", token);
@@ -59,10 +67,8 @@ const MessageUser = () => {
           setMessages((prevMessages) => prevMessages.concat([message]));
         });
         socketRef.current.on("disconnect", () =>
-          setErrorMessage("Could not connect to chat server"),
+          setErrorMessage("Could not connect to chat server")
         );
-
-        setMessages(messages);
       } catch {
         setErrorMessage("Could not retrieve server data");
       } finally {
@@ -75,10 +81,11 @@ const MessageUser = () => {
   useEffect(() => {
     // messageContainerEndRef.current?.scrollIntoView({ behavior: "smooth" });
     const container = messageContainerRef.current;
-    const newMessage = messageContainerEndRef.current?.previousSibling;
+    const newMessage = messageContainerEndRef.current
+      ?.previousSibling as HTMLElement;
     if (container && newMessage) {
-      const itemHeight = newMessage.offsetHeight;
-      container.scrollBy({ top: itemHeight, behavior: "smooth" });
+      const itemHeight = newMessage.offsetHeight as number;
+      container.scrollBy({ top: itemHeight + 20, behavior: "smooth" });
     }
   }, [messages]);
 
@@ -114,7 +121,7 @@ const MessageUser = () => {
               ? "self-end text-white bg-secondary-bg-400"
               : "self-start bg-primary-50";
           return (
-            <div className={`p-2.5 my-1 rounded-full ${senderStyle}`}>
+            <div className={`p-2.5 my-1 rounded-3xl ${senderStyle}`}>
               {message.content}
             </div>
           );
@@ -122,7 +129,7 @@ const MessageUser = () => {
         <div ref={messageContainerEndRef} />
       </div>
 
-      <div className={`${row} items-center h-[40px] gap-2`}>
+      <div className={`${row} items-center h-[40px] gap-2 mt-2`}>
         <input
           className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
           type="text"
@@ -150,8 +157,7 @@ const MessageUser = () => {
               className="
               rounded-full
               bg-secondary-bg-400
-              p-2.5
-              text-4xl
+              p-2
               text-white
               w-full
               h-full"

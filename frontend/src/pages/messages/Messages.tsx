@@ -13,6 +13,7 @@ import {
   getUsersFromId,
 } from "../../backendCommunication";
 import { messagesByMongodbTimestamp } from "../../sorting";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 type ConversationMap = { [id: string]: Message[] };
 type NameMap = { [id: string]: string };
@@ -52,7 +53,7 @@ const Messages = () => {
         setConversations(conversationMap);
 
         const ids = Array.from(
-          new Set(messages.flatMap((message) => message.members)),
+          new Set(messages.flatMap((message) => message.members))
         );
         const users: UserInfo[] = await getUsersFromId(token, ids);
 
@@ -90,7 +91,10 @@ const Messages = () => {
   return (
     <div className="relative flex flex-col h-svh w-svw">
       <div className={`${column} content-center grow h-full p-4 overflow-clip`}>
-        <div className="text-[2.5rem] font-bold">Messages</div>
+        <div className="flex justify-center items-center">
+          <img src={UNSWipeCat} alt="UNSWipe Cat Mascot" className="h-24" />
+        </div>
+        <div className="text-[2.5rem] font-bold text-primary-500">Messages</div>
 
         <input
           className={searchBar}
@@ -103,36 +107,43 @@ const Messages = () => {
         />
 
         <div className={`${column} gap-2 mt-4 overflow-auto`}>
-          {Object.keys(conversations).map((user) => {
-            if (
-              !names[user]
-                .toLocaleLowerCase()
-                .includes(searchInput.toLocaleLowerCase())
-            ) {
-              return undefined;
-            }
+          {Object.keys(conversations)
+            .sort((a, b) =>
+              messagesByMongodbTimestamp(
+                conversations[b][conversations[b].length - 1],
+                conversations[a][conversations[a].length - 1]
+              )
+            )
+            .map((user) => {
+              if (
+                !names[user]
+                  .toLocaleLowerCase()
+                  .includes(searchInput.toLocaleLowerCase())
+              ) {
+                return undefined;
+              }
 
-            return (
-              <button onClick={() => navigate(`/messages/${user}`)}>
-                <div className={`${row} items-center gap-2`}>
-                  <img
-                    src={avatars[user]}
-                    className="w-[55px] h-[55px] rounded-full object-cover"
-                  />
-                  <div className={`${column} items-start flex-grow`}>
-                    <div className="font-bold">{names[user]}</div>
-                    <div className="text-primary-300">
-                      {
-                        conversations[user][conversations[user].length - 1]
-                          .content
-                      }
+              return (
+                <button onClick={() => navigate(`/messages/${user}`)}>
+                  <div className={`${row} items-center gap-2`}>
+                    <img
+                      src={avatars[user]}
+                      className="w-[55px] h-[55px] rounded-full object-cover"
+                    />
+                    <div className={`${column} items-start flex-grow`}>
+                      <div className="font-bold">{names[user]}</div>
+                      <div className="text-primary-300">
+                        {
+                          conversations[user][conversations[user].length - 1]
+                            .content
+                        }
+                      </div>
                     </div>
+                    <div>notif dot</div>
                   </div>
-                  <div>notif dot</div>
-                </div>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
         </div>
       </div>
 

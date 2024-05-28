@@ -3,6 +3,7 @@ import CustomButton from "./CustomButton";
 
 interface UserCardProps {
   avatarUrl: string;
+  name: string;
   currentCourses: string[];
   untakenCourses: string[];
   languages: string[];
@@ -11,6 +12,7 @@ interface UserCardProps {
 
 const UserCard: React.FC<UserCardProps> = ({
   avatarUrl,
+  name,
   currentCourses,
   untakenCourses,
   languages,
@@ -39,18 +41,22 @@ const UserCard: React.FC<UserCardProps> = ({
         bg-white
         rounded-2xl
         w-full
-        m-4
-        shadow-md
+        mx-4
+        my-3
+        shadow-xl
       `}
       >
         <img
           className="
           rounded-t-2xl
-          h-[40vh]
+          h-[30vh]
           object-cover
           "
           src={avatarUrl || "/src/assets/frenchman.jpeg"}
         />
+        <div className={`${column} px-3 pt-3`}>
+          <p className={`${sectionStyle} text-2xl`}>{name}</p>
+        </div>
 
         <div className={`${column} p-3`}>
           <div className={sectionStyle}>Current Courses</div>
@@ -74,7 +80,7 @@ const UserCard: React.FC<UserCardProps> = ({
           <div className={spacerStyle} />
 
           <div className={sectionStyle}>Languages</div>
-          <div className={`${row} max-w-[95%] flex-wrap`}>
+          <div className={`${row} max-w-full flex-wrap`}>
             {languages &&
               languages.map((language) => (
                 <div className={cardStyle}>{language}</div>
