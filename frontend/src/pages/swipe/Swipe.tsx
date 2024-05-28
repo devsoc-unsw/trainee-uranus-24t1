@@ -52,6 +52,7 @@ const Swipe = () => {
         </div>
         {matches.map((match) => (
           <UserCard
+            key={match._id}
             avatarUrl={match.avatarUrl}
             name={`${match.firstName} ${match.lastName}`}
             currentCourses={match.courses}

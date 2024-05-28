@@ -124,7 +124,10 @@ const Messages = () => {
               }
 
               return (
-                <button onClick={() => navigate(`/messages/${user}`)}>
+                <button
+                  key={user}
+                  onClick={() => navigate(`/messages/${user}`)}
+                >
                   <div className={`${row} items-center gap-2`}>
                     <img
                       src={avatars[user]}

@@ -366,6 +366,7 @@ const Profile = () => {
         {genderesRef.current.map((gender, i) => (
           <button
             className="m-1 py-2 px-3 rounded-full bg-secondary-bg-200"
+            key={i}
             onClick={() => {
               setGender(genderesRef.current[i]);
               setGenderModalInputShow(false);

@@ -121,7 +121,10 @@ const MessageUser = () => {
               ? "self-end text-white bg-secondary-bg-400"
               : "self-start bg-primary-50";
           return (
-            <div className={`p-2.5 my-1 rounded-3xl ${senderStyle}`}>
+            <div
+              key={message._id}
+              className={`p-2.5 my-1 rounded-3xl ${senderStyle}`}
+            >
               {message.content}
             </div>
           );

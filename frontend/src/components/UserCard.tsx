@@ -63,7 +63,9 @@ const UserCard: React.FC<UserCardProps> = ({
           <div className={`${row} max-w-[95%] flex-wrap`}>
             {currentCourses &&
               currentCourses.map((course) => (
-                <div className={cardStyle}>{course}</div>
+                <div className={cardStyle} key={course}>
+                  {course}
+                </div>
               ))}
           </div>
 
@@ -73,7 +75,9 @@ const UserCard: React.FC<UserCardProps> = ({
           <div className={`${row} max-w-[95%] flex-wrap`}>
             {untakenCourses &&
               untakenCourses.map((course) => (
-                <div className={cardStyle}>{course}</div>
+                <div className={cardStyle} key={course}>
+                  {course}
+                </div>
               ))}
           </div>
 
@@ -83,7 +87,9 @@ const UserCard: React.FC<UserCardProps> = ({
           <div className={`${row} max-w-full flex-wrap`}>
             {languages &&
               languages.map((language) => (
-                <div className={cardStyle}>{language}</div>
+                <div className={cardStyle} key={language}>
+                  {language}
+                </div>
               ))}
           </div>
 
