@@ -16,6 +16,8 @@ export function filterPublic(user: unknown) {
     age,
     wam,
     academicSocialRatio,
+    avatarUrl,
+    _id,
   } = user as User;
 
   return {
@@ -30,6 +32,8 @@ export function filterPublic(user: unknown) {
     age,
     wam,
     academicSocialRatio,
+    avatarUrl,
+    _id,
   };
 }
 
@@ -43,8 +47,6 @@ export function filterPrivate(user: unknown) {
     preferredGenders,
     preferredAgeRange,
     preferredWamRange,
-    preferredAcademicSocialRatio,
-    _id,
   } = user as User;
 
   return {
@@ -56,8 +58,6 @@ export function filterPrivate(user: unknown) {
     preferredGenders,
     preferredAgeRange,
     preferredWamRange,
-    preferredAcademicSocialRatio,
-    _id,
   };
 }
 
@@ -82,7 +82,7 @@ export function filterAll(user: unknown) {
     preferredGenders,
     preferredAgeRange,
     preferredWamRange,
-    preferredAcademicSocialRatio,
+    avatarUrl,
     _id,
   } = user as User;
 
@@ -106,7 +106,19 @@ export function filterAll(user: unknown) {
     preferredGenders,
     preferredAgeRange,
     preferredWamRange,
-    preferredAcademicSocialRatio,
+    avatarUrl,
     _id,
   };
+}
+
+export function filterNullish<T>(obj: { [key: string]: any }) {
+  return Object.keys(obj)
+    .filter((key) => obj[key] != null)
+    .reduce(
+      (acc, key) => {
+        acc[key] = obj[key];
+        return acc;
+      },
+      {} as { [key: string]: any },
+    ) as T;
 }
