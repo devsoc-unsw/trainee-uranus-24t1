@@ -167,13 +167,16 @@ const Profile = () => {
 
               try {
                 setLoading(true);
-                setAvatarUrl("");
                 const url = await putSelfAvatar(token, file);
                 setAvatarUrl(url);
-                setImgRefresh((prev) => prev + 0.05); // Force <img> to re-fetch and not use cache
-              } catch {
-                setErrorMessage("Internal error: Could not update avatar");
+              } catch (e) {
+                if (e instanceof AxiosError) {
+                  setErrorMessage(e.response?.data.errors[0].message);
+                } else {
+                  setErrorMessage("Internal error: Could not update avatar");
+                }
               } finally {
+                setImgRefresh((prev) => prev + 0.05); // Force <img> to re-fetch and not use cache
                 setLoading(false);
               }
             }}
