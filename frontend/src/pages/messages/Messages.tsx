@@ -127,6 +127,7 @@ const Messages = () => {
                 <button
                   key={user}
                   onClick={() => navigate(`/messages/${user}`)}
+                  className="my-2"
                 >
                   <div className={`${row} items-center gap-2`}>
                     <img

@@ -38,7 +38,7 @@ const subSpacerStyle = `
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { token } = useContext(AppContext);
+  const { token, updateToken } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -260,7 +260,7 @@ const Profile = () => {
             />
           </div>
         </div>
-        <div className={center}>
+        <div className={`${center} flex-col`}>
           <button
             className={bigButton}
             onClick={async (e: FormEvent) => {
@@ -313,6 +313,15 @@ const Profile = () => {
             }}
           >
             Save
+          </button>
+          <button
+            className={`${bigButton} mt-0 bg-primary-500 text-primary-bg-500`}
+            onClick={() => {
+              updateToken(null);
+              navigate("/login");
+            }}
+          >
+            Logout
           </button>
         </div>
       </div>
