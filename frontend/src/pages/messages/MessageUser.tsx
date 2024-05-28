@@ -79,14 +79,10 @@ const MessageUser = () => {
   }, []);
 
   useEffect(() => {
-    // messageContainerEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    const container = messageContainerRef.current;
-    const newMessage = messageContainerEndRef.current
-      ?.previousSibling as HTMLElement;
-    if (container && newMessage) {
-      const itemHeight = newMessage.offsetHeight as number;
-      container.scrollBy({ top: itemHeight + 20, behavior: "smooth" });
-    }
+    messageContainerEndRef &&
+      messageContainerEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
   }, [messages]);
 
   if (loading) {
