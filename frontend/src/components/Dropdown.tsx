@@ -13,6 +13,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   onSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const sortedContents = [...contents].sort();
 
   return (
     <div className="relative inline-block text-left">
@@ -36,7 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
       {isOpen && (
         <div className={column}>
-          {contents.map((option, index) => {
+          {sortedContents.map((option, index) => {
             if (selected[index]) {
               return undefined;
             }
