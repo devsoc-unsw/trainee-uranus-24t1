@@ -60,7 +60,8 @@ const RegisterInfoPage = () => {
         setAge(selfData.age || 17);
         setWam(wamsRef.current.indexOf(selfData.wam || 1));
       } catch (e) {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        navigate("/login");
       } finally {
         setLoading(false);
       }

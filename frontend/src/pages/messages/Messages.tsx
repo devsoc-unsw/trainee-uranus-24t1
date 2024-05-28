@@ -65,7 +65,8 @@ const Messages = () => {
         setNames(nameMap);
         setAvatars(avatarMap);
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        navigate("/login");
       }
     };
 

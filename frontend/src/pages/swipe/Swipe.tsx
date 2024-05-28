@@ -27,7 +27,8 @@ const Swipe = () => {
         setLoading(true);
         setMatcehs(await getSelfMatches(token));
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        navigate("/login");
       } finally {
         setLoading(false);
       }

@@ -58,13 +58,15 @@ const MessageUser = () => {
         socketRef.current.on("chat message out", (message) => {
           setMessages((prevMessages) => prevMessages.concat([message]));
         });
-        socketRef.current.on("disconnect", () =>
-          setErrorMessage("Could not connect to chat server"),
-        );
+        socketRef.current.on("disconnect", () => {
+          localStorage.clear();
+          navigate("/login");
+        });
 
         setMessages(messages);
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        navigate("/login");
       } finally {
         setLoading(false);
       }

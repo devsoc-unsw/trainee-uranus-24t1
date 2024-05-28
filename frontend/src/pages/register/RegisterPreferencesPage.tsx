@@ -75,7 +75,8 @@ const RegisterPreferencesPage = () => {
         );
         setSocialAcademicRatio(selfData.academicSocialRatio || 0.5);
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        navigate("/login");
       } finally {
         setLoading(false);
       }
