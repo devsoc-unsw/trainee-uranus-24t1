@@ -25,10 +25,14 @@ const RegisterInfoPage = () => {
   const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
   const [age, setAge] = useState(17);
   const [wam, setWam] = useState(3);
+  const [programmingLanguagesSelection, setProgrammingLanguageSelection] = useState([] as boolean[]);
+
 
   const languagesRef = useRef([] as string[]);
   const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
+  const programmingLanguagesRef = useRef([] as string[]);
+
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
@@ -36,6 +40,10 @@ const RegisterInfoPage = () => {
     );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
+  const toggleProgrammingLanguageSelection = (index: number) =>
+    setProgrammingLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
 
@@ -48,10 +56,16 @@ const RegisterInfoPage = () => {
         languagesRef.current = staticData.languages;
         pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
+        programmingLanguagesRef.current = staticData.programmingLanguages;
         const selfData = await getSelfData(token);
         setLanguageSelection(
           languagesRef.current.map((language) =>
             selfData.languages?.includes(language),
+          ),
+        );
+        setProgrammingLanguageSelection(
+          programmingLanguagesRef.current.map((language) =>
+            selfData.programmingLanguages?.includes(language),
           ),
         );
         setPronounSelection(
@@ -110,6 +124,12 @@ const RegisterInfoPage = () => {
           onSelect={toggleLanguageSelection}
         />
 
+        <div>Programming Languages:</div>
+        <ListView
+          contents={programmingLanguagesRef.current}
+          selected={programmingLanguagesSelection}
+          onSelect={toggleProgrammingLanguageSelection}
+        />
         <div>Pronouns:</div>
         <ListView
           contents={pronounsRef.current}
@@ -134,6 +154,7 @@ const RegisterInfoPage = () => {
           onSlide={setWam}
           label={wamsRef.current[wam]}
         />
+      
       </div>
 
       <div className={center}>
@@ -152,6 +173,16 @@ const RegisterInfoPage = () => {
               return;
             }
 
+            if (programmingLanguagesSelection.filter((selection) => selection).length !== 1) {
+              setErrorMessage("Please select at least one programming language");
+              return;
+            }
+
+            if (programmingLanguagesSelection.filter((selection) => selection).length !== 1) {
+              setErrorMessage("Please select at least one programming language");
+              return;
+            }
+
             try {
               setLoading(true);
 
@@ -162,6 +193,9 @@ const RegisterInfoPage = () => {
                 pronouns: pronounsRef.current.filter((_, i) => pronounSelection[i]),
                 age: age,
                 wam: wamsRef.current[wam],
+                programmingLanguages: programmingLanguagesRef.current.filter(
+                  (_, i) => programmingLanguagesSelection[i],
+                )
               });
               navigate("/");
             } catch (e: unknown) {

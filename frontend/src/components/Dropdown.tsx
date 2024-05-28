@@ -13,7 +13,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   onSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  
   return (
     <div className="relative inline-block text-left">
       <button
@@ -21,7 +21,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           rounded-full
           my-[10px]
           mx-2
-          bg-secondary-bg-400
+          bg-secondary-bg-500
           text-primary-50
           w-[25px]
           h-[25px]
@@ -35,7 +35,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className={column}>
+        <div className={column} >
           {contents.map((option, index) => {
             if (selected[index]) {
               return undefined;
@@ -44,6 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             return (
               <button
                 key={option}
+                className="text-left px-3 py-1 hover:bg-secondary-bg-100 w-full text-secondary-bg-600"
                 onClick={() => {
                   onSelect(option, index);
                   setIsOpen(false);

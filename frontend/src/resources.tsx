@@ -26,11 +26,11 @@ export const cardStyle = `
   my-[10px]
   mx-2
   py-0.5
-  px-1.5
+  px-2.5
   outline
-  outline-[4px]
-  outline-secondary-bg-400
-  text-secondary-bg-400
+  outline-[3px]
+  outline-secondary-bg-500
+  text-secondary-bg-500
 `;
 
 export const inputStyle = `
