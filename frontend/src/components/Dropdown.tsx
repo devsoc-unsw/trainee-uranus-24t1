@@ -21,7 +21,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           rounded-full
           my-[10px]
           mx-2
-          bg-secondary-bg-400
+          bg-secondary-bg-500
           text-primary-50
           w-[25px]
           h-[25px]
