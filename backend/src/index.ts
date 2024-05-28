@@ -12,6 +12,7 @@ import { staticDataRouter } from "./routes/static_data.routes";
 import { ObjectId } from "mongodb";
 import Message, { MessageType } from "./models/message";
 import User from "./models/user";
+import { socket } from "./services/socket.service";
 
 try {
   await connectToDatabase();
@@ -34,63 +35,7 @@ app.use("/self", selfRouter);
 app.use("/static-data", staticDataRouter);
 app.use(errorHandler);
 
-const io = new SocketIOServer(server, {
-  path: "/socket.io",
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
-
-const sendTo: { [key: string]: (arg0: Message) => void } = {};
-
-io.on("connection", async (socket) => {
-  socket.on("token", async (token) => {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    const _id: string = (decoded as JwtPayload)._id;
-    const user = (await collections.users?.findOne({
-      _id: new ObjectId(_id),
-    })) as unknown as User;
-
-    if (!user) {
-      socket.disconnect();
-      return;
-    }
-
-    sendTo[_id] = (message) => socket.emit("chat message out", message);
-
-    socket.on("chat message in", async (data) => {
-      const packet: {
-        sender: string;
-        receiver: string;
-        type: MessageType;
-        content: string;
-      } = data;
-
-      const message: Message = new Message(
-        [new ObjectId(packet.sender), new ObjectId(packet.receiver)],
-        new ObjectId(packet.sender),
-        packet.type,
-        packet.content,
-      );
-      const result = await collections.messages?.insertOne(message);
-      if (!result) {
-        console.log("?? Could not send message ??");
-        return;
-      }
-      message._id = result.insertedId;
-
-      sendTo[packet.sender](message);
-      if (sendTo[packet.receiver] != undefined) {
-        sendTo[packet.receiver](message);
-      }
-    });
-  });
-
-  socket.on("disconnect", () => {
-    // console.log("user disconnected");
-  });
-});
+socket(server);
 
 process.on("SIGINT", () => {
   server.close(() => {

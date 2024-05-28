@@ -38,6 +38,7 @@ const MessageUser = () => {
   const messageContainerEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     (async () => {
       try {
         setLoading(true);
@@ -54,25 +55,27 @@ const MessageUser = () => {
         const self = await getSelfData(token);
         selfIdRef.current = self._id;
 
-        socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
-        socketRef.current.emit("token", token);
-        socketRef.current.on("chat message out", (message) => {
-          setMessages((prevMessages) => prevMessages.concat([message]));
-          if (message.type === MessageType.Default) {
-            socketRef.current?.emit("chat message in", {
-              sender: selfIdRef.current,
-              receiver: userId,
-              type: MessageType.Seen,
-              content: ""
-            });
-          }
-        });
-        socketRef.current?.emit("chat message in", {
-          sender: selfIdRef.current,
-          receiver: userId,
-          type: MessageType.Seen,
-          content: ""
-        });
+        if (!isMounted) {
+          socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
+          socketRef.current.emit("token", token);
+          socketRef.current.on("chat message out", (message) => {
+            setMessages((prevMessages) => prevMessages.concat([message]));
+            if (message.type === MessageType.Default) {
+              socketRef.current?.emit("chat message in", {
+                sender: selfIdRef.current,
+                receiver: userId,
+                type: MessageType.Seen,
+                content: ""
+              });
+            }
+          });
+          socketRef.current?.emit("chat message in", {
+            sender: selfIdRef.current,
+            receiver: userId,
+            type: MessageType.Seen,
+            content: ""
+          });
+        }
         // socketRef.current.on("disconnect", () => {
         //   localStorage.clear();
         //   navigate("/login");
@@ -86,6 +89,7 @@ const MessageUser = () => {
     })();
 
     return () => {
+      isMounted = false;
       if (socketRef.current) {
         socketRef.current.close();
       }
