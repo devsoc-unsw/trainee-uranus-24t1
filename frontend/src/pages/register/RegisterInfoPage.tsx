@@ -63,6 +63,11 @@ const RegisterInfoPage = () => {
             selfData.languages?.includes(language),
           ),
         );
+        setProgrammingLanguageSelection(
+          programmingLanguagesRef.current.map((language) =>
+            selfData.programmingLanguages?.includes(language),
+          ),
+        );
         setGenderSelection(
           gendersRef.current.map((gender) => gender === selfData.gender),
         );
@@ -118,6 +123,12 @@ const RegisterInfoPage = () => {
           onSelect={toggleLanguageSelection}
         />
 
+        <div>Programming Languages:</div>
+        <ListView
+          contents={programmingLanguagesRef.current}
+          selected={programmingLanguagesSelection}
+          onSelect={toggleProgrammingLanguageSelection}
+        />
         <div>Gender:</div>
         <ListView
           contents={gendersRef.current}
@@ -142,12 +153,7 @@ const RegisterInfoPage = () => {
           onSlide={setWam}
           label={wamsRef.current[wam]}
         />
-        <div>Programming Languages:</div>
-        <ListView
-          contents={programmingLanguagesRef.current}
-          selected={programmingLanguagesSelection}
-          onSelect={toggleProgrammingLanguageSelection}
-        />
+      
       </div>
 
       <div className={center}>
