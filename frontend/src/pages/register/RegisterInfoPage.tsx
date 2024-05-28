@@ -14,6 +14,7 @@ import {
 import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterInfoPage = () => {
   const navigate = useNavigate();
@@ -32,11 +33,11 @@ const RegisterInfoPage = () => {
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const toggleGenderSelection = (index: number) =>
     setGenderSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   useEffect(() => {
@@ -51,11 +52,11 @@ const RegisterInfoPage = () => {
         const selfData = await getSelfData(token);
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages?.includes(language),
-          ),
+            selfData.languages?.includes(language)
+          )
         );
         setGenderSelection(
-          gendersRef.current.map((gender) => gender === selfData.gender),
+          gendersRef.current.map((gender) => gender === selfData.gender)
         );
         setAge(selfData.age || 17);
         setWam(wamsRef.current.indexOf(selfData.wam || 1));
@@ -77,62 +78,68 @@ const RegisterInfoPage = () => {
   }
 
   return (
-    <div className={`${column} relative w-svw h-svh p-4`}>
+    <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
           <BackButton onBack={() => navigate("/register-preferences")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
+          <img className="w-[100px]" src={UNSWipeCat} />
         </div>
       </div>
 
-      <div className="flex justify-end">5 of 5</div>
+      <div className="flex justify-end opacity-60 text-sm pb-[10px]">
+        5 of 5
+      </div>
 
-      <div className="h-[10px]" />
-
-      <div className={center}>
+      <div className={`${center} pb-[20px]`}>
         <ProgressBar progress={100} />
       </div>
 
-      <div className="h-[30px]" />
-
-      <div className="text-[2.5rem] font-bold">Your Info?</div>
-
-      <div className="h-[60px]" />
+      <div className="text-[2.5rem] font-extrabold text-primary-500 pb-3">
+        Your Info?
+      </div>
 
       <div className={`${column} h-full`}>
-        <div>Languages:</div>
-        <ListView
-          contents={languagesRef.current}
-          selected={languageSelection}
-          onSelect={toggleLanguageSelection}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Languages:</div>
+          <ListView
+            contents={languagesRef.current}
+            selected={languageSelection}
+            onSelect={toggleLanguageSelection}
+          />
+        </div>
 
-        <div>Gender:</div>
-        <ListView
-          contents={gendersRef.current}
-          selected={genderSelection}
-          onSelect={toggleGenderSelection}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Gender:</div>
+          <ListView
+            contents={gendersRef.current}
+            selected={genderSelection}
+            onSelect={toggleGenderSelection}
+          />
+        </div>
 
-        <div>Age:</div>
-        <LabelledSlider
-          min={15}
-          max={30}
-          value={age}
-          onSlide={setAge}
-          label={age.toString()}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Age:</div>
+          <LabelledSlider
+            min={15}
+            max={30}
+            value={age}
+            onSlide={setAge}
+            label={age.toString()}
+          />
+        </div>
 
-        <div>WAM:</div>
-        <LabelledSlider
-          min={0}
-          max={wamsRef.current.length - 1}
-          value={wam}
-          onSlide={setWam}
-          label={wamsRef.current[wam]}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">WAM:</div>
+          <LabelledSlider
+            min={0}
+            max={wamsRef.current.length - 1}
+            value={wam}
+            onSlide={setWam}
+            label={wamsRef.current[wam]}
+          />
+        </div>
       </div>
 
       <div className={center}>
@@ -156,7 +163,7 @@ const RegisterInfoPage = () => {
 
               await putSelfData(token, {
                 languages: languagesRef.current.filter(
-                  (_, i) => languageSelection[i],
+                  (_, i) => languageSelection[i]
                 ),
                 gender: gendersRef.current.find((_, i) => genderSelection[i]),
                 age: age,

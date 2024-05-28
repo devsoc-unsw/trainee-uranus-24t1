@@ -69,23 +69,21 @@ const RegisterHobbies = () => {
         </div>
       </div>
 
-      <div className="flex justify-end">3 of 5</div>
+      <div className="flex justify-end opacity-60 text-sm pb-[10px]">
+        3 of 5
+      </div>
 
-      <div className="h-[10px]" />
-
-      <div className={center}>
+      <div className={`${center} pb-[20px]`}>
         <ProgressBar progress={60} />
       </div>
 
-      <div className="h-[30px]" />
-
-      <div className="text-[2.5rem] font-bold">Hobbies?</div>
-      <div>What do you like doing in your free time?</div>
-
-      <div className="h-[60px]" />
+      <div className="text-[2.5rem] font-extrabold text-primary-500">
+        Hobbies?
+      </div>
+      <div className="pb-3">What do you like doing in your free time?</div>
 
       <input
-        className={searchBar}
+        className={`${searchBar} mb-4`}
         onChange={(e) => {
           e.preventDefault();
           setSearchInput(e.target.value);
@@ -93,8 +91,6 @@ const RegisterHobbies = () => {
         placeholder="🔍 Search"
         type="input"
       />
-
-      <div className="h-[90px]" />
 
       <ListSearch
         contents={hobbiesRef.current}
