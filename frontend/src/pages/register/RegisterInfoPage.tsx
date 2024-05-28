@@ -25,10 +25,14 @@ const RegisterInfoPage = () => {
   const [genderSelection, setGenderSelection] = useState([] as boolean[]);
   const [age, setAge] = useState(17);
   const [wam, setWam] = useState(3);
+  const [programmingLanguagesSelection, setProgrammingLanguageSelection] = useState([] as boolean[]);
+
 
   const languagesRef = useRef([] as string[]);
   const gendersRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
+  const programmingLanguagesRef = useRef([] as string[]);
+
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
@@ -36,6 +40,10 @@ const RegisterInfoPage = () => {
     );
   const toggleGenderSelection = (index: number) =>
     setGenderSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
+  const toggleProgrammingLanguageSelection = (index: number) =>
+    setProgrammingLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
 
@@ -48,6 +56,7 @@ const RegisterInfoPage = () => {
         languagesRef.current = staticData.languages;
         gendersRef.current = staticData.genders;
         wamsRef.current = staticData.wams;
+        programmingLanguagesRef.current = staticData.programmingLanguages;
         const selfData = await getSelfData(token);
         setLanguageSelection(
           languagesRef.current.map((language) =>
@@ -133,6 +142,12 @@ const RegisterInfoPage = () => {
           onSlide={setWam}
           label={wamsRef.current[wam]}
         />
+        <div>Programming Languages:</div>
+        <ListView
+          contents={programmingLanguagesRef.current}
+          selected={programmingLanguagesSelection}
+          onSelect={toggleProgrammingLanguageSelection}
+        />
       </div>
 
       <div className={center}>
@@ -151,6 +166,11 @@ const RegisterInfoPage = () => {
               return;
             }
 
+            if (programmingLanguagesSelection.filter((selection) => selection).length !== 1) {
+              setErrorMessage("Please select at least one programming language");
+              return;
+            }
+
             try {
               setLoading(true);
 
@@ -161,6 +181,9 @@ const RegisterInfoPage = () => {
                 gender: gendersRef.current.find((_, i) => genderSelection[i]),
                 age: age,
                 wam: wamsRef.current[wam],
+                programmingLanguages: programmingLanguagesRef.current.filter(
+                  (_, i) => programmingLanguagesSelection[i],
+                )
               });
               navigate("/");
             } catch (e: unknown) {
