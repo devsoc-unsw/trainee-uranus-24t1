@@ -22,20 +22,20 @@ const RegisterInfoPage = () => {
   const [loading, setLoading] = useState(false);
   const [erorrMessage, setErrorMessage] = useState("");
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
-  const [genderSelection, setGenderSelection] = useState([] as boolean[]);
+  const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
   const [age, setAge] = useState(17);
   const [wam, setWam] = useState(3);
 
   const languagesRef = useRef([] as string[]);
-  const gendersRef = useRef([] as string[]);
+  const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
-  const toggleGenderSelection = (index: number) =>
-    setGenderSelection((prevState) =>
+  const togglePronounSelection = (index: number) =>
+    setPronounSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
 
@@ -46,7 +46,7 @@ const RegisterInfoPage = () => {
 
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
-        gendersRef.current = staticData.genders;
+        pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         const selfData = await getSelfData(token);
         setLanguageSelection(
@@ -54,14 +54,14 @@ const RegisterInfoPage = () => {
             selfData.languages?.includes(language),
           ),
         );
-        setGenderSelection(
-          gendersRef.current.map((gender) => gender === selfData.gender),
+        setPronounSelection(
+          pronounsRef.current.map((pronoun) => selfData.pronouns?.includes(pronoun)),
         );
         setAge(selfData.age || 17);
         setWam(wamsRef.current.indexOf(selfData.wam || 1));
       } catch (e) {
         localStorage.clear();
-        navigate("/login");
+        location.reload();
       } finally {
         setLoading(false);
       }
@@ -110,11 +110,11 @@ const RegisterInfoPage = () => {
           onSelect={toggleLanguageSelection}
         />
 
-        <div>Gender:</div>
+        <div>Pronouns:</div>
         <ListView
-          contents={gendersRef.current}
-          selected={genderSelection}
-          onSelect={toggleGenderSelection}
+          contents={pronounsRef.current}
+          selected={pronounSelection}
+          onSelect={togglePronounSelection}
         />
 
         <div>Age:</div>
@@ -147,8 +147,8 @@ const RegisterInfoPage = () => {
               return;
             }
 
-            if (genderSelection.filter((selection) => selection).length !== 1) {
-              setErrorMessage("Please select one gender");
+            if (pronounSelection.filter((selection) => selection).length < 1) {
+              setErrorMessage("Please select at least one pair of prinouns");
               return;
             }
 
@@ -159,7 +159,7 @@ const RegisterInfoPage = () => {
                 languages: languagesRef.current.filter(
                   (_, i) => languageSelection[i],
                 ),
-                gender: gendersRef.current.find((_, i) => genderSelection[i]),
+                pronouns: pronounsRef.current.filter((_, i) => pronounSelection[i]),
                 age: age,
                 wam: wamsRef.current[wam],
               });

@@ -56,7 +56,7 @@ export async function updateStaticData() {
     "MATH1231",
     "MATH1241",
   ];
-  const genders = ["Male", "Female", "Nonbinary", "Other"];
+  const pronouns = ["He/Him", "She/Her", "They/Them", "Other"];
   const languages = [
     "English",
     "Chinese",
@@ -119,7 +119,7 @@ export async function updateStaticData() {
   await collections.staticData?.deleteMany({});
   await collections.staticData?.insertOne({
     courses,
-    genders,
+    pronouns,
     languages,
     programmingLanguages,
     wams,
@@ -129,7 +129,7 @@ export async function updateStaticData() {
 
 type staticDataProps = {
   courses: string[];
-  genders: string[];
+  pronouns: string[];
   languages: string[];
   programmingLanguages: string[];
   wams: string[];

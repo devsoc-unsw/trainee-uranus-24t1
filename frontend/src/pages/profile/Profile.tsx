@@ -44,14 +44,14 @@ const Profile = () => {
 
   const [nameInputModalShow, setNameInputModalShow] = useState(false);
   const [ageInputModalShow, setAgeInputModalShow] = useState(false);
-  const [genderModalInputShow, setGenderModalInputShow] = useState(false);
+  const [pronounsModalInputShow, setPronounsModalInputShow] = useState(false);
   const [asrInputModalShow, setAsrInputModalShow] = useState(false);
   const [wamInputModalShow, setWamInputModalShow] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const languagesRef = useRef([] as string[]);
-  const genderesRef = useRef([] as string[]);
+  const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
   const coursesRef = useRef([] as string[]);
 
@@ -60,7 +60,6 @@ const Profile = () => {
   const [age, setAge] = useState(0);
   const [asr, setAsr] = useState(0);
   const [wam, setWam] = useState(0);
-  const [gender, setGender] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
 
   const [courseSelection, setCourseSelection] = useState([] as boolean[]);
@@ -68,6 +67,7 @@ const Profile = () => {
     [] as boolean[],
   );
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
+  const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
@@ -81,6 +81,10 @@ const Profile = () => {
     setLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
+  const togglePronounSelection = (index: number) =>
+    setPronounSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
 
   const [imgRefresh, setImgRefresh] = useState(0);
 
@@ -90,7 +94,7 @@ const Profile = () => {
         setLoading(true);
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
-        genderesRef.current = staticData.genders;
+        pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         coursesRef.current = staticData.courses;
 
@@ -100,7 +104,6 @@ const Profile = () => {
         setAge(selfData.age);
         setAsr(selfData.academicSocialRatio);
         setWam(wamsRef.current.indexOf(selfData.wam));
-        setGender(selfData.gender);
         setAvatarUrl(selfData.avatarUrl);
         setCourseSelection(
           coursesRef.current.map((course) => selfData.courses.includes(course)),
@@ -115,9 +118,15 @@ const Profile = () => {
             selfData.languages.includes(language),
           ),
         );
-      } catch {
+        console.log(selfData)
+        setPronounSelection(
+          pronounsRef.current.map((pronoun) => 
+            selfData.pronouns.includes(pronoun)
+          ),
+        );
+      } catch (e) {
         localStorage.clear();
-        navigate("/login");
+        location.reload();
       } finally {
         setLoading(false);
       }
@@ -220,9 +229,9 @@ const Profile = () => {
               </div>
               <div className={`${column} w-[50%]`}>
                 <PencilEntry
-                  descriptor="Gender"
-                  text={gender}
-                  onEdit={() => setGenderModalInputShow(true)}
+                  descriptor="Pronouns"
+                  text={pronounSelection.map((b, i) => b ? pronounsRef.current[i] : null).filter(x => x != undefined).join(", ")}
+                  onEdit={() => setPronounsModalInputShow(true)}
                 />
                 <div className={subSpacerStyle} />
                 <PencilEntry
@@ -291,7 +300,9 @@ const Profile = () => {
                   age,
                   academicSocialRatio: asr,
                   wam: wamsRef.current[wam],
-                  gender,
+                  pronouns: pronounsRef.current.filter(
+                    (_, i) => pronounSelection[i]
+                  ),
                   courses: coursesRef.current.filter(
                     (_, i) => courseSelection[i],
                   ),
@@ -360,19 +371,19 @@ const Profile = () => {
         </div>
       </InputModal>
       <InputModal
-        title="Gender"
-        show={genderModalInputShow}
-        onHide={() => setGenderModalInputShow(false)}
+        title="Pronouns"
+        show={pronounsModalInputShow}
+        onHide={() => setPronounsModalInputShow(false)}
       >
-        {genderesRef.current.map((gender, i) => (
+        {pronounsRef.current.map((pronoun, i) => (
           <button
             className="m-1 py-2 px-3 rounded-full bg-secondary-bg-200"
             onClick={() => {
-              setGender(genderesRef.current[i]);
-              setGenderModalInputShow(false);
+              togglePronounSelection(i);
+              setPronounsModalInputShow(false);
             }}
           >
-            {gender}
+            {pronoun}
           </button>
         ))}
       </InputModal>

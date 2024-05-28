@@ -76,7 +76,7 @@ export type UserInfo = {
   hobbies: string[];
   languages: string[];
   programmingLanguages: string[];
-  gender: string;
+  pronouns: string[];
   age: number;
   wam: string;
   academicSocialRatio: number;

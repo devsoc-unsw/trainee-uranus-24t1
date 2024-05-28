@@ -28,7 +28,7 @@ const Swipe = () => {
         setMatches(await getSelfMatches(token));
       } catch {
         localStorage.clear();
-        navigate("/login");
+        location.reload();
       } finally {
         setLoading(false);
       }

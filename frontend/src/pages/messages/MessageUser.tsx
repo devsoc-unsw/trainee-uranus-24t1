@@ -66,7 +66,7 @@ const MessageUser = () => {
         setMessages(messages);
       } catch {
         localStorage.clear();
-        navigate("/login");
+        location.reload();
       } finally {
         setLoading(false);
       }

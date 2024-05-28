@@ -102,7 +102,7 @@ Returns: {
   hobbies
   languages
   programmingLanguages
-  gender
+  pronouns
   age
   wam
   academicSocialRatio
@@ -128,7 +128,7 @@ Returns: {
   hobbies: string[]
   languages: string[]
   programmingLanguages: string[]
-  gender: string
+  pronouns: string[]
   age: number
   wam: string
   academicSocialRatio: number
@@ -136,7 +136,7 @@ Returns: {
   preferredCourses: string[]
   preferredLanguages: string[]
   preferredProgrammingLanguages: string[]
-  preferredGenders: string[]
+  preferredPronouns: string[]
   preferredAgeRange: [number, number]
   preferredWamRange: [string, string]
   preferredAcademicSocialRatio: number
@@ -160,7 +160,7 @@ Body: {
   hobbies: string[]
   languages: string[]
   programmingLanguages: string[]
-  gender: string
+  pronouns: string[]
   age: number
   wam: string
   academicSocialRatio: number
@@ -168,7 +168,7 @@ Body: {
   preferredCourses: string[]
   preferredLanguages: string[]
   preferredProgrammingLanguages: string[]
-  preferredGenders: string[]
+  preferredPronouns: string[]
   preferredAgeRange: [number, number]
   preferredWamRange: [string, string]
   preferredAcademicSocialRatio: number

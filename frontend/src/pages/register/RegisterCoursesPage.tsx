@@ -42,7 +42,7 @@ const RegisterCoursesPage = () => {
         );
       } catch {
         localStorage.clear();
-        navigate("/login");
+        location.reload();
       } finally {
         setLoading(false);
       }

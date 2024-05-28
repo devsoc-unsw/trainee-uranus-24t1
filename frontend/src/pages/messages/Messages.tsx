@@ -66,7 +66,7 @@ const Messages = () => {
         setAvatars(avatarMap);
       } catch {
         localStorage.clear();
-        navigate("/login");
+        location.reload();
       }
     };
 
