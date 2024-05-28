@@ -19,13 +19,13 @@ const Swipe = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [matches, setMatcehs] = useState([] as UserInfo[]);
+  const [matches, setMatches] = useState([] as UserInfo[]);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        setMatcehs(await getSelfMatches(token));
+        setMatches(await getSelfMatches(token));
       } catch {
         localStorage.clear();
         navigate("/login");
@@ -49,10 +49,10 @@ const Swipe = () => {
       <div className="content-center grow overflow-auto w-full">
         {matches.map((match) => (
           <UserCard
-            avatarUrl={match.avatarUrl}
-            currentCourses={match.courses}
-            untakenCourses={match.futureCourses}
-            languages={match.languages}
+            avatarUrl={match.avatarUrl ?? ""}
+            currentCourses={match.courses ?? []}
+            untakenCourses={match.futureCourses ?? []}
+            languages={match.languages ?? []}
             onMatch={async () => {
               await startConversation(token, match._id);
               navigate(`/messages/${match._id}`);
