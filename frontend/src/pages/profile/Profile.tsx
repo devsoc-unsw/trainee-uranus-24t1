@@ -19,7 +19,6 @@ import {
 import InputModal from "../../components/InputModal";
 import ErrorModal from "../../components/ErrorModal";
 import { AppContext } from "../../contexts/AppContext";
-import { Spinner } from "react-bootstrap";
 import {
   getSelfData,
   getStaticData,
@@ -31,6 +30,7 @@ import PencilEntry from "../../components/PencilEntry";
 import LabelledSlider from "../../components/LabelledSlider";
 import { AxiosError } from "axios";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
+import LoadContainer from "../../components/LoadContainer";
 
 const groupTitleStyle = `
   font-bold
@@ -100,6 +100,7 @@ const Profile = () => {
     (async () => {
       try {
         setLoading(true);
+        // await sleep(3000);
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
         pronounsRef.current = staticData.pronouns;
@@ -126,7 +127,6 @@ const Profile = () => {
             selfData.languages.includes(language)
           )
         );
-        console.log(selfData);
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
             selfData.pronouns.includes(pronoun)
@@ -141,14 +141,6 @@ const Profile = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <div className="relative flex flex-col h-svh w-svw">
@@ -200,20 +192,22 @@ const Profile = () => {
               }
             }}
           />
-          <button
-            className="w-full"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <img
-              className="
-              w-full
-              rounded-t-2xl
-              h-[40vh]
-              object-cover
-            "
-              src={`${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"}
-            />
-          </button>
+          <LoadContainer loading={loading} className="w-full h-[40vh] rounded-t-2xl">
+            <button
+              className="w-full"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <img
+                className="
+                w-full
+                rounded-t-2xl
+                h-[40vh]
+                object-cover
+              "
+                src={`${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"}
+              />
+            </button>
+          </LoadContainer>
 
           <div className={`${column} p-3`}>
             <div className={subSpacerStyle} />
@@ -221,7 +215,9 @@ const Profile = () => {
               descriptor="Name"
               text={`${firstName} ${lastName}`}
               onEdit={() => setNameInputModalShow(true)}
+              loading={loading}
             />
+
             <div className={subSpacerStyle} />
             <div className={row}>
               <div className={`${column} w-[50%]`}>
@@ -229,12 +225,14 @@ const Profile = () => {
                   descriptor="Age"
                   text={age.toString()}
                   onEdit={() => setAgeInputModalShow(true)}
-                />
+                  loading={loading}
+                  />
                 <div className={subSpacerStyle} />
                 <PencilEntry
                   descriptor="Academic Social Ratio"
                   text={`${Math.round(asr * 100)}%`}
                   onEdit={() => setAsrInputModalShow(true)}
+                  loading={loading}
                 />
               </div>
               <div className={`${column} w-[50%]`}>
@@ -245,12 +243,14 @@ const Profile = () => {
                     .filter((x) => x != undefined)
                     .join(", ")}
                   onEdit={() => setPronounsModalInputShow(true)}
+                  loading={loading}
                 />
                 <div className={subSpacerStyle} />
                 <PencilEntry
                   descriptor="WAM"
                   text={wamsRef.current[wam]}
                   onEdit={() => setWamInputModalShow(true)}
+                  loading={loading}
                 />
               </div>
             </div>
@@ -258,29 +258,35 @@ const Profile = () => {
             <div className={subSpacerStyle} />
 
             <div className={groupTitleStyle}>Current Courses</div>
-            <ListView
-              contents={coursesRef.current}
-              selected={courseSelection}
-              onSelect={toggleCourseSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={coursesRef.current}
+                selected={courseSelection}
+                onSelect={toggleCourseSelection}
+              />
+            </LoadContainer>
 
             <div className={spacerStyle} />
 
             <div className={groupTitleStyle}>Untaken Courses</div>
-            <ListView
-              contents={coursesRef.current}
-              selected={futureCourseSelection}
-              onSelect={toggleFutureCourseSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={coursesRef.current}
+                selected={futureCourseSelection}
+                onSelect={toggleFutureCourseSelection}
+              />
+            </LoadContainer>
 
             <div className={spacerStyle} />
 
             <div className={groupTitleStyle}>Languages</div>
-            <ListView
-              contents={languagesRef.current}
-              selected={languageSelection}
-              onSelect={toggleLanguageSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={languagesRef.current}
+                selected={languageSelection}
+                onSelect={toggleLanguageSelection}
+              />
+            </LoadContainer>
           </div>
         </div>
         <div className={`${center} flex-col`}>
@@ -305,7 +311,7 @@ const Profile = () => {
               }
 
               try {
-                setLoading(true);
+                // setLoading(true);
 
                 await putSelfData(token, {
                   firstName,
@@ -333,7 +339,7 @@ const Profile = () => {
                   setErrorMessage("Internal error");
                 }
               } finally {
-                setLoading(false);
+                // setLoading(false);
               }
             }}
           >

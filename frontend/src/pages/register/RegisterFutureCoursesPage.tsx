@@ -1,7 +1,6 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { center, column, bigButton, searchBar } from "../../resources";
-import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
 import ErrorModal from "../../components/ErrorModal";
@@ -58,14 +57,6 @@ const RegisterFutureCoursesPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
     <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
@@ -107,6 +98,7 @@ const RegisterFutureCoursesPage = () => {
         selected={futureCourseSelection}
         searchInput={searchInput}
         onSelect={(i) => toggleFutureCourseSelection(i)}
+        loading={loading}
       />
 
       <div className={`${center}`}>

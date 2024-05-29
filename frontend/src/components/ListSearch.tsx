@@ -1,10 +1,12 @@
 import { row } from "../resources";
+import LoadContainer from "./LoadContainer";
 
 interface ListSearchProps {
   contents: string[];
   selected: boolean[];
   searchInput: string;
   onSelect: (index: number) => void;
+  loading?: boolean;
 }
 
 const ListSearch: React.FC<ListSearchProps> = ({
@@ -12,12 +14,13 @@ const ListSearch: React.FC<ListSearchProps> = ({
   selected,
   searchInput,
   onSelect,
+  loading,
 }) => {
   return (
     <div
       className={`${row} flex-wrap h-full justify-between content-start overflow-y-auto`}
     >
-      {contents.map((content, index) => {
+      {loading ? new Array(7).fill(<LoadContainer loading={true} className="h-[50px] w-[48%] mb-[7%]" />) : contents.map((content, index) => {
         if (
           !content.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())
         ) {

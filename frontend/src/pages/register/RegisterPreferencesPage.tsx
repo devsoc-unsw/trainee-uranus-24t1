@@ -1,6 +1,5 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
-import { Spinner } from "react-bootstrap";
 import { center, column, bigButton } from "../../resources";
 import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
@@ -15,6 +14,7 @@ import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
+import LoadContainer from "../../components/LoadContainer";
 
 const RegisterPreferencesPage = () => {
   const navigate = useNavigate();
@@ -85,14 +85,6 @@ const RegisterPreferencesPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
     <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
@@ -122,63 +114,75 @@ const RegisterPreferencesPage = () => {
       <div className={column}>
         <div className="pb-3">
           <div className="text-lg font-bold">Preferred Languages:</div>
-          <ListView
-            contents={languagesRef.current}
-            selected={preferredLanguageSelection}
-            onSelect={togglePreferredLanguageSelection}
-          />
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={languagesRef.current}
+              selected={preferredLanguageSelection}
+              onSelect={togglePreferredLanguageSelection}
+            />
+          </LoadContainer>
         </div>
         <div className="pb-3">
           <div className="text-lg font-bold">Preferred Pronouns:</div>
-          <ListView
-            contents={pronounsRef.current}
-            selected={preferredPronounSelection}
-            onSelect={togglePreferredPronounSelection}
-          />
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={pronounsRef.current}
+              selected={preferredPronounSelection}
+              onSelect={togglePreferredPronounSelection}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">Preferred Minimum Age:</div>
-          <LabelledSlider
-            min={15}
-            max={30}
-            value={preferredAgeRangeMin}
-            onSlide={setPreferredAgeRangeMin}
-            label={preferredAgeRangeMin.toString()}
-          />
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={preferredAgeRangeMin}
+              onSlide={setPreferredAgeRangeMin}
+              label={preferredAgeRangeMin.toString()}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">Preferred Maximum Age:</div>
-          <LabelledSlider
-            min={15}
-            max={30}
-            value={preferredAgeRangeMax}
-            onSlide={setPreferredAgeRangeMax}
-            label={preferredAgeRangeMax.toString()}
-          />
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={preferredAgeRangeMax}
+              onSlide={setPreferredAgeRangeMax}
+              label={preferredAgeRangeMax.toString()}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">Preferred Minimum WAM:</div>
-          <LabelledSlider
-            min={0}
-            max={wamsRef.current.length - 1}
-            value={preferredWamRangeMin}
-            onSlide={setPreferredWamRangeMin}
-            label={wamsRef.current[preferredWamRangeMin]}
-          />
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={preferredWamRangeMin}
+              onSlide={setPreferredWamRangeMin}
+              label={wamsRef.current[preferredWamRangeMin]}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">Preferred Maximum WAM:</div>
-          <LabelledSlider
-            min={0}
-            max={wamsRef.current.length - 1}
-            value={preferredWamRangeMax}
-            onSlide={setPreferredWamRangeMax}
-            label={wamsRef.current[preferredWamRangeMax]}
-          />
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={preferredWamRangeMax}
+              onSlide={setPreferredWamRangeMax}
+              label={wamsRef.current[preferredWamRangeMax]}
+            />
+          </LoadContainer>
         </div>
 
         <div className="text-lg font-bold pb-1">Academic vs Social Ratio:</div>
@@ -190,24 +194,26 @@ const RegisterPreferencesPage = () => {
           your academic goals and 100% being you are looking for someone that
           matches your social aspirations!
         </div>
-        <div className="flex flex-row justify-between items-center w-full">
-          <p className="text-primary-500 font-bold text-sm opacity-75">
-            Academic
-          </p>
-          <div className="w-[60%]">
-            <LabelledSlider
-              min={0}
-              max={1}
-              step={0.01}
-              value={socialAcademicRatio}
-              onSlide={setSocialAcademicRatio}
-              label={`${Math.round(socialAcademicRatio * 100)}%`}
-            />
+        <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+          <div className="flex flex-row justify-between items-center w-full">
+            <p className="text-primary-500 font-bold text-sm opacity-75">
+              Academic
+            </p>
+            <div className="w-[60%]">
+              <LabelledSlider
+                min={0}
+                max={1}
+                step={0.01}
+                value={socialAcademicRatio}
+                onSlide={setSocialAcademicRatio}
+                label={`${Math.round(socialAcademicRatio * 100)}%`}
+              />
+            </div>
+            <p className="text-primary-500 font-bold text-sm opacity-75">
+              Social
+            </p>
           </div>
-          <p className="text-primary-500 font-bold text-sm opacity-75">
-            Social
-          </p>
-        </div>
+        </LoadContainer>
       </div>
 
       <div className={center}>

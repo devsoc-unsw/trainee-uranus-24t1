@@ -2,10 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import NavBar from "../../components/NavBar";
 import { useContext, useEffect, useRef, useState } from "react";
-import { center, column, row, searchBar } from "../../resources";
+import { column, row, searchBar } from "../../resources";
 import { AppContext } from "../../contexts/AppContext";
 import ErrorModal from "../../components/ErrorModal";
-import { Spinner } from "react-bootstrap";
 import {
   Message,
   MessageType,
@@ -16,6 +15,7 @@ import {
 } from "../../backendCommunication";
 import { messagesByMongodbTimestamp } from "../../sorting";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
+import LoadContainer from "../../components/LoadContainer";
 
 type ConversationMap = { [id: string]: Message[] };
 type NameMap = { [id: string]: string };
@@ -85,13 +85,13 @@ const Messages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className={`h-svh w-svw ${center}`}>
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="relative flex flex-col h-svh w-svw">
@@ -111,71 +111,75 @@ const Messages = () => {
           }}
         />
 
-        <div className={`${column} gap-2 mt-4 overflow-auto`}>
-          {Object.keys(conversations)
-            .sort((a, b) =>
-              messagesByMongodbTimestamp(
-                conversations[b][conversations[b].length - 1],
-                conversations[a][conversations[a].length - 1]
-              )
-            )
-            .map((user) => {
-              if (
-                !names[user]
-                  .toLocaleLowerCase()
-                  .includes(searchInput.toLocaleLowerCase())
-              ) {
-                return undefined;
-              }
-
-              const unreadMessage =
-                conversations[user]
-                  .filter(
-                    (m) =>
-                      (m.sender !== selfIdRef.current &&
-                        m.type === MessageType.Default) ||
-                      (m.sender === selfIdRef.current &&
-                        m.type === MessageType.Seen)
+        <div className="grow">
+          <LoadContainer loading={loading} className="mt-4 w-full h-[75px]">
+            <div className={`${column} gap-2 mt-4 overflow-auto`}>
+              {Object.keys(conversations)
+                .sort((a, b) =>
+                  messagesByMongodbTimestamp(
+                    conversations[b][conversations[b].length - 1],
+                    conversations[a][conversations[a].length - 1]
                   )
-                  .pop()?.type === MessageType.Default;
+                )
+                .map((user) => {
+                  if (
+                    !names[user]
+                      .toLocaleLowerCase()
+                      .includes(searchInput.toLocaleLowerCase())
+                  ) {
+                    return undefined;
+                  }
 
-              const latestMessage =
-                conversations[user]
-                  .filter((m) => m.type === MessageType.Default)
-                  .pop()?.content ?? "";
+                  const unreadMessage =
+                    conversations[user]
+                      .filter(
+                        (m) =>
+                          (m.sender !== selfIdRef.current &&
+                            m.type === MessageType.Default) ||
+                          (m.sender === selfIdRef.current &&
+                            m.type === MessageType.Seen)
+                      )
+                      .pop()?.type === MessageType.Default;
 
-              return (
-                <button
-                  key={user}
-                  onClick={() => navigate(`/messages/${user}`)}
-                  className="my-2 overflow-hidden"
-                >
-                  <div className={`${row} items-center gap-2`}>
-                    <img
-                      src={avatars[user]}
-                      className="w-[55px] h-[55px] rounded-full object-cover"
-                    />
-                    <div className={`${column} items-start flex-grow`}>
-                      <div className="font-bold">{names[user]}</div>
-                      <div
-                        className={`text-primary-300 text-left ${
-                          unreadMessage && "font-semibold"
-                        }`}
-                      >
-                        {latestMessage?.length > 35
-                          ? latestMessage.slice(0, 35) + "..."
-                          : latestMessage}
+                  const latestMessage =
+                    conversations[user]
+                      .filter((m) => m.type === MessageType.Default)
+                      .pop()?.content ?? "";
+
+                  return (
+                    <button
+                      key={user}
+                      onClick={() => navigate(`/messages/${user}`)}
+                      className="my-2 overflow-hidden"
+                    >
+                      <div className={`${row} items-center gap-2`}>
+                        <img
+                          src={avatars[user]}
+                          className="w-[55px] h-[55px] rounded-full object-cover"
+                        />
+                        <div className={`${column} items-start flex-grow`}>
+                          <div className="font-bold">{names[user]}</div>
+                          <div
+                            className={`text-primary-300 text-left ${
+                              unreadMessage && "font-semibold"
+                            }`}
+                          >
+                            {latestMessage?.length > 35
+                              ? latestMessage.slice(0, 35) + "..."
+                              : latestMessage}
+                          </div>
+                        </div>
+                        {unreadMessage && (
+                          <div className={`${row} gap-1`}>
+                            <GoDotFill className="text-secondary-bg-400 h-[30px] animate-ping-slow" />
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    {unreadMessage && (
-                      <div className={`${row} gap-1`}>
-                        <GoDotFill className="text-secondary-bg-400 h-[30px] animate-ping-slow" />
-                      </div>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
+                    </button>
+                  );
+                })}
+            </div>
+          </LoadContainer>
         </div>
       </div>
 
