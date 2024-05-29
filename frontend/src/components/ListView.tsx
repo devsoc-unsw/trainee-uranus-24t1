@@ -30,15 +30,16 @@ const ListView: React.FC<ListViewProps> = ({
                 text-primary-50
                 text-[1rem]
                 rounded-full
-                w-[20px]
-                h-[20px]
+                w-5
+                h-5
                 flex
                 items-center
                 justify-center
               "
               onClick={() => onSelect(index)}
             >
-              -
+              {/* There's a weird offset without this */}
+              <div className="mt-[-10%]">-</div>
             </button>
           </div>
         );

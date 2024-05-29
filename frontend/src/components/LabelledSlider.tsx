@@ -21,6 +21,8 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({
     <div className={column}>
       <input
         className="
+          bg-secondary-bg-500
+					rounded-full
           appearance-none
           cursor-pointer
           h-2
@@ -43,7 +45,7 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({
         relative
         mx-2
         mb-3
-      "
+				"
       >
         <div
           className="

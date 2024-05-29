@@ -12,6 +12,7 @@ import {
 } from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
+import Heading from "../../components/Heading";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterHobbies = () => {
@@ -70,10 +71,12 @@ const RegisterHobbies = () => {
         <ProgressBar progress={60} />
       </div>
 
-      <div className="text-[2.5rem] font-extrabold text-primary-500">
-        Hobbies?
-      </div>
-      <div className="pb-3">What do you like doing in your free time?</div>
+      <div className="h-[30px]" />
+
+      <Heading>Hobbies?</Heading>
+      <div>What do you like doing in your free time?</div>
+
+      <div className="h-[60px]" />
 
       <input
         className={`${searchBar} mb-4`}

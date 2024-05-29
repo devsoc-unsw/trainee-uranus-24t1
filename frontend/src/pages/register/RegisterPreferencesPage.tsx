@@ -13,6 +13,7 @@ import {
 import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
+import Heading from "../../components/Heading";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 import LoadContainer from "../../components/LoadContainer";
 
@@ -105,12 +106,10 @@ const RegisterPreferencesPage = () => {
         <ProgressBar progress={80} />
       </div>
 
-      <div className="text-[2.5rem] font-extrabold text-primary-500">
-        Preferences?
-      </div>
-      <div className="pb-3 text-sm opacity-65">
-        What are you looking for in someone?
-      </div>
+      <div className="h-[30px]" />
+
+      <Heading>Preferences?</Heading>
+      <div>What are you looking for in someone?</div>
 
       <div className={column}>
         <div className="pb-3">

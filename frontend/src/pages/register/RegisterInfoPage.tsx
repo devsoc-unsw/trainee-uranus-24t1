@@ -15,6 +15,7 @@ import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 import LoadContainer from "../../components/LoadContainer";
+import Heading from "../../components/Heading";
 
 const RegisterInfoPage = () => {
   const navigate = useNavigate();
@@ -105,9 +106,11 @@ const RegisterInfoPage = () => {
         <ProgressBar progress={100} />
       </div>
 
-      <div className="text-[2.5rem] font-extrabold text-primary-500 pb-3">
-        Your Info?
-      </div>
+      <div className="h-[30px]" />
+
+      <Heading>Your Info?</Heading>
+
+      <div className="h-[60px]" />
 
       <div className={`${column} h-full`}>
         <div className="pb-3">

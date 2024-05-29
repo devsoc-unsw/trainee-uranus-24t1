@@ -12,6 +12,7 @@ import {
 } from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
+import Heading from "../../components/Heading";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterFutureCoursesPage = () => {
@@ -77,12 +78,12 @@ const RegisterFutureCoursesPage = () => {
         <ProgressBar progress={40} />
       </div>
 
-      <div className="text-[2.5rem] font-extrabold text-primary-500">
-        Future Courses?
-      </div>
-      <div className="pb-3">
-        Select all the courses you are doing in the future
-      </div>
+      <div className="h-[30px]" />
+
+      <Heading>Future Courses?</Heading>
+      <div>Select all the courses you are doing in the future</div>
+
+      <div className="h-[60px]" />
 
       <input
         className={`${searchBar} mb-4`}

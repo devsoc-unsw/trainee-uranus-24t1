@@ -13,7 +13,7 @@ import {
   REGISTER_PATH,
 } from "../../utils/constants";
 import CatMascot from "../../assets/UNSWipe-cat.png";
-import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
+import { UNSWipeLogo } from "../../components/Logo";
 import CustomButton from "../../components/CustomButton";
 
 const RegisterPage = () => {
@@ -87,7 +87,8 @@ const RegisterPage = () => {
     <>
       <div className="flex flex-col h-svh w-svw items-center p-10">
         <div className="flex w-full mt-5 mb-20">
-          <img src={UNSWipeLogo} alt="UNSWipe Logo Design" />
+          {/* <img src={UNSWipeLogo} alt="UNSWipe Logo Design" /> */}
+          <UNSWipeLogo />
         </div>
         <div className="flex h-screen w-full flex-col items-center justify-evenly">
           <div className="w-full">
