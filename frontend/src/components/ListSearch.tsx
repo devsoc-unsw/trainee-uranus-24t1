@@ -20,18 +20,27 @@ const ListSearch: React.FC<ListSearchProps> = ({
     <div
       className={`${row} flex-wrap h-full justify-between content-start overflow-y-auto`}
     >
-      {loading ? new Array(7).fill(<LoadContainer loading={true} className="h-[50px] w-[48%] mb-[7%]" />) : contents.map((content, index) => {
-        if (
-          !content.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())
-        ) {
-          return undefined;
-        }
+      {loading
+        ? new Array(7).fill(
+            <LoadContainer
+              loading={true}
+              className="h-[50px] w-[48%] mb-[7%]"
+            />,
+          )
+        : contents.map((content, index) => {
+            if (
+              !content
+                .toLocaleLowerCase()
+                .includes(searchInput.toLocaleLowerCase())
+            ) {
+              return undefined;
+            }
 
-        return (
-          <button
-            key={`${index}`}
-            id={`${index}`}
-            className={`
+            return (
+              <button
+                key={`${index}`}
+                id={`${index}`}
+                className={`
               rounded-full
               transition-all
               duration-250
@@ -50,12 +59,12 @@ const ListSearch: React.FC<ListSearchProps> = ({
                   : " text-secondary-bg-500 bg-white"
               }
             `}
-            onClick={() => onSelect(index)}
-          >
-            {content}
-          </button>
-        );
-      })}
+                onClick={() => onSelect(index)}
+              >
+                {content}
+              </button>
+            );
+          })}
     </div>
   );
 };

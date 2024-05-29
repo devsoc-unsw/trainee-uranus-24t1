@@ -25,7 +25,7 @@ const RegisterCoursesPage = () => {
   const coursesRef = useRef([] as string[]);
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -36,7 +36,9 @@ const RegisterCoursesPage = () => {
         coursesRef.current = staticData.courses;
         const selfData = await getSelfData(token);
         setCourseSelection(
-          coursesRef.current.map((course) => selfData.courses?.includes(course))
+          coursesRef.current.map((course) =>
+            selfData.courses?.includes(course),
+          ),
         );
       } catch {
         localStorage.clear();
@@ -103,7 +105,7 @@ const RegisterCoursesPage = () => {
 
               await putSelfData(token, {
                 courses: coursesRef.current.filter(
-                  (_, i) => courseSelection[i]
+                  (_, i) => courseSelection[i],
                 ),
               });
               navigate("/register-future-courses");

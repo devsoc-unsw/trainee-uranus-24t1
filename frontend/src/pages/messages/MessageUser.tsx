@@ -59,9 +59,9 @@ const MessageUser = () => {
             .filter(
               (message) =>
                 message.members.includes(user._id) &&
-                message.members.includes(self._id)
+                message.members.includes(self._id),
             )
-            .sort(messagesByMongodbTimestamp)
+            .sort(messagesByMongodbTimestamp),
         );
         if (!isMounted) {
           socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
@@ -112,7 +112,10 @@ const MessageUser = () => {
     <div className={`${column} relative w-svw h-svh p-4 overflow-clip`}>
       <div className="w-full relative flex items-center justify-center gap-2 pb-3">
         <BackButton onBack={() => navigate("/messages")} />
-        <LoadContainer loading={loading} className="w-[55px] h-[55px] rounded-full object-cover overflow-clip">
+        <LoadContainer
+          loading={loading}
+          className="w-[55px] h-[55px] rounded-full object-cover overflow-clip"
+        >
           <img
             src={avatarUrl}
             className="w-[55px] h-[55px] rounded-full object-cover"
@@ -139,7 +142,7 @@ const MessageUser = () => {
               .reverse()
               .find(
                 (m) =>
-                  m.sender !== selfIdRef.current && m.type === MessageType.Seen
+                  m.sender !== selfIdRef.current && m.type === MessageType.Seen,
               ) === message
           ) {
             return (

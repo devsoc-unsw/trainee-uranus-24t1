@@ -23,8 +23,8 @@ const CourseButton: React.FC<CourseButtonProps> = ({ disabled, children }) => {
   const dynamicStyle = disabled
     ? "text-tertiary-500 bg-tertiary-bg-500 border-tertiary-bg-500"
     : isClicked
-    ? "bg-secondary-bg-500 border-secondary-bg-600 text-white"
-    : "text-secondary-bg-500 bg-white hover:bg-secondary-bg-500 hover:text-white";
+      ? "bg-secondary-bg-500 border-secondary-bg-600 text-white"
+      : "text-secondary-bg-500 bg-white hover:bg-secondary-bg-500 hover:text-white";
 
   return (
     <button

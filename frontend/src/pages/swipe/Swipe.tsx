@@ -41,24 +41,28 @@ const Swipe = () => {
         <div className="mt-5 mb-2 w-full flex justify-center items-center">
           <img src={UNSWipeLogo} alt="UNSWipe Logo" />
         </div>
-        {loading ? <UserCard loading={true} /> : matches.map((match) => (
-          <UserCard
-            key={match._id}
-            avatarUrl={match.avatarUrl ?? ""}
-            name={
-              match.firstName && match.lastName
-                ? `${match.firstName} ${match.lastName}`
-                : ""
-            }
-            currentCourses={match.courses ?? []}
-            untakenCourses={match.futureCourses ?? []}
-            languages={match.languages ?? []}
-            onMatch={async () => {
-              await startConversation(token, match._id);
-              navigate(`/messages/${match._id}`);
-            }}
-          />
-        ))}
+        {loading ? (
+          <UserCard loading={true} />
+        ) : (
+          matches.map((match) => (
+            <UserCard
+              key={match._id}
+              avatarUrl={match.avatarUrl ?? ""}
+              name={
+                match.firstName && match.lastName
+                  ? `${match.firstName} ${match.lastName}`
+                  : ""
+              }
+              currentCourses={match.courses ?? []}
+              untakenCourses={match.futureCourses ?? []}
+              languages={match.languages ?? []}
+              onMatch={async () => {
+                await startConversation(token, match._id);
+                navigate(`/messages/${match._id}`);
+              }}
+            />
+          ))
+        )}
       </div>
 
       <div className="w-full">

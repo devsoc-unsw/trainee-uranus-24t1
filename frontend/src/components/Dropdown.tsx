@@ -13,7 +13,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   onSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <div className="relative inline-block text-left">
       <button
@@ -35,7 +35,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className={column} >
+        <div className={column}>
           {contents.map((option, index) => {
             if (selected[index]) {
               return undefined;

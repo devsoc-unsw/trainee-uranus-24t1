@@ -16,7 +16,9 @@ const LoadContainer: React.FC<LoadContainerProps> = ({
     <div className={className}>
       <Skeleton />
     </div>
-  ) : children;
+  ) : (
+    children
+  );
 };
 
 export default LoadContainer;

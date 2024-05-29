@@ -61,7 +61,10 @@ const UserCard: React.FC<UserCardProps> = ({
           />
         </LoadContainer>
 
-        <LoadContainer loading={loading} className="h-[40px] w-[200px] mx-3 mt-3">
+        <LoadContainer
+          loading={loading}
+          className="h-[40px] w-[200px] mx-3 mt-3"
+        >
           <div className={`${column} px-3 pt-3`}>
             <p className={`${sectionStyle} text-2xl`}>{name}</p>
           </div>
@@ -109,7 +112,11 @@ const UserCard: React.FC<UserCardProps> = ({
           </LoadContainer>
 
           <LoadContainer loading={loading} className="h-[40px] w-full mt-2">
-            <CustomButton type="button" onClick={onMatch ?? (() => {})} disabled={false}>
+            <CustomButton
+              type="button"
+              onClick={onMatch ?? (() => {})}
+              disabled={false}
+            >
               Message
             </CustomButton>
           </LoadContainer>

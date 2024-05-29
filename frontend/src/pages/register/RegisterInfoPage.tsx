@@ -36,15 +36,15 @@ const RegisterInfoPage = () => {
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const toggleProgrammingLanguageSelection = (index: number) =>
     setProgrammingLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -60,18 +60,18 @@ const RegisterInfoPage = () => {
         const selfData = await getSelfData(token);
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages?.includes(language)
-          )
+            selfData.languages?.includes(language),
+          ),
         );
         setProgrammingLanguageSelection(
           programmingLanguagesRef.current.map((language) =>
-            selfData.programmingLanguages?.includes(language)
-          )
+            selfData.programmingLanguages?.includes(language),
+          ),
         );
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.pronouns?.includes(pronoun)
-          )
+            selfData.pronouns?.includes(pronoun),
+          ),
         );
         setAge(selfData.age || 17);
         setWam(wamsRef.current.indexOf(selfData.wam || 1));
@@ -111,7 +111,7 @@ const RegisterInfoPage = () => {
       <div className={`${column} h-full`}>
         <div className="pb-3">
           <div className="text-lg font-bold">Languages:</div>
-            <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
             <ListView
               contents={languagesRef.current}
               selected={languageSelection}
@@ -184,7 +184,7 @@ const RegisterInfoPage = () => {
                 .length < 1
             ) {
               setErrorMessage(
-                "Please select at least one programming language"
+                "Please select at least one programming language",
               );
               return;
             }
@@ -199,15 +199,15 @@ const RegisterInfoPage = () => {
 
               await putSelfData(token, {
                 languages: languagesRef.current.filter(
-                  (_, i) => languageSelection[i]
+                  (_, i) => languageSelection[i],
                 ),
                 pronouns: pronounsRef.current.filter(
-                  (_, i) => pronounSelection[i]
+                  (_, i) => pronounSelection[i],
                 ),
                 age: age,
                 wam: wamsRef.current[wam],
                 programmingLanguages: programmingLanguagesRef.current.filter(
-                  (_, i) => programmingLanguagesSelection[i]
+                  (_, i) => programmingLanguagesSelection[i],
                 ),
               });
               navigate("/");

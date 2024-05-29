@@ -75,42 +75,42 @@ const Profile = () => {
 
   const [courseSelection, setCourseSelection] = useState([] as boolean[]);
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
   const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
   const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
   const [preferredPronounSelection, setPreferredPronounSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
   // const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
   // const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePreferredLanguageSelection = (index: number) =>
     setPreferredLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePreferredPronounSelection = (index: number) =>
     setPreferredPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   const [imgRefresh, setImgRefresh] = useState(0);
@@ -135,33 +135,33 @@ const Profile = () => {
         setWam(wamsRef.current.indexOf(selfData.wam));
         setAvatarUrl(selfData.avatarUrl);
         setCourseSelection(
-          coursesRef.current.map((course) => selfData.courses.includes(course))
+          coursesRef.current.map((course) => selfData.courses.includes(course)),
         );
         setFutureCourseSelection(
           coursesRef.current.map((course) =>
-            selfData.futureCourses.includes(course)
-          )
+            selfData.futureCourses.includes(course),
+          ),
         );
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages.includes(language)
-          )
+            selfData.languages.includes(language),
+          ),
         );
         setPreferredLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.preferredLanguages.includes(language)
-          )
+            selfData.preferredLanguages.includes(language),
+          ),
         );
         console.log(selfData);
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.pronouns.includes(pronoun)
-          )
+            selfData.pronouns.includes(pronoun),
+          ),
         );
         setPreferredPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.preferredPronouns.includes(pronoun)
-          )
+            selfData.preferredPronouns.includes(pronoun),
+          ),
         );
       } catch (e) {
         localStorage.clear();
@@ -223,7 +223,10 @@ const Profile = () => {
               }
             }}
           />
-          <LoadContainer loading={loading} className="w-full h-[40vh] rounded-t-2xl">
+          <LoadContainer
+            loading={loading}
+            className="w-full h-[40vh] rounded-t-2xl"
+          >
             <button
               className="w-full"
               onClick={() => fileInputRef.current?.click()}
@@ -235,7 +238,9 @@ const Profile = () => {
                 h-[40vh]
                 object-cover
               "
-                src={`${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"}
+                src={
+                  `${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"
+                }
               />
             </button>
           </LoadContainer>
@@ -257,7 +262,7 @@ const Profile = () => {
                   text={age.toString()}
                   onEdit={() => setAgeInputModalShow(true)}
                   loading={loading}
-                  />
+                />
                 <div className={subSpacerStyle} />
                 <PencilEntry
                   descriptor="Academic Social Ratio"
@@ -377,27 +382,35 @@ const Profile = () => {
                   return;
                 }
 
-                if (!preferredLanguageSelection.some((selection) => selection)) {
+                if (
+                  !preferredLanguageSelection.some((selection) => selection)
+                ) {
                   setErrorMessage(
-                    "Please select at least one preferred language"
+                    "Please select at least one preferred language",
                   );
                   return;
                 }
 
                 if (!preferredPronounSelection.some((selection) => selection)) {
-                  setErrorMessage("Please select at least one preferred pronoun");
+                  setErrorMessage(
+                    "Please select at least one preferred pronoun",
+                  );
                   return;
                 }
 
-                if (!preferredLanguageSelection.some((selection) => selection)) {
+                if (
+                  !preferredLanguageSelection.some((selection) => selection)
+                ) {
                   setErrorMessage(
-                    "Please select at least one preferred language"
+                    "Please select at least one preferred language",
                   );
                   return;
                 }
 
                 if (!preferredPronounSelection.some((selection) => selection)) {
-                  setErrorMessage("Please select at least one preferred pronoun");
+                  setErrorMessage(
+                    "Please select at least one preferred pronoun",
+                  );
                   return;
                 }
 
@@ -411,22 +424,22 @@ const Profile = () => {
                     academicSocialRatio: asr,
                     wam: wamsRef.current[wam],
                     pronouns: pronounsRef.current.filter(
-                      (_, i) => pronounSelection[i]
+                      (_, i) => pronounSelection[i],
                     ),
                     courses: coursesRef.current.filter(
-                      (_, i) => courseSelection[i]
+                      (_, i) => courseSelection[i],
                     ),
                     futureCourses: coursesRef.current.filter(
-                      (_, i) => futureCourseSelection[i]
+                      (_, i) => futureCourseSelection[i],
                     ),
                     languages: languagesRef.current.filter(
-                      (_, i) => languageSelection[i]
+                      (_, i) => languageSelection[i],
                     ),
                     preferredLanguages: languagesRef.current.filter(
-                      (_, i) => preferredLanguageSelection[i]
+                      (_, i) => preferredLanguageSelection[i],
                     ),
                     preferredPronouns: pronounsRef.current.filter(
-                      (_, i) => preferredPronounSelection[i]
+                      (_, i) => preferredPronounSelection[i],
                     ),
                   });
                 } catch (e: unknown) {
