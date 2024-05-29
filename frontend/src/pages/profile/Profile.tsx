@@ -56,6 +56,10 @@ const Profile = () => {
   const [pronounsModalInputShow, setPronounsModalInputShow] = useState(false);
   const [asrInputModalShow, setAsrInputModalShow] = useState(false);
   const [wamInputModalShow, setWamInputModalShow] = useState(false);
+  const [preferredAgeRangeModalShow, setPreferredAgeRangeModalShow] =
+    useState(false);
+  const [preferredWamRangeModalShow, setPreferredWamRangeModalShow] =
+    useState(false);
   const [seeMore, setSeeMore] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -84,8 +88,8 @@ const Profile = () => {
   const [preferredPronounSelection, setPreferredPronounSelection] = useState(
     [] as boolean[]
   );
-  // const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
-  // const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
+  const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
+  const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
@@ -132,6 +136,8 @@ const Profile = () => {
         setAsr(selfData.academicSocialRatio);
         setWam(wamsRef.current.indexOf(selfData.wam));
         setAvatarUrl(selfData.avatarUrl);
+        setPreferredAgeRange(selfData.preferredAgeRange);
+        setPreferredWamRange(selfData.preferredWamRange);
         setCourseSelection(
           coursesRef.current.map((course) => selfData.courses.includes(course))
         );
@@ -332,6 +338,20 @@ const Profile = () => {
                   selected={preferredPronounSelection}
                   onSelect={togglePreferredPronounSelection}
                 />
+
+                <div className={spacerStyle} />
+                <div className={`${row} justify-between w-full`}>
+                  <PencilEntry
+                    descriptor="Preferred Age Range"
+                    text={preferredAgeRange[0] + " - " + preferredAgeRange[1]}
+                    onEdit={() => setPreferredAgeRangeModalShow(true)}
+                  />
+                  <PencilEntry
+                    descriptor="Preferred WAM Range"
+                    text={preferredWamRange[0] + " - " + preferredWamRange[1]}
+                    onEdit={() => setPreferredWamRangeModalShow(true)}
+                  />
+                </div>
               </>
             )}
 
@@ -376,6 +396,18 @@ const Profile = () => {
                 return;
               }
 
+              if (preferredAgeRange[0] > preferredAgeRange[1]) {
+                setErrorMessage("Please select a valid age range");
+                return;
+              }
+
+              if (preferredWamRange[0] >= preferredWamRange[1]) {
+                setErrorMessage(
+                  "Please select a valid WAM range in ascending order"
+                );
+                return;
+              }
+
               try {
                 setUpdateLoading(true);
 
@@ -403,6 +435,8 @@ const Profile = () => {
                   preferredPronouns: pronounsRef.current.filter(
                     (_, i) => preferredPronounSelection[i]
                   ),
+                  preferredAgeRange: preferredAgeRange,
+                  preferredWamRange: preferredWamRange,
                 });
               } catch (e: unknown) {
                 if (e instanceof AxiosError) {
@@ -517,6 +551,90 @@ const Profile = () => {
             onSlide={setWam}
             label={wamsRef.current[wam]}
           />
+        </div>
+      </InputModal>
+      <InputModal
+        title="Preferred Age Range"
+        show={preferredAgeRangeModalShow}
+        onHide={() => setPreferredAgeRangeModalShow(false)}
+      >
+        <div className="w-[80%]">
+          <div className="pb-3">
+            <div className="text-primary-500 text-sm font-semibold">
+              Minimum Age
+            </div>
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={preferredAgeRange[0]}
+              onSlide={(newValue) =>
+                setPreferredAgeRange((prev) =>
+                  prev.map((_, i) => (i === 0 ? newValue : _))
+                )
+              }
+              label={
+                preferredAgeRange[0] ? preferredAgeRange[0].toString() : ""
+              }
+            />
+          </div>
+          <div>
+            <div className="text-primary-500 text-sm font-semibold">
+              Maximum Age
+            </div>
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={preferredAgeRange[1]}
+              onSlide={(newValue) =>
+                setPreferredAgeRange((prev) =>
+                  prev.map((_, i) => (i === 1 ? newValue : _))
+                )
+              }
+              label={
+                preferredAgeRange[1] ? preferredAgeRange[1].toString() : ""
+              }
+            />
+          </div>
+        </div>
+      </InputModal>
+      <InputModal
+        title="Preferred WAM Range"
+        show={preferredWamRangeModalShow}
+        onHide={() => setPreferredWamRangeModalShow(false)}
+      >
+        <div className="w-[80%]">
+          <div className="pb-3">
+            <div className="text-primary-500 text-sm font-semibold">
+              Minimum WAM
+            </div>
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={wamsRef.current.indexOf(preferredWamRange[0])}
+              onSlide={(newValue) =>
+                setPreferredWamRange((prev) =>
+                  prev.map((_, i) => (i === 0 ? wamsRef.current[newValue] : _))
+                )
+              }
+              label={preferredWamRange[0]}
+            />
+          </div>
+          <div>
+            <div className="text-primary-500 text-sm font-semibold">
+              Maximum WAM
+            </div>
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={wamsRef.current.indexOf(preferredWamRange[1])}
+              onSlide={(newValue) =>
+                setPreferredWamRange((prev) =>
+                  prev.map((_, i) => (i === 1 ? wamsRef.current[newValue] : _))
+                )
+              }
+              label={preferredWamRange[1]}
+            />
+          </div>
         </div>
       </InputModal>
 
