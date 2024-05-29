@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import { filterPublic } from "../services/user-filter";
 import "express-async-errors"; // Apply async error patch
-import Message from "../models/message";
+import Message, { MessageType } from "../models/message";
 import BadRequestError from "../errors/bad-request-error";
 
 export const usersRouter = express.Router();
@@ -32,7 +32,7 @@ usersRouter.post(
       return res.status(200).json("Conversation already exists");
     }
 
-    const message = new Message([id, req.user._id!], req.user._id!, "Hi!");
+    const message = new Message([id, req.user._id!], req.user._id!, MessageType.Default, "Hi!");
     const insertResult = await collections.messages?.insertOne(message);
     if (!insertResult) {
       throw new BadRequestError({ message: "Could not start conversation" });

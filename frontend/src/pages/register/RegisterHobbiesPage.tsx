@@ -41,7 +41,8 @@ const RegisterHobbies = () => {
           hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby)),
         );
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        location.reload();
       } finally {
         setLoading(false);
       }

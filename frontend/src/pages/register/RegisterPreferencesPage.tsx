@@ -24,7 +24,7 @@ const RegisterPreferencesPage = () => {
   const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
     [] as boolean[],
   );
-  const [preferredGenderSelection, setPreferredGenderSelection] = useState(
+  const [preferredPronounSelection, setPreferredPronounSelection] = useState(
     [] as boolean[],
   );
   const [preferredAgeRangeMin, setPreferredAgeRangeMin] = useState(17);
@@ -34,15 +34,15 @@ const RegisterPreferencesPage = () => {
   const [socialAcademicRatio, setSocialAcademicRatio] = useState(0.5);
 
   const languagesRef = useRef([] as string[]);
-  const gendersRef = useRef([] as string[]);
+  const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
 
   const togglePreferredLanguageSelection = (index: number) =>
     setPreferredLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
-  const togglePreferredGenderSelection = (index: number) =>
-    setPreferredGenderSelection((prevState) =>
+  const togglePreferredPronounSelection = (index: number) =>
+    setPreferredPronounSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
 
@@ -52,7 +52,7 @@ const RegisterPreferencesPage = () => {
         setLoading(true);
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
-        gendersRef.current = staticData.genders;
+        pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         const selfData = await getSelfData(token);
         setPreferredLanguageSelection(
@@ -60,9 +60,9 @@ const RegisterPreferencesPage = () => {
             selfData.preferredLanguages?.includes(language),
           ),
         );
-        setPreferredGenderSelection(
-          gendersRef.current.map((gender) =>
-            selfData.preferredGenders?.includes(gender),
+        setPreferredPronounSelection(
+          pronounsRef.current.map((pronoun) =>
+            selfData.preferredPronouns?.includes(pronoun),
           ),
         );
         setPreferredAgeRangeMin(selfData.preferredAgeRange?.[0] || 17);
@@ -75,7 +75,8 @@ const RegisterPreferencesPage = () => {
         );
         setSocialAcademicRatio(selfData.academicSocialRatio || 0.5);
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        location.reload();
       } finally {
         setLoading(false);
       }
@@ -125,11 +126,11 @@ const RegisterPreferencesPage = () => {
           onSelect={togglePreferredLanguageSelection}
         />
 
-        <div>Preferred Gender:</div>
+        <div>Preferred Pronouns:</div>
         <ListView
-          contents={gendersRef.current}
-          selected={preferredGenderSelection}
-          onSelect={togglePreferredGenderSelection}
+          contents={pronounsRef.current}
+          selected={preferredPronounSelection}
+          onSelect={togglePreferredPronounSelection}
         />
 
         <div>Preferred Minimum Age:</div>
@@ -196,8 +197,8 @@ const RegisterPreferencesPage = () => {
               return;
             }
 
-            if (preferredGenderSelection.every((selection) => !selection)) {
-              setErrorMessage("Please select at least one preferred gender");
+            if (preferredPronounSelection.every((selection) => !selection)) {
+              setErrorMessage("Please select at least one preferred pronoun pair");
               return;
             }
 
@@ -218,8 +219,8 @@ const RegisterPreferencesPage = () => {
                 preferredLanguages: languagesRef.current.filter(
                   (_, i) => preferredLanguageSelection[i],
                 ),
-                preferredGenders: gendersRef.current.filter(
-                  (_, i) => preferredGenderSelection[i],
+                preferredPronouns: pronounsRef.current.filter(
+                  (_, i) => preferredPronounSelection[i],
                 ),
                 preferredAgeRange: [preferredAgeRangeMin, preferredAgeRangeMax],
                 preferredWamRange: [

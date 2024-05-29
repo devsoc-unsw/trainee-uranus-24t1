@@ -41,7 +41,8 @@ const RegisterCoursesPage = () => {
           ),
         );
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        location.reload();
       } finally {
         setLoading(false);
       }

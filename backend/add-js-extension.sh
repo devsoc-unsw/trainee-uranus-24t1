@@ -4,7 +4,7 @@
 directory='./src'
 
 # Regex pattern to match JavaScript import statements that don't include ".js" at the end of the source path
-pattern="from ['\"](.+/[^'\"]*?)['\"]"
+pattern="from ['\"](\.+\/[^'\"]*?)['\"]"
 
 # Replacement pattern that adds ".js"
 replacement="from \"\1.js\""
