@@ -1,7 +1,6 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { center, column, bigButton, searchBar } from "../../resources";
-import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
 import ErrorModal from "../../components/ErrorModal";
@@ -23,13 +22,13 @@ const RegisterFutureCoursesPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
 
   const futureCoursesRef = useRef([] as string[]);
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -41,12 +40,12 @@ const RegisterFutureCoursesPage = () => {
         const selfData = await getSelfData(token);
         const courses = selfData.courses || [];
         futureCoursesRef.current = staticData.courses.filter(
-          (course: string) => !courses.includes(course)
+          (course: string) => !courses.includes(course),
         );
         setFutureCourseSelection(
           futureCoursesRef.current.map((course) =>
-            selfData.futureCourses?.includes(course)
-          )
+            selfData.futureCourses?.includes(course),
+          ),
         );
       } catch {
         localStorage.clear();
@@ -57,14 +56,6 @@ const RegisterFutureCoursesPage = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
@@ -107,6 +98,7 @@ const RegisterFutureCoursesPage = () => {
         selected={futureCourseSelection}
         searchInput={searchInput}
         onSelect={(i) => toggleFutureCourseSelection(i)}
+        loading={loading}
       />
 
       <div className={`${center}`}>
@@ -125,7 +117,7 @@ const RegisterFutureCoursesPage = () => {
 
               await putSelfData(token, {
                 futureCourses: futureCoursesRef.current.filter(
-                  (_, i) => futureCourseSelection[i]
+                  (_, i) => futureCourseSelection[i],
                 ),
               });
               navigate("/register-hobbies");

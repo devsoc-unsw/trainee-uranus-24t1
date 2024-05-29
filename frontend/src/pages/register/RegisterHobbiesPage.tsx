@@ -1,6 +1,5 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
-import { Spinner } from "react-bootstrap";
 import { center, column, bigButton, searchBar } from "../../resources";
 import ErrorModal from "../../components/ErrorModal";
 import BackButton from "../../components/BackButton";
@@ -27,7 +26,7 @@ const RegisterHobbies = () => {
   const hobbiesRef = useRef([] as string[]);
   const toggleHobbySelection = (index: number) =>
     setHobbySelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const RegisterHobbies = () => {
         hobbiesRef.current = staticData.hobbies;
         const selfData = await getSelfData(token);
         setHobbySelection(
-          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby))
+          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby)),
         );
       } catch {
         localStorage.clear();
@@ -50,14 +49,6 @@ const RegisterHobbies = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
@@ -98,6 +89,7 @@ const RegisterHobbies = () => {
         selected={hobbySelection}
         searchInput={searchInput}
         onSelect={(i) => toggleHobbySelection(i)}
+        loading={loading}
       />
 
       <div className={center}>

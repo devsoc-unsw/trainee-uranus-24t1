@@ -1,7 +1,6 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { center, column, bigButton } from "../../resources";
-import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
 import ErrorModal from "../../components/ErrorModal";
@@ -15,6 +14,7 @@ import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
+import LoadContainer from "../../components/LoadContainer";
 
 const RegisterInfoPage = () => {
   const navigate = useNavigate();
@@ -36,15 +36,15 @@ const RegisterInfoPage = () => {
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const toggleProgrammingLanguageSelection = (index: number) =>
     setProgrammingLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -60,18 +60,18 @@ const RegisterInfoPage = () => {
         const selfData = await getSelfData(token);
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages?.includes(language)
-          )
+            selfData.languages?.includes(language),
+          ),
         );
         setProgrammingLanguageSelection(
           programmingLanguagesRef.current.map((language) =>
-            selfData.programmingLanguages?.includes(language)
-          )
+            selfData.programmingLanguages?.includes(language),
+          ),
         );
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.pronouns?.includes(pronoun)
-          )
+            selfData.pronouns?.includes(pronoun),
+          ),
         );
         setAge(selfData.age || 17);
         setWam(wamsRef.current.indexOf(selfData.wam || 1));
@@ -84,14 +84,6 @@ const RegisterInfoPage = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
@@ -119,50 +111,60 @@ const RegisterInfoPage = () => {
       <div className={`${column} h-full`}>
         <div className="pb-3">
           <div className="text-lg font-bold">Languages:</div>
-          <ListView
-            contents={languagesRef.current}
-            selected={languageSelection}
-            onSelect={toggleLanguageSelection}
-          />
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={languagesRef.current}
+              selected={languageSelection}
+              onSelect={toggleLanguageSelection}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">Programming Languages:</div>
-          <ListView
-            contents={programmingLanguagesRef.current}
-            selected={programmingLanguagesSelection}
-            onSelect={toggleProgrammingLanguageSelection}
-          />
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={programmingLanguagesRef.current}
+              selected={programmingLanguagesSelection}
+              onSelect={toggleProgrammingLanguageSelection}
+            />
+          </LoadContainer>
         </div>
         <div className="pb-3">
           <div className="text-lg font-bold">Pronouns:</div>
-          <ListView
-            contents={pronounsRef.current}
-            selected={pronounSelection}
-            onSelect={togglePronounSelection}
-          />
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={pronounsRef.current}
+              selected={pronounSelection}
+              onSelect={togglePronounSelection}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">Age:</div>
-          <LabelledSlider
-            min={15}
-            max={30}
-            value={age}
-            onSlide={setAge}
-            label={age.toString()}
-          />
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={age}
+              onSlide={setAge}
+              label={age.toString()}
+            />
+          </LoadContainer>
         </div>
 
         <div className="pb-3">
           <div className="text-lg font-bold">WAM:</div>
-          <LabelledSlider
-            min={0}
-            max={wamsRef.current.length - 1}
-            value={wam}
-            onSlide={setWam}
-            label={wamsRef.current[wam]}
-          />
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={wam}
+              onSlide={setWam}
+              label={wamsRef.current[wam]}
+            />
+          </LoadContainer>
         </div>
       </div>
 
@@ -182,7 +184,7 @@ const RegisterInfoPage = () => {
                 .length < 1
             ) {
               setErrorMessage(
-                "Please select at least one programming language"
+                "Please select at least one programming language",
               );
               return;
             }
@@ -197,15 +199,15 @@ const RegisterInfoPage = () => {
 
               await putSelfData(token, {
                 languages: languagesRef.current.filter(
-                  (_, i) => languageSelection[i]
+                  (_, i) => languageSelection[i],
                 ),
                 pronouns: pronounsRef.current.filter(
-                  (_, i) => pronounSelection[i]
+                  (_, i) => pronounSelection[i],
                 ),
                 age: age,
                 wam: wamsRef.current[wam],
                 programmingLanguages: programmingLanguagesRef.current.filter(
-                  (_, i) => programmingLanguagesSelection[i]
+                  (_, i) => programmingLanguagesSelection[i],
                 ),
               });
               navigate("/");

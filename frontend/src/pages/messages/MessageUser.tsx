@@ -17,6 +17,7 @@ import {
 import { messagesByMongodbTimestamp } from "../../sorting";
 import { Socket, io } from "socket.io-client";
 import { LOCAL_HOST, SOCKET_PATH } from "../../utils/constants";
+import LoadContainer from "../../components/LoadContainer";
 
 const MessageUser = () => {
   const navigate = useNavigate();
@@ -58,9 +59,9 @@ const MessageUser = () => {
             .filter(
               (message) =>
                 message.members.includes(user._id) &&
-                message.members.includes(self._id)
+                message.members.includes(self._id),
             )
-            .sort(messagesByMongodbTimestamp)
+            .sort(messagesByMongodbTimestamp),
         );
         if (!isMounted) {
           socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
@@ -107,23 +108,24 @@ const MessageUser = () => {
       });
   }, [messages]);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
     <div className={`${column} relative w-svw h-svh p-4 overflow-clip`}>
       <div className="w-full relative flex items-center justify-center gap-2 pb-3">
         <BackButton onBack={() => navigate("/messages")} />
-        <img
-          src={avatarUrl}
-          className="w-[55px] h-[55px] rounded-full object-cover"
-        />
-        <div className="flex-grow font-bold">{name}</div>
+        <LoadContainer
+          loading={loading}
+          className="w-[55px] h-[55px] rounded-full object-cover overflow-clip"
+        >
+          <img
+            src={avatarUrl}
+            className="w-[55px] h-[55px] rounded-full object-cover"
+          />
+        </LoadContainer>
+        <div className="grow">
+          <LoadContainer loading={loading} className="h-[25px] w-[200px]">
+            <div className="font-bold">{name}</div>
+          </LoadContainer>
+        </div>
         <button onClick={() => setErrorMessage("🛠️")}>
           <IoMdInformationCircleOutline className="text-4xl text-secondary-bg-400" />
         </button>
@@ -140,7 +142,7 @@ const MessageUser = () => {
               .reverse()
               .find(
                 (m) =>
-                  m.sender !== selfIdRef.current && m.type === MessageType.Seen
+                  m.sender !== selfIdRef.current && m.type === MessageType.Seen,
               ) === message
           ) {
             return (
@@ -188,26 +190,30 @@ const MessageUser = () => {
           setInputContent("");
         }}
       >
-        <input
-          className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
-          type="text"
-          placeholder="Message"
-          value={inputContent}
-          onChange={(e) => setInputContent(e.target.value)}
-        />
-        <button type="submit">
-          <div className="aspect-square h-full">
-            <PiPaperPlaneRightFill
-              className="
-              rounded-full
-              bg-secondary-bg-400
-              p-2
-              text-white
-              w-full
-              h-full"
-            />
-          </div>
-        </button>
+        <LoadContainer loading={loading} className="grow h-full">
+          <input
+            className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
+            type="text"
+            placeholder="Message"
+            value={inputContent}
+            onChange={(e) => setInputContent(e.target.value)}
+          />
+        </LoadContainer>
+        <LoadContainer loading={loading} className="aspect-square h-full">
+          <button type="submit">
+            <div className="aspect-square h-full">
+              <PiPaperPlaneRightFill
+                className="
+                rounded-full
+                bg-secondary-bg-400
+                p-2
+                text-white
+                w-full
+                h-full"
+              />
+            </div>
+          </button>
+        </LoadContainer>
       </form>
 
       <ErrorModal

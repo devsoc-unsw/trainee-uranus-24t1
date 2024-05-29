@@ -12,7 +12,6 @@ const ListView: React.FC<ListViewProps> = ({
   selected,
   onSelect,
 }) => {
-  
   return (
     <div className={`${row} flex-wrap`}>
       {contents.map((content, index) => {

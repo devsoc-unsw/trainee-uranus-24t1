@@ -19,7 +19,6 @@ import {
 import InputModal from "../../components/InputModal";
 import ErrorModal from "../../components/ErrorModal";
 import { AppContext } from "../../contexts/AppContext";
-import { Spinner } from "react-bootstrap";
 import {
   getSelfData,
   getStaticData,
@@ -31,6 +30,8 @@ import PencilEntry from "../../components/PencilEntry";
 import LabelledSlider from "../../components/LabelledSlider";
 import { AxiosError } from "axios";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
+import LoadContainer from "../../components/LoadContainer";
+import { Spinner } from "react-bootstrap";
 
 const groupTitleStyle = `
   font-bold
@@ -122,6 +123,7 @@ const Profile = () => {
     (async () => {
       try {
         setLoading(true);
+        // await sleep(3000);
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
         pronounsRef.current = staticData.pronouns;
@@ -177,14 +179,6 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
     <div className="relative flex flex-col h-svh w-svw">
       <div
@@ -235,20 +229,27 @@ const Profile = () => {
               }
             }}
           />
-          <button
-            className="w-full"
-            onClick={() => fileInputRef.current?.click()}
+          <LoadContainer
+            loading={loading}
+            className="w-full h-[40vh] rounded-t-2xl"
           >
-            <img
-              className="
-              w-full
-              rounded-t-2xl
-              h-[40vh]
-              object-cover
-            "
-              src={`${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"}
-            />
-          </button>
+            <button
+              className="w-full"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <img
+                className="
+                w-full
+                rounded-t-2xl
+                h-[40vh]
+                object-cover
+              "
+                src={
+                  `${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"
+                }
+              />
+            </button>
+          </LoadContainer>
 
           <div className={`${column} p-3`}>
             <div className={subSpacerStyle} />
@@ -256,7 +257,9 @@ const Profile = () => {
               descriptor="Name"
               text={`${firstName} ${lastName}`}
               onEdit={() => setNameInputModalShow(true)}
+              loading={loading}
             />
+
             <div className={subSpacerStyle} />
             <div className={row}>
               <div className={`${column} w-[50%]`}>
@@ -264,12 +267,14 @@ const Profile = () => {
                   descriptor="Age"
                   text={age.toString()}
                   onEdit={() => setAgeInputModalShow(true)}
+                  loading={loading}
                 />
                 <div className={subSpacerStyle} />
                 <PencilEntry
                   descriptor="Academic Social Ratio"
                   text={`${Math.round(asr * 100)}%`}
                   onEdit={() => setAsrInputModalShow(true)}
+                  loading={loading}
                 />
               </div>
               <div className={`${column} w-[50%]`}>
@@ -280,12 +285,14 @@ const Profile = () => {
                     .filter((x) => x != undefined)
                     .join(", ")}
                   onEdit={() => setPronounsModalInputShow(true)}
+                  loading={loading}
                 />
                 <div className={subSpacerStyle} />
                 <PencilEntry
                   descriptor="WAM"
                   text={wamsRef.current[wam]}
                   onEdit={() => setWamInputModalShow(true)}
+                  loading={loading}
                 />
               </div>
             </div>
@@ -293,29 +300,35 @@ const Profile = () => {
             <div className={subSpacerStyle} />
 
             <div className={groupTitleStyle}>Current Courses</div>
-            <ListView
-              contents={coursesRef.current}
-              selected={courseSelection}
-              onSelect={toggleCourseSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={coursesRef.current}
+                selected={courseSelection}
+                onSelect={toggleCourseSelection}
+              />
+            </LoadContainer>
 
             <div className={spacerStyle} />
 
             <div className={groupTitleStyle}>Untaken Courses</div>
-            <ListView
-              contents={coursesRef.current}
-              selected={futureCourseSelection}
-              onSelect={toggleFutureCourseSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={coursesRef.current}
+                selected={futureCourseSelection}
+                onSelect={toggleFutureCourseSelection}
+              />
+            </LoadContainer>
 
             <div className={spacerStyle} />
 
             <div className={groupTitleStyle}>Languages</div>
-            <ListView
-              contents={languagesRef.current}
-              selected={languageSelection}
-              onSelect={toggleLanguageSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={languagesRef.current}
+                selected={languageSelection}
+                onSelect={toggleLanguageSelection}
+              />
+            </LoadContainer>
 
             {seeMore && (
               <>
@@ -323,21 +336,25 @@ const Profile = () => {
                 <div className={groupTitleStyle}>
                   Preferred Matched Languages
                 </div>
-                <ListView
-                  contents={languagesRef.current}
-                  selected={preferredLanguageSelection}
-                  onSelect={togglePreferredLanguageSelection}
-                />
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={languagesRef.current}
+                    selected={preferredLanguageSelection}
+                    onSelect={togglePreferredLanguageSelection}
+                  />
+                </LoadContainer>
 
                 <div className={spacerStyle} />
                 <div className={groupTitleStyle}>
                   Preferred Matched Pronouns
                 </div>
-                <ListView
-                  contents={pronounsRef.current}
-                  selected={preferredPronounSelection}
-                  onSelect={togglePreferredPronounSelection}
-                />
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={pronounsRef.current}
+                    selected={preferredPronounSelection}
+                    onSelect={togglePreferredPronounSelection}
+                  />
+                </LoadContainer>
 
                 <div className={spacerStyle} />
                 <div className={`${row} justify-between w-full`}>
@@ -355,111 +372,136 @@ const Profile = () => {
               </>
             )}
 
-            <div
-              className="mt-4 text-sm underline opacity-75 cursor-pointer"
+            <button
+              className="mt-4 text-sm opacity-75 cursor-pointer place-self-start"
               onClick={() => setSeeMore((prev) => !prev)}
             >
               {seeMore ? "See Less" : "See More"}
-            </div>
+            </button>
           </div>
         </div>
         <div className={`${center} flex-col`}>
-          <button
-            className={bigButton}
-            onClick={async (e: FormEvent) => {
-              e.preventDefault();
+          <LoadContainer loading={loading} className="h-[45px] w-[150px] my-4">
+            <button
+              className={bigButton}
+              onClick={async (e: FormEvent) => {
+                e.preventDefault();
 
-              if (!courseSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one course");
-                return;
-              }
-
-              if (!futureCourseSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one future course");
-                return;
-              }
-
-              if (!languageSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one language");
-                return;
-              }
-
-              if (!preferredLanguageSelection.some((selection) => selection)) {
-                setErrorMessage(
-                  "Please select at least one preferred language"
-                );
-                return;
-              }
-
-              if (!preferredPronounSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one preferred pronoun");
-                return;
-              }
-
-              if (preferredAgeRange[0] > preferredAgeRange[1]) {
-                setErrorMessage("Please select a valid age range");
-                return;
-              }
-
-              if (preferredWamRange[0] >= preferredWamRange[1]) {
-                setErrorMessage(
-                  "Please select a valid WAM range in ascending order"
-                );
-                return;
-              }
-
-              try {
-                setUpdateLoading(true);
-
-                await putSelfData(token, {
-                  firstName,
-                  lastName,
-                  age,
-                  academicSocialRatio: asr,
-                  wam: wamsRef.current[wam],
-                  pronouns: pronounsRef.current.filter(
-                    (_, i) => pronounSelection[i]
-                  ),
-                  courses: coursesRef.current.filter(
-                    (_, i) => courseSelection[i]
-                  ),
-                  futureCourses: coursesRef.current.filter(
-                    (_, i) => futureCourseSelection[i]
-                  ),
-                  languages: languagesRef.current.filter(
-                    (_, i) => languageSelection[i]
-                  ),
-                  preferredLanguages: languagesRef.current.filter(
-                    (_, i) => preferredLanguageSelection[i]
-                  ),
-                  preferredPronouns: pronounsRef.current.filter(
-                    (_, i) => preferredPronounSelection[i]
-                  ),
-                  preferredAgeRange: preferredAgeRange,
-                  preferredWamRange: preferredWamRange,
-                });
-              } catch (e: unknown) {
-                if (e instanceof AxiosError) {
-                  setErrorMessage(e.response?.data.errors[0].message);
-                } else {
-                  setErrorMessage("Internal error");
+                if (!courseSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one course");
+                  return;
                 }
-              } finally {
-                setUpdateLoading(false);
-              }
-            }}
-          >
-            {updateLoading ? <Spinner /> : "Save"}
-          </button>
-          <button
-            className={`${bigButtonEmphasised} mt-0`}
-            onClick={() => {
-              updateToken(null);
-              navigate("/login");
-            }}
-          >
-            Logout
-          </button>
+
+                if (!futureCourseSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one future course");
+                  return;
+                }
+
+                if (!languageSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one language");
+                  return;
+                }
+
+                if (
+                  !preferredLanguageSelection.some((selection) => selection)
+                ) {
+                  setErrorMessage(
+                    "Please select at least one preferred language"
+                  );
+                  return;
+                }
+
+                if (!preferredPronounSelection.some((selection) => selection)) {
+                  setErrorMessage(
+                    "Please select at least one preferred pronoun"
+                  );
+                  return;
+                }
+
+                if (
+                  !preferredLanguageSelection.some((selection) => selection)
+                ) {
+                  setErrorMessage(
+                    "Please select at least one preferred language"
+                  );
+                  return;
+                }
+
+                if (!preferredPronounSelection.some((selection) => selection)) {
+                  setErrorMessage(
+                    "Please select at least one preferred pronoun"
+                  );
+                  return;
+                }
+
+                if (preferredAgeRange[0] > preferredAgeRange[1]) {
+                  setErrorMessage("Please select a valid age range");
+                  return;
+                }
+
+                if (preferredWamRange[0] >= preferredWamRange[1]) {
+                  setErrorMessage(
+                    "Please select a valid WAM range in ascending order"
+                  );
+                  return;
+                }
+
+                try {
+                  setUpdateLoading(true);
+
+                  await putSelfData(token, {
+                    firstName,
+                    lastName,
+                    age,
+                    academicSocialRatio: asr,
+                    wam: wamsRef.current[wam],
+                    pronouns: pronounsRef.current.filter(
+                      (_, i) => pronounSelection[i]
+                    ),
+                    courses: coursesRef.current.filter(
+                      (_, i) => courseSelection[i]
+                    ),
+                    futureCourses: coursesRef.current.filter(
+                      (_, i) => futureCourseSelection[i]
+                    ),
+                    languages: languagesRef.current.filter(
+                      (_, i) => languageSelection[i]
+                    ),
+                    preferredLanguages: languagesRef.current.filter(
+                      (_, i) => preferredLanguageSelection[i]
+                    ),
+                    preferredPronouns: pronounsRef.current.filter(
+                      (_, i) => preferredPronounSelection[i]
+                    ),
+                    preferredAgeRange: preferredAgeRange,
+                    preferredWamRange: preferredWamRange,
+                  });
+                } catch (e: unknown) {
+                  if (e instanceof AxiosError) {
+                    setErrorMessage(e.response?.data.errors[0].message);
+                  } else {
+                    setErrorMessage("Internal error");
+                  }
+                } finally {
+                  setUpdateLoading(false);
+                }
+              }}
+            >
+              {updateLoading ? <Spinner /> : "Save"}
+            </button>
+          </LoadContainer>
+
+          <LoadContainer loading={loading} className="h-[45px] w-[200px] my-3">
+            <button
+              className={`${bigButtonEmphasised} mt-0`}
+              onClick={() => {
+                updateToken(null);
+                navigate("/login");
+              }}
+            >
+              Logout
+            </button>
+          </LoadContainer>
         </div>
       </div>
 

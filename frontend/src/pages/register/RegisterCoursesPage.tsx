@@ -1,7 +1,6 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import ProgressBar from "../../components/ProgressBar";
 import { AppContext } from "../../contexts/AppContext";
-import { Spinner } from "react-bootstrap";
 import ErrorModal from "../../components/ErrorModal";
 import { center, column, bigButton, searchBar } from "../../resources";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,7 @@ const RegisterCoursesPage = () => {
   const coursesRef = useRef([] as string[]);
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -37,7 +36,9 @@ const RegisterCoursesPage = () => {
         coursesRef.current = staticData.courses;
         const selfData = await getSelfData(token);
         setCourseSelection(
-          coursesRef.current.map((course) => selfData.courses?.includes(course))
+          coursesRef.current.map((course) =>
+            selfData.courses?.includes(course),
+          ),
         );
       } catch {
         localStorage.clear();
@@ -48,14 +49,6 @@ const RegisterCoursesPage = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
@@ -93,6 +86,7 @@ const RegisterCoursesPage = () => {
         selected={courseSelection}
         searchInput={searchInput}
         onSelect={(i) => toggleCourseSelection(i)}
+        loading={loading}
       />
 
       <div className={`${center}`}>
@@ -111,7 +105,7 @@ const RegisterCoursesPage = () => {
 
               await putSelfData(token, {
                 courses: coursesRef.current.filter(
-                  (_, i) => courseSelection[i]
+                  (_, i) => courseSelection[i],
                 ),
               });
               navigate("/register-future-courses");
