@@ -22,20 +22,28 @@ const RegisterInfoPage = () => {
   const [loading, setLoading] = useState(false);
   const [erorrMessage, setErrorMessage] = useState("");
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
-  const [genderSelection, setGenderSelection] = useState([] as boolean[]);
+  const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
   const [age, setAge] = useState(17);
   const [wam, setWam] = useState(3);
+  const [programmingLanguagesSelection, setProgrammingLanguageSelection] = useState([] as boolean[]);
+
 
   const languagesRef = useRef([] as string[]);
-  const gendersRef = useRef([] as string[]);
+  const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
+  const programmingLanguagesRef = useRef([] as string[]);
+
 
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
-  const toggleGenderSelection = (index: number) =>
-    setGenderSelection((prevState) =>
+  const togglePronounSelection = (index: number) =>
+    setPronounSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
+  const toggleProgrammingLanguageSelection = (index: number) =>
+    setProgrammingLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
 
@@ -46,21 +54,28 @@ const RegisterInfoPage = () => {
 
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
-        gendersRef.current = staticData.genders;
+        pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
+        programmingLanguagesRef.current = staticData.programmingLanguages;
         const selfData = await getSelfData(token);
         setLanguageSelection(
           languagesRef.current.map((language) =>
             selfData.languages?.includes(language),
           ),
         );
-        setGenderSelection(
-          gendersRef.current.map((gender) => gender === selfData.gender),
+        setProgrammingLanguageSelection(
+          programmingLanguagesRef.current.map((language) =>
+            selfData.programmingLanguages?.includes(language),
+          ),
+        );
+        setPronounSelection(
+          pronounsRef.current.map((pronoun) => selfData.pronouns?.includes(pronoun)),
         );
         setAge(selfData.age || 17);
         setWam(wamsRef.current.indexOf(selfData.wam || 1));
       } catch (e) {
-        setErrorMessage("Could not retrieve server data");
+        localStorage.clear();
+        location.reload();
       } finally {
         setLoading(false);
       }
@@ -109,11 +124,17 @@ const RegisterInfoPage = () => {
           onSelect={toggleLanguageSelection}
         />
 
-        <div>Gender:</div>
+        <div>Programming Languages:</div>
         <ListView
-          contents={gendersRef.current}
-          selected={genderSelection}
-          onSelect={toggleGenderSelection}
+          contents={programmingLanguagesRef.current}
+          selected={programmingLanguagesSelection}
+          onSelect={toggleProgrammingLanguageSelection}
+        />
+        <div>Pronouns:</div>
+        <ListView
+          contents={pronounsRef.current}
+          selected={pronounSelection}
+          onSelect={togglePronounSelection}
         />
 
         <div>Age:</div>
@@ -133,6 +154,7 @@ const RegisterInfoPage = () => {
           onSlide={setWam}
           label={wamsRef.current[wam]}
         />
+      
       </div>
 
       <div className={center}>
@@ -146,8 +168,18 @@ const RegisterInfoPage = () => {
               return;
             }
 
-            if (genderSelection.filter((selection) => selection).length !== 1) {
-              setErrorMessage("Please select one gender");
+            if (pronounSelection.filter((selection) => selection).length < 1) {
+              setErrorMessage("Please select at least one pair of prinouns");
+              return;
+            }
+
+            if (programmingLanguagesSelection.filter((selection) => selection).length !== 1) {
+              setErrorMessage("Please select at least one programming language");
+              return;
+            }
+
+            if (programmingLanguagesSelection.filter((selection) => selection).length !== 1) {
+              setErrorMessage("Please select at least one programming language");
               return;
             }
 
@@ -158,9 +190,12 @@ const RegisterInfoPage = () => {
                 languages: languagesRef.current.filter(
                   (_, i) => languageSelection[i],
                 ),
-                gender: gendersRef.current.find((_, i) => genderSelection[i]),
+                pronouns: pronounsRef.current.filter((_, i) => pronounSelection[i]),
                 age: age,
                 wam: wamsRef.current[wam],
+                programmingLanguages: programmingLanguagesRef.current.filter(
+                  (_, i) => programmingLanguagesSelection[i],
+                )
               });
               navigate("/");
             } catch (e: unknown) {

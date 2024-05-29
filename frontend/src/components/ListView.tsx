@@ -12,6 +12,7 @@ const ListView: React.FC<ListViewProps> = ({
   selected,
   onSelect,
 }) => {
+  
   return (
     <div className={`${row} flex-wrap`}>
       {contents.map((content, index) => {
@@ -26,7 +27,7 @@ const ListView: React.FC<ListViewProps> = ({
                 absolute
                 -top-0
                 -left-0
-                bg-primary-400
+                bg-secondary-bg-500
                 text-primary-50
                 text-[1rem]
                 rounded-full

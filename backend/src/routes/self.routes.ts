@@ -57,6 +57,11 @@ selfRouter.post(
       throw new BadRequestError({ message: "No file uploaded." });
     }
 
+    if (!/jpeg|jpg|png|gif|bmp|webp|svg/.test(file.mimetype)) {
+      await unlink(file.path);
+      throw new BadRequestError({ message: "Please upload an image file" });
+    }
+
     const fileContent = await promises.readFile(file.path);
     const fileExtension = file.originalname.split(".").pop();
     const fileName = `avatars/${req.user._id}.${fileExtension}`;
