@@ -177,28 +177,18 @@ const RegisterInfoPage = () => {
               return;
             }
 
+            if (
+              programmingLanguagesSelection.filter((selection) => selection)
+                .length < 1
+            ) {
+              setErrorMessage(
+                "Please select at least one programming language"
+              );
+              return;
+            }
+
             if (pronounSelection.filter((selection) => selection).length < 1) {
-              setErrorMessage("Please select at least one pair of prinouns");
-              return;
-            }
-
-            if (
-              programmingLanguagesSelection.filter((selection) => selection)
-                .length !== 1
-            ) {
-              setErrorMessage(
-                "Please select at least one programming language"
-              );
-              return;
-            }
-
-            if (
-              programmingLanguagesSelection.filter((selection) => selection)
-                .length !== 1
-            ) {
-              setErrorMessage(
-                "Please select at least one programming language"
-              );
+              setErrorMessage("Please select at least one pair of pronouns");
               return;
             }
 

@@ -117,7 +117,7 @@ const MessageUser = () => {
 
   return (
     <div className={`${column} relative w-svw h-svh p-4 overflow-clip`}>
-      <div className="w-full relative flex items-center justify-center gap-2">
+      <div className="w-full relative flex items-center justify-center gap-2 pb-3">
         <BackButton onBack={() => navigate("/messages")} />
         <img
           src={avatarUrl}
@@ -145,8 +145,9 @@ const MessageUser = () => {
           ) {
             return (
               <img
+                key={message._id}
                 src={avatarUrl}
-                className="w-[17px] h-[17px] rounded-full object-cover"
+                className="w-[20px] h-[20px] rounded-full object-cover my-3"
               />
             );
           }
@@ -161,7 +162,7 @@ const MessageUser = () => {
           return (
             <div
               key={message._id}
-              className={`p-2.5 my-1 rounded-3xl ${senderStyle}`}
+              className={`px-3.5 py-2.5 my-1 rounded-3xl max-w-[80%] ${senderStyle}`}
             >
               {message.content}
             </div>
@@ -170,7 +171,23 @@ const MessageUser = () => {
         <div ref={messageContainerEndRef} />
       </div>
 
-      <div className={`${row} items-center h-[40px] gap-2 mt-2`}>
+      <form
+        className={`${row} items-center h-[40px] gap-2 mt-2`}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (inputContent.length === 0) {
+            return;
+          }
+
+          socketRef.current?.emit("chat message in", {
+            sender: selfIdRef.current,
+            receiver: userId,
+            type: MessageType.Default,
+            content: inputContent,
+          });
+          setInputContent("");
+        }}
+      >
         <input
           className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
           type="text"
@@ -178,22 +195,7 @@ const MessageUser = () => {
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
         />
-        <button
-          onClick={async (e) => {
-            e.preventDefault();
-            if (inputContent.length === 0) {
-              return;
-            }
-
-            socketRef.current?.emit("chat message in", {
-              sender: selfIdRef.current,
-              receiver: userId,
-              type: MessageType.Default,
-              content: inputContent,
-            });
-            setInputContent("");
-          }}
-        >
+        <button type="submit">
           <div className="aspect-square h-full">
             <PiPaperPlaneRightFill
               className="
@@ -206,7 +208,7 @@ const MessageUser = () => {
             />
           </div>
         </button>
-      </div>
+      </form>
 
       <ErrorModal
         errorMessage={errorMessage}

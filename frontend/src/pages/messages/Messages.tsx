@@ -128,11 +128,27 @@ const Messages = () => {
                 return undefined;
               }
 
+              const unreadMessage =
+                conversations[user]
+                  .filter(
+                    (m) =>
+                      (m.sender !== selfIdRef.current &&
+                        m.type === MessageType.Default) ||
+                      (m.sender === selfIdRef.current &&
+                        m.type === MessageType.Seen)
+                  )
+                  .pop()?.type === MessageType.Default;
+
+              const latestMessage =
+                conversations[user]
+                  .filter((m) => m.type === MessageType.Default)
+                  .pop()?.content ?? "";
+
               return (
                 <button
                   key={user}
                   onClick={() => navigate(`/messages/${user}`)}
-                  className="my-2"
+                  className="my-2 overflow-hidden"
                 >
                   <div className={`${row} items-center gap-2`}>
                     <img
@@ -141,29 +157,19 @@ const Messages = () => {
                     />
                     <div className={`${column} items-start flex-grow`}>
                       <div className="font-bold">{names[user]}</div>
-                      <div className="text-primary-300">
-                        {
-                          conversations[user]
-                            .filter((m) => m.type === MessageType.Default)
-                            .pop()?.content
-                        }
+                      <div
+                        className={`text-primary-300 text-left ${
+                          unreadMessage && "font-semibold"
+                        }`}
+                      >
+                        {latestMessage?.length > 35
+                          ? latestMessage.slice(0, 35) + "..."
+                          : latestMessage}
                       </div>
-                      <div>notif dot</div>
                     </div>
-                    {conversations[user]
-                      .filter(
-                        (m) =>
-                          (m.sender !== selfIdRef.current &&
-                            m.type === MessageType.Default) ||
-                          (m.sender === selfIdRef.current &&
-                            m.type === MessageType.Seen)
-                      )
-                      .pop()?.type === MessageType.Default && (
+                    {unreadMessage && (
                       <div className={`${row} gap-1`}>
-                        <GoDotFill className="text-secondary-bg-400 h-[30px]" />
-                        <div className="text-secondary-bg-400 h-[30px] content-center">
-                          Unread message
-                        </div>
+                        <GoDotFill className="text-secondary-bg-400 h-[30px] animate-ping-slow" />
                       </div>
                     )}
                   </div>

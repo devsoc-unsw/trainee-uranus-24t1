@@ -1,6 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import { center, column, inputStyle, bigButton, row } from "../../resources";
+import {
+  center,
+  column,
+  inputStyle,
+  bigButton,
+  row,
+  bigButtonEmphasised,
+} from "../../resources";
 import {
   ChangeEvent,
   FormEvent,
@@ -84,7 +91,7 @@ const Profile = () => {
     );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   const [imgRefresh, setImgRefresh] = useState(0);
@@ -119,11 +126,11 @@ const Profile = () => {
             selfData.languages.includes(language)
           )
         );
-        console.log(selfData)
+        console.log(selfData);
         setPronounSelection(
-          pronounsRef.current.map((pronoun) => 
+          pronounsRef.current.map((pronoun) =>
             selfData.pronouns.includes(pronoun)
-          ),
+          )
         );
       } catch (e) {
         localStorage.clear();
@@ -233,7 +240,10 @@ const Profile = () => {
               <div className={`${column} w-[50%]`}>
                 <PencilEntry
                   descriptor="Pronouns"
-                  text={pronounSelection.map((b, i) => b ? pronounsRef.current[i] : null).filter(x => x != undefined).join(", ")}
+                  text={pronounSelection
+                    .map((b, i) => (b ? pronounsRef.current[i] : null))
+                    .filter((x) => x != undefined)
+                    .join(", ")}
                   onEdit={() => setPronounsModalInputShow(true)}
                 />
                 <div className={subSpacerStyle} />
@@ -330,7 +340,7 @@ const Profile = () => {
             Save
           </button>
           <button
-            className={`${bigButton} mt-0 bg-primary-500 text-primary-bg-500`}
+            className={`${bigButtonEmphasised} mt-0`}
             onClick={() => {
               updateToken(null);
               navigate("/login");

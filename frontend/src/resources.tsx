@@ -13,6 +13,17 @@ export const bigButton = `
   text-2xl
 `;
 
+export const bigButtonEmphasised = `
+  my-4
+  px-5
+  py-2
+  rounded-md
+  font-extrabold
+  text-2xl
+  bg-primary-500
+  text-primary-bg-500
+`;
+
 export const searchBar = `
   rounded-full
   w-full
