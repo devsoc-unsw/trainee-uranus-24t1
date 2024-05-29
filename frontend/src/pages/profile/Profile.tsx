@@ -48,6 +48,7 @@ const Profile = () => {
   const { token, updateToken } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [nameInputModalShow, setNameInputModalShow] = useState(false);
@@ -55,6 +56,7 @@ const Profile = () => {
   const [pronounsModalInputShow, setPronounsModalInputShow] = useState(false);
   const [asrInputModalShow, setAsrInputModalShow] = useState(false);
   const [wamInputModalShow, setWamInputModalShow] = useState(false);
+  const [seeMore, setSeeMore] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -76,6 +78,14 @@ const Profile = () => {
   );
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
   const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
+  const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
+    [] as boolean[]
+  );
+  const [preferredPronounSelection, setPreferredPronounSelection] = useState(
+    [] as boolean[]
+  );
+  // const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
+  // const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
@@ -93,6 +103,14 @@ const Profile = () => {
     setPronounSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value))
     );
+  const togglePreferredLanguageSelection = (index: number) =>
+    setPreferredLanguageSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value))
+    );
+  const togglePreferredPronounSelection = (index: number) =>
+    setPreferredPronounSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value))
+    );
 
   const [imgRefresh, setImgRefresh] = useState(0);
 
@@ -107,6 +125,7 @@ const Profile = () => {
         coursesRef.current = staticData.courses;
 
         const selfData = await getSelfData(token);
+        console.log(selfData);
         setFirstName(selfData.firstName);
         setLastName(selfData.lastName);
         setAge(selfData.age);
@@ -126,10 +145,20 @@ const Profile = () => {
             selfData.languages.includes(language)
           )
         );
+        setPreferredLanguageSelection(
+          languagesRef.current.map((language) =>
+            selfData.preferredLanguages.includes(language)
+          )
+        );
         console.log(selfData);
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
             selfData.pronouns.includes(pronoun)
+          )
+        );
+        setPreferredPronounSelection(
+          pronounsRef.current.map((pronoun) =>
+            selfData.preferredPronouns.includes(pronoun)
           )
         );
       } catch (e) {
@@ -281,6 +310,37 @@ const Profile = () => {
               selected={languageSelection}
               onSelect={toggleLanguageSelection}
             />
+
+            {seeMore && (
+              <>
+                <div className={spacerStyle} />
+                <div className={groupTitleStyle}>
+                  Preferred Matched Languages
+                </div>
+                <ListView
+                  contents={languagesRef.current}
+                  selected={preferredLanguageSelection}
+                  onSelect={togglePreferredLanguageSelection}
+                />
+
+                <div className={spacerStyle} />
+                <div className={groupTitleStyle}>
+                  Preferred Matched Pronouns
+                </div>
+                <ListView
+                  contents={pronounsRef.current}
+                  selected={preferredPronounSelection}
+                  onSelect={togglePreferredPronounSelection}
+                />
+              </>
+            )}
+
+            <div
+              className="mt-4 text-sm underline opacity-75 cursor-pointer"
+              onClick={() => setSeeMore((prev) => !prev)}
+            >
+              {seeMore ? "See Less" : "See More"}
+            </div>
           </div>
         </div>
         <div className={`${center} flex-col`}>
@@ -289,23 +349,35 @@ const Profile = () => {
             onClick={async (e: FormEvent) => {
               e.preventDefault();
 
-              if (courseSelection.every((selection) => !selection)) {
+              if (!courseSelection.some((selection) => selection)) {
                 setErrorMessage("Please select at least one course");
                 return;
               }
 
-              if (futureCourseSelection.every((selection) => !selection)) {
+              if (!futureCourseSelection.some((selection) => selection)) {
                 setErrorMessage("Please select at least one future course");
                 return;
               }
 
-              if (languageSelection.every((selection) => !selection)) {
+              if (!languageSelection.some((selection) => selection)) {
                 setErrorMessage("Please select at least one language");
                 return;
               }
 
+              if (!preferredLanguageSelection.some((selection) => selection)) {
+                setErrorMessage(
+                  "Please select at least one preferred language"
+                );
+                return;
+              }
+
+              if (!preferredPronounSelection.some((selection) => selection)) {
+                setErrorMessage("Please select at least one preferred pronoun");
+                return;
+              }
+
               try {
-                setLoading(true);
+                setUpdateLoading(true);
 
                 await putSelfData(token, {
                   firstName,
@@ -325,6 +397,12 @@ const Profile = () => {
                   languages: languagesRef.current.filter(
                     (_, i) => languageSelection[i]
                   ),
+                  preferredLanguages: languagesRef.current.filter(
+                    (_, i) => preferredLanguageSelection[i]
+                  ),
+                  preferredPronouns: pronounsRef.current.filter(
+                    (_, i) => preferredPronounSelection[i]
+                  ),
                 });
               } catch (e: unknown) {
                 if (e instanceof AxiosError) {
@@ -333,11 +411,11 @@ const Profile = () => {
                   setErrorMessage("Internal error");
                 }
               } finally {
-                setLoading(false);
+                setUpdateLoading(false);
               }
             }}
           >
-            Save
+            {updateLoading ? <Spinner /> : "Save"}
           </button>
           <button
             className={`${bigButtonEmphasised} mt-0`}
