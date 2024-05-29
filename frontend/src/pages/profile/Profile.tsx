@@ -157,7 +157,6 @@ const Profile = () => {
             selfData.preferredLanguages.includes(language)
           )
         );
-        console.log(selfData);
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
             selfData.pronouns.includes(pronoun)
