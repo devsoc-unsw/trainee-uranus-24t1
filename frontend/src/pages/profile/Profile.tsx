@@ -31,6 +31,7 @@ import LabelledSlider from "../../components/LabelledSlider";
 import { AxiosError } from "axios";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import LoadContainer from "../../components/LoadContainer";
+import { Spinner } from "react-bootstrap";
 
 const groupTitleStyle = `
   font-bold
@@ -310,11 +311,13 @@ const Profile = () => {
             <div className={spacerStyle} />
 
             <div className={groupTitleStyle}>Languages</div>
-            <ListView
-              contents={languagesRef.current}
-              selected={languageSelection}
-              onSelect={toggleLanguageSelection}
-            />
+            <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+              <ListView
+                contents={languagesRef.current}
+                selected={languageSelection}
+                onSelect={toggleLanguageSelection}
+              />
+            </LoadContainer>
 
             {seeMore && (
               <>
@@ -322,127 +325,136 @@ const Profile = () => {
                 <div className={groupTitleStyle}>
                   Preferred Matched Languages
                 </div>
-                <ListView
-                  contents={languagesRef.current}
-                  selected={preferredLanguageSelection}
-                  onSelect={togglePreferredLanguageSelection}
-                />
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={languagesRef.current}
+                    selected={preferredLanguageSelection}
+                    onSelect={togglePreferredLanguageSelection}
+                  />
+                </LoadContainer>
 
                 <div className={spacerStyle} />
                 <div className={groupTitleStyle}>
                   Preferred Matched Pronouns
                 </div>
-                <ListView
-                  contents={pronounsRef.current}
-                  selected={preferredPronounSelection}
-                  onSelect={togglePreferredPronounSelection}
-                />
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={pronounsRef.current}
+                    selected={preferredPronounSelection}
+                    onSelect={togglePreferredPronounSelection}
+                  />
+                </LoadContainer>
               </>
             )}
 
-            <div
-              className="mt-4 text-sm underline opacity-75 cursor-pointer"
+            <button
+              className="mt-4 text-sm opacity-75 cursor-pointer place-self-start"
               onClick={() => setSeeMore((prev) => !prev)}
             >
               {seeMore ? "See Less" : "See More"}
-            </div>
+            </button>
           </div>
         </div>
         <div className={`${center} flex-col`}>
-          <button
-            className={bigButton}
-            onClick={async (e: FormEvent) => {
-              e.preventDefault();
+          <LoadContainer loading={loading} className="h-[45px] w-[150px] my-4">
+            <button
+              className={bigButton}
+              onClick={async (e: FormEvent) => {
+                e.preventDefault();
 
-              if (!courseSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one course");
-                return;
-              }
-
-              if (!futureCourseSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one future course");
-                return;
-              }
-
-              if (!languageSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one language");
-                return;
-              }
-
-              if (!preferredLanguageSelection.some((selection) => selection)) {
-                setErrorMessage(
-                  "Please select at least one preferred language"
-                );
-                return;
-              }
-
-              if (!preferredPronounSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one preferred pronoun");
-                return;
-              }
-
-              if (!preferredLanguageSelection.some((selection) => selection)) {
-                setErrorMessage(
-                  "Please select at least one preferred language"
-                );
-                return;
-              }
-
-              if (!preferredPronounSelection.some((selection) => selection)) {
-                setErrorMessage("Please select at least one preferred pronoun");
-                return;
-              }
-
-              try {
-                // setLoading(true);
-
-                await putSelfData(token, {
-                  firstName,
-                  lastName,
-                  age,
-                  academicSocialRatio: asr,
-                  wam: wamsRef.current[wam],
-                  pronouns: pronounsRef.current.filter(
-                    (_, i) => pronounSelection[i]
-                  ),
-                  courses: coursesRef.current.filter(
-                    (_, i) => courseSelection[i]
-                  ),
-                  futureCourses: coursesRef.current.filter(
-                    (_, i) => futureCourseSelection[i]
-                  ),
-                  languages: languagesRef.current.filter(
-                    (_, i) => languageSelection[i]
-                  ),
-                  preferredLanguages: languagesRef.current.filter(
-                    (_, i) => preferredLanguageSelection[i]
-                  ),
-                  preferredPronouns: pronounsRef.current.filter(
-                    (_, i) => preferredPronounSelection[i]
-                  ),
-                });
-              } catch (e: unknown) {
-                if (e instanceof AxiosError) {
-                  setErrorMessage(e.response?.data.errors[0].message);
-                } else {
-                  setErrorMessage("Internal error");
+                if (!courseSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one course");
+                  return;
                 }
-              } finally {
-                // setLoading(false);
-              }
-            }}
-          >
-            {updateLoading ? <Spinner /> : "Save"}
-          </button>
-          <button
-            className={`${bigButtonEmphasised} mt-0`}
-            onClick={() => {
-              updateToken(null);
-              navigate("/login");
-            }}
-          >
-            Logout
-          </button>
+
+                if (!futureCourseSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one future course");
+                  return;
+                }
+
+                if (!languageSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one language");
+                  return;
+                }
+
+                if (!preferredLanguageSelection.some((selection) => selection)) {
+                  setErrorMessage(
+                    "Please select at least one preferred language"
+                  );
+                  return;
+                }
+
+                if (!preferredPronounSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one preferred pronoun");
+                  return;
+                }
+
+                if (!preferredLanguageSelection.some((selection) => selection)) {
+                  setErrorMessage(
+                    "Please select at least one preferred language"
+                  );
+                  return;
+                }
+
+                if (!preferredPronounSelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one preferred pronoun");
+                  return;
+                }
+
+                try {
+                  setUpdateLoading(true);
+
+                  await putSelfData(token, {
+                    firstName,
+                    lastName,
+                    age,
+                    academicSocialRatio: asr,
+                    wam: wamsRef.current[wam],
+                    pronouns: pronounsRef.current.filter(
+                      (_, i) => pronounSelection[i]
+                    ),
+                    courses: coursesRef.current.filter(
+                      (_, i) => courseSelection[i]
+                    ),
+                    futureCourses: coursesRef.current.filter(
+                      (_, i) => futureCourseSelection[i]
+                    ),
+                    languages: languagesRef.current.filter(
+                      (_, i) => languageSelection[i]
+                    ),
+                    preferredLanguages: languagesRef.current.filter(
+                      (_, i) => preferredLanguageSelection[i]
+                    ),
+                    preferredPronouns: pronounsRef.current.filter(
+                      (_, i) => preferredPronounSelection[i]
+                    ),
+                  });
+                } catch (e: unknown) {
+                  if (e instanceof AxiosError) {
+                    setErrorMessage(e.response?.data.errors[0].message);
+                  } else {
+                    setErrorMessage("Internal error");
+                  }
+                } finally {
+                  setUpdateLoading(false);
+                }
+              }}
+            >
+              {updateLoading ? <Spinner /> : "Save"}
+            </button>
+          </LoadContainer>
+
+          <LoadContainer loading={loading} className="h-[45px] w-[200px] my-3">
+            <button
+              className={`${bigButtonEmphasised} mt-0`}
+              onClick={() => {
+                updateToken(null);
+                navigate("/login");
+              }}
+            >
+              Logout
+            </button>
+          </LoadContainer>
         </div>
       </div>
 
