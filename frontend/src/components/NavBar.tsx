@@ -20,7 +20,7 @@ const NavBar: FC<NavBarProps> = ({ navigate, index }) => {
   };
 
   const dynamicStyleFactory = (index: number) => {
-    return index === activeIndex ? "text-primary-9000" : "text-white";
+    return index === activeIndex ? "text-primary-500" : "text-white";
   };
 
   return (

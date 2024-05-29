@@ -11,6 +11,7 @@ import {
 import { Spinner } from "react-bootstrap";
 import { center } from "../../resources";
 import ErrorModal from "../../components/ErrorModal";
+import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 
 const Swipe = () => {
   const navigate = useNavigate();
@@ -47,9 +48,18 @@ const Swipe = () => {
   return (
     <div className="relative flex flex-col h-svh w-svw">
       <div className="content-center grow overflow-auto w-full">
+        <div className="mt-5 mb-2 w-full flex justify-center items-center">
+          <img src={UNSWipeLogo} alt="UNSWipe Logo" />
+        </div>
         {matches.map((match) => (
           <UserCard
+            key={match._id}
             avatarUrl={match.avatarUrl ?? ""}
+            name={
+              match.firstName && match.lastName
+                ? `${match.firstName} ${match.lastName}`
+                : ""
+            }
             currentCourses={match.courses ?? []}
             untakenCourses={match.futureCourses ?? []}
             languages={match.languages ?? []}

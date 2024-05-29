@@ -36,7 +36,7 @@ const ListSearch: React.FC<ListSearchProps> = ({
               border-secondary-bg-500
               h-[50px]
               w-[48%]
-              mb-[4%]
+              mb-[7%]
               flex
               items-center
               justify-center

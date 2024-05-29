@@ -20,7 +20,7 @@ const ListView: React.FC<ListViewProps> = ({
           return undefined;
         }
         return (
-          <div className="relative inline-block">
+          <div className="relative inline-block" key={index}>
             <div className={cardStyle}>{content}</div>
             <button
               className="

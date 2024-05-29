@@ -48,13 +48,20 @@ const MessageUser = () => {
         setName(`${user.firstName} ${user.lastName}`);
         setAvatarUrl(user.avatarUrl);
 
-        const messages = await getSelfMessages(token);
-        messages.sort(messagesByMongodbTimestamp);
-        setMessages(messages);
-
         const self = await getSelfData(token);
         selfIdRef.current = self._id;
 
+        const messages = await getSelfMessages(token);
+
+        setMessages(
+          messages
+            .filter(
+              (message) =>
+                message.members.includes(user._id) &&
+                message.members.includes(self._id)
+            )
+            .sort(messagesByMongodbTimestamp)
+        );
         if (!isMounted) {
           socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
           socketRef.current.emit("token", token);
@@ -65,7 +72,7 @@ const MessageUser = () => {
                 sender: selfIdRef.current,
                 receiver: userId,
                 type: MessageType.Seen,
-                content: ""
+                content: "",
               });
             }
           });
@@ -73,13 +80,9 @@ const MessageUser = () => {
             sender: selfIdRef.current,
             receiver: userId,
             type: MessageType.Seen,
-            content: ""
+            content: "",
           });
         }
-        // socketRef.current.on("disconnect", () => {
-        //   localStorage.clear();
-        //   navigate("/login");
-        // });
       } catch {
         localStorage.clear();
         location.reload();
@@ -98,13 +101,10 @@ const MessageUser = () => {
   }, []);
 
   useEffect(() => {
-    // messageContainerEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    const container = messageContainerRef.current;
-    const newMessage: HTMLElement = messageContainerEndRef.current?.previousSibling as HTMLElement;
-    if (container && newMessage) {
-      const itemHeight = newMessage.offsetHeight;
-      container.scrollBy({ top: itemHeight, behavior: "smooth" });
-    }
+    messageContainerEndRef &&
+      messageContainerEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
   }, [messages]);
 
   if (loading) {
@@ -134,7 +134,15 @@ const MessageUser = () => {
         ref={messageContainerRef}
       >
         {messages.map((message) => {
-          if (messages.slice().reverse().find(m => m.sender !== selfIdRef.current && m.type === MessageType.Seen) === message) {
+          if (
+            messages
+              .slice()
+              .reverse()
+              .find(
+                (m) =>
+                  m.sender !== selfIdRef.current && m.type === MessageType.Seen
+              ) === message
+          ) {
             return (
               <img
                 src={avatarUrl}
@@ -151,7 +159,10 @@ const MessageUser = () => {
               ? "self-end text-white bg-secondary-bg-400"
               : "self-start bg-primary-50";
           return (
-            <div className={`p-2.5 my-1 rounded-full ${senderStyle}`}>
+            <div
+              key={message._id}
+              className={`p-2.5 my-1 rounded-3xl ${senderStyle}`}
+            >
               {message.content}
             </div>
           );
@@ -159,7 +170,7 @@ const MessageUser = () => {
         <div ref={messageContainerEndRef} />
       </div>
 
-      <div className={`${row} items-center h-[40px] gap-2`}>
+      <div className={`${row} items-center h-[40px] gap-2 mt-2`}>
         <input
           className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
           type="text"
@@ -188,8 +199,7 @@ const MessageUser = () => {
               className="
               rounded-full
               bg-secondary-bg-400
-              p-2.5
-              text-4xl
+              p-2
               text-white
               w-full
               h-full"

@@ -23,6 +23,7 @@ import ListView from "../../components/ListView";
 import PencilEntry from "../../components/PencilEntry";
 import LabelledSlider from "../../components/LabelledSlider";
 import { AxiosError } from "axios";
+import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 
 const groupTitleStyle = `
   font-bold
@@ -37,7 +38,7 @@ const subSpacerStyle = `
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { token } = useContext(AppContext);
+  const { token, updateToken } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,22 +65,22 @@ const Profile = () => {
 
   const [courseSelection, setCourseSelection] = useState([] as boolean[]);
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
   const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
@@ -106,17 +107,17 @@ const Profile = () => {
         setWam(wamsRef.current.indexOf(selfData.wam));
         setAvatarUrl(selfData.avatarUrl);
         setCourseSelection(
-          coursesRef.current.map((course) => selfData.courses.includes(course)),
+          coursesRef.current.map((course) => selfData.courses.includes(course))
         );
         setFutureCourseSelection(
           coursesRef.current.map((course) =>
-            selfData.futureCourses.includes(course),
-          ),
+            selfData.futureCourses.includes(course)
+          )
         );
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages.includes(language),
-          ),
+            selfData.languages.includes(language)
+          )
         );
         console.log(selfData)
         setPronounSelection(
@@ -152,10 +153,12 @@ const Profile = () => {
         overflow-auto
         w-full
         h-full
-        bg-secondary-bg-500
         p-4
       "
       >
+        <div className="flex justify-center items-center my-4">
+          <img src={UNSWipeLogo} alt="UNSWipe logo" />
+        </div>
         <div
           className={`
           ${column}
@@ -270,7 +273,7 @@ const Profile = () => {
             />
           </div>
         </div>
-        <div className={center}>
+        <div className={`${center} flex-col`}>
           <button
             className={bigButton}
             onClick={async (e: FormEvent) => {
@@ -304,13 +307,13 @@ const Profile = () => {
                     (_, i) => pronounSelection[i]
                   ),
                   courses: coursesRef.current.filter(
-                    (_, i) => courseSelection[i],
+                    (_, i) => courseSelection[i]
                   ),
                   futureCourses: coursesRef.current.filter(
-                    (_, i) => futureCourseSelection[i],
+                    (_, i) => futureCourseSelection[i]
                   ),
                   languages: languagesRef.current.filter(
-                    (_, i) => languageSelection[i],
+                    (_, i) => languageSelection[i]
                   ),
                 });
               } catch (e: unknown) {
@@ -325,6 +328,15 @@ const Profile = () => {
             }}
           >
             Save
+          </button>
+          <button
+            className={`${bigButton} mt-0 bg-primary-500 text-primary-bg-500`}
+            onClick={() => {
+              updateToken(null);
+              navigate("/login");
+            }}
+          >
+            Logout
           </button>
         </div>
       </div>
@@ -378,6 +390,7 @@ const Profile = () => {
         {pronounsRef.current.map((pronoun, i) => (
           <button
             className="m-1 py-2 px-3 rounded-full bg-secondary-bg-200"
+            key={i}
             onClick={() => {
               togglePronounSelection(i);
               setPronounsModalInputShow(false);

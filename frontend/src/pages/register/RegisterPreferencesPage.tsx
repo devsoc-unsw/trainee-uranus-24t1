@@ -14,6 +14,7 @@ import {
 import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterPreferencesPage = () => {
   const navigate = useNavigate();
@@ -22,10 +23,10 @@ const RegisterPreferencesPage = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
   const [preferredPronounSelection, setPreferredPronounSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
   const [preferredAgeRangeMin, setPreferredAgeRangeMin] = useState(17);
   const [preferredAgeRangeMax, setPreferredAgeRangeMax] = useState(27);
@@ -39,11 +40,11 @@ const RegisterPreferencesPage = () => {
 
   const togglePreferredLanguageSelection = (index: number) =>
     setPreferredLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const togglePreferredPronounSelection = (index: number) =>
     setPreferredPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   useEffect(() => {
@@ -57,21 +58,21 @@ const RegisterPreferencesPage = () => {
         const selfData = await getSelfData(token);
         setPreferredLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.preferredLanguages?.includes(language),
-          ),
+            selfData.preferredLanguages?.includes(language)
+          )
         );
         setPreferredPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.preferredPronouns?.includes(pronoun),
-          ),
+            selfData.preferredPronouns?.includes(pronoun)
+          )
         );
         setPreferredAgeRangeMin(selfData.preferredAgeRange?.[0] || 17);
         setPreferredAgeRangeMax(selfData.preferredAgeRange?.[1] || 27);
         setPreferredWamRangeMin(
-          wamsRef.current.indexOf(selfData.preferredWamRange?.[0] ?? 0),
+          wamsRef.current.indexOf(selfData.preferredWamRange?.[0] ?? 0)
         );
         setPreferredWamRangeMax(
-          wamsRef.current.indexOf(selfData.preferredWamRange?.[1] ?? 4),
+          wamsRef.current.indexOf(selfData.preferredWamRange?.[1] ?? 4)
         );
         setSocialAcademicRatio(selfData.academicSocialRatio || 0.5);
       } catch {
@@ -93,97 +94,120 @@ const RegisterPreferencesPage = () => {
   }
 
   return (
-    <div className={`${column} relative w-svw h-svh p-4`}>
+    <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
           <BackButton onBack={() => navigate("/register-hobbies")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
+          <img className="w-[100px]" src={UNSWipeCat} />
         </div>
       </div>
 
-      <div className="flex justify-end">4 of 5</div>
+      <div className="flex justify-end opacity-60 text-sm pb-[10px]">
+        4 of 5
+      </div>
 
-      <div className="h-[10px]" />
-
-      <div className={center}>
+      <div className={`${center} pb-[20px]`}>
         <ProgressBar progress={80} />
       </div>
 
-      <div className="h-[30px]" />
+      <div className="text-[2.5rem] font-extrabold text-primary-500">
+        Preferences?
+      </div>
+      <div className="pb-3 text-sm opacity-65">
+        What are you looking for in someone?
+      </div>
 
-      <div className="text-[2.5rem] font-bold">Preferences?</div>
-      <div>What are you looking for in someone?</div>
+      <div className={column}>
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Languages:</div>
+          <ListView
+            contents={languagesRef.current}
+            selected={preferredLanguageSelection}
+            onSelect={togglePreferredLanguageSelection}
+          />
+        </div>
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Pronouns:</div>
+          <ListView
+            contents={pronounsRef.current}
+            selected={preferredPronounSelection}
+            onSelect={togglePreferredPronounSelection}
+          />
+        </div>
 
-      <div className="h-[60px]" />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Minimum Age:</div>
+          <LabelledSlider
+            min={15}
+            max={30}
+            value={preferredAgeRangeMin}
+            onSlide={setPreferredAgeRangeMin}
+            label={preferredAgeRangeMin.toString()}
+          />
+        </div>
 
-      <div className={`${column} h-full`}>
-        <div>Preferred Languages:</div>
-        <ListView
-          contents={languagesRef.current}
-          selected={preferredLanguageSelection}
-          onSelect={togglePreferredLanguageSelection}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Maximum Age:</div>
+          <LabelledSlider
+            min={15}
+            max={30}
+            value={preferredAgeRangeMax}
+            onSlide={setPreferredAgeRangeMax}
+            label={preferredAgeRangeMax.toString()}
+          />
+        </div>
 
-        <div>Preferred Pronouns:</div>
-        <ListView
-          contents={pronounsRef.current}
-          selected={preferredPronounSelection}
-          onSelect={togglePreferredPronounSelection}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Minimum WAM:</div>
+          <LabelledSlider
+            min={0}
+            max={wamsRef.current.length - 1}
+            value={preferredWamRangeMin}
+            onSlide={setPreferredWamRangeMin}
+            label={wamsRef.current[preferredWamRangeMin]}
+          />
+        </div>
 
-        <div>Preferred Minimum Age:</div>
-        <LabelledSlider
-          min={15}
-          max={30}
-          value={preferredAgeRangeMin}
-          onSlide={setPreferredAgeRangeMin}
-          label={preferredAgeRangeMin.toString()}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Maximum WAM:</div>
+          <LabelledSlider
+            min={0}
+            max={wamsRef.current.length - 1}
+            value={preferredWamRangeMax}
+            onSlide={setPreferredWamRangeMax}
+            label={wamsRef.current[preferredWamRangeMax]}
+          />
+        </div>
 
-        <div>Preferred Maximum Age:</div>
-        <LabelledSlider
-          min={15}
-          max={30}
-          value={preferredAgeRangeMax}
-          onSlide={setPreferredAgeRangeMax}
-          label={preferredAgeRangeMax.toString()}
-        />
-
-        <div>Preferred Minimum WAM:</div>
-        <LabelledSlider
-          min={0}
-          max={wamsRef.current.length - 1}
-          value={preferredWamRangeMin}
-          onSlide={setPreferredWamRangeMin}
-          label={wamsRef.current[preferredWamRangeMin]}
-        />
-
-        <div>Preferred Maximum WAM:</div>
-        <LabelledSlider
-          min={0}
-          max={wamsRef.current.length - 1}
-          value={preferredWamRangeMax}
-          onSlide={setPreferredWamRangeMax}
-          label={wamsRef.current[preferredWamRangeMax]}
-        />
-
-        <div>Academic vs Social Ratio:</div>
-        <div>What do you value?</div>
-        <div>
+        <div className="text-lg font-bold pb-1">Academic vs Social Ratio:</div>
+        <div className="text-xs">
+          <b>What do you value?</b>
+        </div>
+        <div className="text-xs">
           With 0% being that you are completely looking for someone to fulfil
           your academic goals and 100% being you are looking for someone that
           matches your social aspirations!
         </div>
-        <LabelledSlider
-          min={0}
-          max={1}
-          step={0.01}
-          value={socialAcademicRatio}
-          onSlide={setSocialAcademicRatio}
-          label={`${Math.round(socialAcademicRatio * 100)}%`}
-        />
+        <div className="flex flex-row justify-between items-center w-full">
+          <p className="text-primary-500 font-bold text-sm opacity-75">
+            Academic
+          </p>
+          <div className="w-[60%]">
+            <LabelledSlider
+              min={0}
+              max={1}
+              step={0.01}
+              value={socialAcademicRatio}
+              onSlide={setSocialAcademicRatio}
+              label={`${Math.round(socialAcademicRatio * 100)}%`}
+            />
+          </div>
+          <p className="text-primary-500 font-bold text-sm opacity-75">
+            Social
+          </p>
+        </div>
       </div>
 
       <div className={center}>
@@ -198,7 +222,9 @@ const RegisterPreferencesPage = () => {
             }
 
             if (preferredPronounSelection.every((selection) => !selection)) {
-              setErrorMessage("Please select at least one preferred pronoun pair");
+              setErrorMessage(
+                "Please select at least one preferred pronoun pair"
+              );
               return;
             }
 
@@ -217,10 +243,10 @@ const RegisterPreferencesPage = () => {
 
               await putSelfData(token, {
                 preferredLanguages: languagesRef.current.filter(
-                  (_, i) => preferredLanguageSelection[i],
+                  (_, i) => preferredLanguageSelection[i]
                 ),
                 preferredPronouns: pronounsRef.current.filter(
-                  (_, i) => preferredPronounSelection[i],
+                  (_, i) => preferredPronounSelection[i]
                 ),
                 preferredAgeRange: [preferredAgeRangeMin, preferredAgeRangeMax],
                 preferredWamRange: [
