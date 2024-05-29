@@ -23,10 +23,10 @@ const RegisterPreferencesPage = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
   const [preferredPronounSelection, setPreferredPronounSelection] = useState(
-    [] as boolean[],
+    [] as boolean[]
   );
   const [preferredAgeRangeMin, setPreferredAgeRangeMin] = useState(17);
   const [preferredAgeRangeMax, setPreferredAgeRangeMax] = useState(27);
@@ -40,11 +40,11 @@ const RegisterPreferencesPage = () => {
 
   const togglePreferredLanguageSelection = (index: number) =>
     setPreferredLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
   const togglePreferredPronounSelection = (index: number) =>
     setPreferredPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   useEffect(() => {
@@ -58,26 +58,27 @@ const RegisterPreferencesPage = () => {
         const selfData = await getSelfData(token);
         setPreferredLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.preferredLanguages?.includes(language),
-          ),
+            selfData.preferredLanguages?.includes(language)
+          )
         );
         setPreferredPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.preferredPronouns?.includes(pronoun),
-          ),
+            selfData.preferredPronouns?.includes(pronoun)
+          )
         );
         setPreferredAgeRangeMin(selfData.preferredAgeRange?.[0] || 17);
         setPreferredAgeRangeMax(selfData.preferredAgeRange?.[1] || 27);
         setPreferredWamRangeMin(
-          wamsRef.current.indexOf(selfData.preferredWamRange?.[0] ?? 0),
+          wamsRef.current.indexOf(selfData.preferredWamRange?.[0] ?? 0)
         );
         setPreferredWamRangeMax(
-          wamsRef.current.indexOf(selfData.preferredWamRange?.[1] ?? 4),
+          wamsRef.current.indexOf(selfData.preferredWamRange?.[1] ?? 4)
         );
         setSocialAcademicRatio(selfData.academicSocialRatio || 0.5);
       } catch {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again."
+        );
       } finally {
         setLoading(false);
       }
@@ -229,7 +230,7 @@ const RegisterPreferencesPage = () => {
 
             if (preferredPronounSelection.every((selection) => !selection)) {
               setErrorMessage(
-                "Please select at least one preferred pronoun pair",
+                "Please select at least one preferred pronoun pair"
               );
               return;
             }
@@ -249,10 +250,10 @@ const RegisterPreferencesPage = () => {
 
               await putSelfData(token, {
                 preferredLanguages: languagesRef.current.filter(
-                  (_, i) => preferredLanguageSelection[i],
+                  (_, i) => preferredLanguageSelection[i]
                 ),
                 preferredPronouns: pronounsRef.current.filter(
-                  (_, i) => preferredPronounSelection[i],
+                  (_, i) => preferredPronounSelection[i]
                 ),
                 preferredAgeRange: [preferredAgeRangeMin, preferredAgeRangeMax],
                 preferredWamRange: [

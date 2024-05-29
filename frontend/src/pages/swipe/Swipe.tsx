@@ -26,8 +26,9 @@ const Swipe = () => {
         setLoading(true);
         setMatches(await getSelfMatches(token));
       } catch {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again."
+        );
       } finally {
         setLoading(false);
       }

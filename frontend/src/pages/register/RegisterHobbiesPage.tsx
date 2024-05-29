@@ -26,7 +26,7 @@ const RegisterHobbies = () => {
   const hobbiesRef = useRef([] as string[]);
   const toggleHobbySelection = (index: number) =>
     setHobbySelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value)),
+      prevState.map((value, i) => (i === index ? !value : value))
     );
 
   useEffect(() => {
@@ -38,11 +38,12 @@ const RegisterHobbies = () => {
         hobbiesRef.current = staticData.hobbies;
         const selfData = await getSelfData(token);
         setHobbySelection(
-          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby)),
+          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby))
         );
       } catch {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again."
+        );
       } finally {
         setLoading(false);
       }

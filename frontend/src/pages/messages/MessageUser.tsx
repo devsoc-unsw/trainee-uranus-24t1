@@ -4,8 +4,8 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../contexts/AppContext";
 import ErrorModal from "../../components/ErrorModal";
-import { center, column, row } from "../../resources";
-import { Spinner } from "react-bootstrap";
+import { /*center,*/ column, row } from "../../resources";
+// import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
 import {
   Message,
@@ -59,9 +59,9 @@ const MessageUser = () => {
             .filter(
               (message) =>
                 message.members.includes(user._id) &&
-                message.members.includes(self._id),
+                message.members.includes(self._id)
             )
-            .sort(messagesByMongodbTimestamp),
+            .sort(messagesByMongodbTimestamp)
         );
         if (!isMounted) {
           socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
@@ -85,8 +85,9 @@ const MessageUser = () => {
           });
         }
       } catch {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again."
+        );
       } finally {
         setLoading(false);
       }
@@ -142,7 +143,7 @@ const MessageUser = () => {
               .reverse()
               .find(
                 (m) =>
-                  m.sender !== selfIdRef.current && m.type === MessageType.Seen,
+                  m.sender !== selfIdRef.current && m.type === MessageType.Seen
               ) === message
           ) {
             return (

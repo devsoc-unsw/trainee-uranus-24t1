@@ -131,7 +131,6 @@ const Profile = () => {
         coursesRef.current = staticData.courses;
 
         const selfData = await getSelfData(token);
-        console.log(selfData);
         setFirstName(selfData.firstName);
         setLastName(selfData.lastName);
         setAge(selfData.age);
@@ -170,8 +169,9 @@ const Profile = () => {
           )
         );
       } catch (e) {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again."
+        );
       } finally {
         setLoading(false);
       }
