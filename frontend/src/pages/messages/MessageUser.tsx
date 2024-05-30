@@ -9,6 +9,7 @@ import BackButton from "../../components/BackButton";
 import {
   Message,
   MessageType,
+  UserInfo,
   getSelfData,
   getSelfMessages,
   getUsersFromId,
@@ -18,11 +19,16 @@ import { Socket, io } from "socket.io-client";
 import { LOCAL_HOST, SOCKET_PATH } from "../../utils/constants";
 import LoadContainer from "../../components/LoadContainer";
 import ConfettiExplosion from "react-confetti-explosion";
+import InputModal from "../../components/InputModal";
+import UserCard from "../../components/UserCard";
 
 const MessageUser = () => {
   const navigate = useNavigate();
   const { user: userId } = useParams<{ user: string }>();
   const { token } = useContext(AppContext);
+
+  const [userInfo, setUserInfo] = useState(null as null | UserInfo);
+  const [userInfoModalShow, setInfoUserModalShow] = useState(false);
 
   const [confetti, setConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -44,11 +50,11 @@ const MessageUser = () => {
     (async () => {
       try {
         setLoading(true);
-
         const users = await getUsersFromId(token, [userId]);
         const user = users[0];
         setName(`${user.firstName} ${user.lastName}`);
         setAvatarUrl(user.avatarUrl);
+        setUserInfo(user);
 
         const self = await getSelfData(token);
         selfIdRef.current = self._id;
@@ -148,7 +154,7 @@ const MessageUser = () => {
           />
         </LoadContainer>
         <div className="grow">
-          <LoadContainer loading={loading} className="h-[25px] w-[200px]">
+          <LoadContainer loading={loading} className="h-[25px] w-[100px]">
             <div className="font-bold">{name}</div>
           </LoadContainer>
         </div>
@@ -156,7 +162,8 @@ const MessageUser = () => {
         <button
           onClick={async () => {
             // setErrorMessage("🛠️");
-            setConfetti(true);
+            // setConfetti(true);
+            setInfoUserModalShow(true);
           }}
         >
           <IoMdInformationCircleOutline className="text-4xl text-secondary-bg-400" />
@@ -197,48 +204,67 @@ const MessageUser = () => {
         <div ref={messageContainerEndRef} />
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full px-3 pb-3">
-        <form
-          className={`${row} items-center h-[40px] gap-2 mt-2`}
-          onSubmit={async (e) => {
-            e.preventDefault();
-            if (inputContent.trim().length === 0) {
-              return;
-            }
+      <form
+        className={`${row} items-center h-[40px] gap-2 mt-2`}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (inputContent.trim().length === 0) {
+            return;
+          }
 
-            socketRef.current?.emit("chat message in", {
-              sender: selfIdRef.current,
-              receiver: userId,
-              type: MessageType.Default,
-              content: inputContent.trim(),
-            });
-            setInputContent("");
-          }}
-        >
-          <LoadContainer loading={loading} className="grow h-full">
-            <input
-              className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
-              type="text"
-              placeholder="Message"
-              value={inputContent}
-              onChange={(e) => setInputContent(e.target.value)}
+          socketRef.current?.emit("chat message in", {
+            sender: selfIdRef.current,
+            receiver: userId,
+            type: MessageType.Default,
+            content: inputContent.trim(),
+          });
+          setInputContent("");
+        }}
+      >
+        <LoadContainer loading={loading} className="grow h-full">
+          <input
+            className="grow rounded-full py-2 px-3 bg-primary-50 h-full"
+            type="text"
+            placeholder="Message"
+            value={inputContent}
+            onChange={(e) => setInputContent(e.target.value)}
+          />
+        </LoadContainer>
+        <LoadContainer loading={loading} className="aspect-square h-full">
+          <button type="submit" className="aspect-square h-full">
+            <PiPaperPlaneRightFill
+              className="
+              rounded-full
+              bg-secondary-bg-400
+              p-2
+              text-white
+              w-full
+              h-full"
             />
-          </LoadContainer>
-          <LoadContainer loading={loading} className="aspect-square h-full">
-            <button type="submit" className="aspect-square h-full">
-              <PiPaperPlaneRightFill
-                className="
-                rounded-full
-                bg-secondary-bg-400
-                p-2
-                text-white
-                w-full
-                h-full"
-              />
-            </button>
-          </LoadContainer>
-        </form>
-      </div>
+          </button>
+        </LoadContainer>
+      </form>
+
+      <InputModal
+        title="Profile"
+        show={userInfoModalShow}
+        onHide={() => setInfoUserModalShow(false)}
+      >
+        <UserCard
+          avatarUrl={userInfo?.avatarUrl}
+          name={name}
+          currentCourses={userInfo?.courses}
+          untakenCourses={userInfo?.futureCourses}
+          languages={userInfo?.languages}
+          wam={userInfo?.wam}
+          academicSocialRatio={userInfo?.academicSocialRatio}
+          age={userInfo?.age}
+          hobbies={userInfo?.hobbies}
+          programmingLanguages={userInfo?.programmingLanguages}
+          pronouns={userInfo?.pronouns}
+          loading={loading}
+        />
+      </InputModal>
 
       <ErrorModal
         errorMessage={errorMessage}

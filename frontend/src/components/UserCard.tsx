@@ -133,13 +133,15 @@ const UserCard: React.FC<UserCardProps> = ({
           {list("Programming Languages", programmingLanguages)}
 
           <LoadContainer loading={loading} className="h-[40px] w-full mt-2">
-            <CustomButton
-              type="button"
-              onClick={onMatch ?? (() => {})}
-              disabled={false}
-            >
-              Message
-            </CustomButton>
+            {onMatch && (
+              <CustomButton
+                type="button"
+                onClick={onMatch ?? (() => {})}
+                disabled={false}
+              >
+                Message
+              </CustomButton>
+            )}
           </LoadContainer>
         </div>
       </div>
