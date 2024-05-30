@@ -69,6 +69,7 @@ const Profile = () => {
   const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
   const coursesRef = useRef([] as string[]);
+  const hobbiesRef = useRef([] as string[]);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -91,6 +92,7 @@ const Profile = () => {
   );
   const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
   const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
+  const [hobbySelection, setHobbySelection] = useState([] as boolean[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
@@ -116,6 +118,10 @@ const Profile = () => {
     setPreferredPronounSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value))
     );
+  const toggleHobbySelection = (index: number) =>
+    setHobbySelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value))
+    );
 
   const [imgRefresh, setImgRefresh] = useState(0);
 
@@ -129,6 +135,7 @@ const Profile = () => {
         pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         coursesRef.current = staticData.courses;
+        hobbiesRef.current = staticData.hobbies;
 
         const selfData = await getSelfData(token);
         setFirstName(selfData.firstName);
@@ -166,6 +173,9 @@ const Profile = () => {
           pronounsRef.current.map((pronoun) =>
             selfData.preferredPronouns.includes(pronoun)
           )
+        );
+        setHobbySelection(
+          hobbiesRef.current.map((hobby) => selfData.hobbies.includes(hobby))
         );
       } catch (e) {
         setErrorMessage(
@@ -356,6 +366,16 @@ const Profile = () => {
                 </LoadContainer>
 
                 <div className={spacerStyle} />
+                <div className={groupTitleStyle}>Hobbies</div>
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={hobbiesRef.current}
+                    selected={hobbySelection}
+                    onSelect={toggleHobbySelection}
+                  />
+                </LoadContainer>
+
+                <div className={spacerStyle} />
                 <div className={`${row} justify-between w-full`}>
                   <PencilEntry
                     descriptor="Preferred Age Range"
@@ -438,10 +458,18 @@ const Profile = () => {
                   return;
                 }
 
-                if (preferredWamRange[0] >= preferredWamRange[1]) {
+                if (
+                  wamsRef.current.indexOf(preferredWamRange[0]) >=
+                  wamsRef.current.indexOf(preferredWamRange[1])
+                ) {
                   setErrorMessage(
                     "Please select a valid WAM range in ascending order"
                   );
+                  return;
+                }
+
+                if (!hobbySelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one hobby");
                   return;
                 }
 
@@ -474,6 +502,9 @@ const Profile = () => {
                     ),
                     preferredAgeRange: preferredAgeRange,
                     preferredWamRange: preferredWamRange,
+                    hobbies: hobbiesRef.current.filter(
+                      (_, i) => hobbySelection[i]
+                    ),
                   });
                 } catch (e: unknown) {
                   if (e instanceof AxiosError) {
