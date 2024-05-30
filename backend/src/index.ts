@@ -2,7 +2,11 @@ import express, { Application } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import cors from "cors";
 import { Server as SocketIOServer } from "socket.io";
-import { collections, connectToDatabase, updateStaticData } from "./services/database.service";
+import {
+  collections,
+  connectToDatabase,
+  updateStaticData,
+} from "./services/database.service";
 import { authenticationRouter } from "./routes/authentication.routes";
 import { PORT, SECRET_KEY } from "./env";
 import { usersRouter } from "./routes/users.routes";

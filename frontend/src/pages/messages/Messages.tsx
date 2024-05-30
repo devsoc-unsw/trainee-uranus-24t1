@@ -56,7 +56,7 @@ const Messages = () => {
         });
 
         const ids = Array.from(
-          new Set(messages.flatMap((message) => message.members))
+          new Set(messages.flatMap((message) => message.members)),
         );
         const users: UserInfo[] = await getUsersFromId(token, ids);
 
@@ -71,7 +71,7 @@ const Messages = () => {
         setConversations(conversationMap);
       } catch {
         setErrorMessage(
-          "There was a problem retrieving your data. Please try again."
+          "There was a problem retrieving your data. Please try again.",
         );
       }
     };
@@ -119,8 +119,8 @@ const Messages = () => {
                 .sort((a, b) =>
                   messagesByMongodbTimestamp(
                     conversations[b][conversations[b].length - 1],
-                    conversations[a][conversations[a].length - 1]
-                  )
+                    conversations[a][conversations[a].length - 1],
+                  ),
                 )
                 .map((user) => {
                   if (
@@ -138,7 +138,7 @@ const Messages = () => {
                           (m.sender !== selfIdRef.current &&
                             m.type === MessageType.Default) ||
                           (m.sender === selfIdRef.current &&
-                            m.type === MessageType.Seen)
+                            m.type === MessageType.Seen),
                       )
                       .pop()?.type === MessageType.Default;
 

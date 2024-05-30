@@ -27,7 +27,7 @@ const Swipe = () => {
         setMatches(await getSelfMatches(token));
       } catch {
         setErrorMessage(
-          "There was a problem retrieving your data. Please try again."
+          "There was a problem retrieving your data. Please try again.",
         );
       } finally {
         setLoading(false);

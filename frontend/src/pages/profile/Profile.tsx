@@ -66,8 +66,8 @@ const Profile = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const languagesRef = useRef([] as string[]);
-	const programmingLanguagesRef = useRef([] as string[]);
-	const hobbiesRef = useRef([] as string[]);
+  const programmingLanguagesRef = useRef([] as string[]);
+  const hobbiesRef = useRef([] as string[]);
   const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
   const coursesRef = useRef([] as string[]);
@@ -81,52 +81,53 @@ const Profile = () => {
 
   const [courseSelection, setCourseSelection] = useState([] as boolean[]);
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
   const [languageSelection, setLanguageSelection] = useState([] as boolean[]);
-	const [programmingLanguageSelection, setProgrammingLanguageSelection] = useState([] as boolean[]);
-	const [hobbySelection, setHobbySelection] = useState([] as boolean[]);
+  const [programmingLanguageSelection, setProgrammingLanguageSelection] =
+    useState([] as boolean[]);
+  const [hobbySelection, setHobbySelection] = useState([] as boolean[]);
   const [pronounSelection, setPronounSelection] = useState([] as boolean[]);
   const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
   const [preferredPronounSelection, setPreferredPronounSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
   const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
   const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const toggleLanguageSelection = (index: number) =>
     setLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
-	const toggleProgrammingLanguageSelection = (index: number) =>
-		setProgrammingLanguageSelection((prevState) =>
-			prevState.map((value, i) => (i === index ? !value : value))	
-		);
-	const toggleHobbySelection = (index: number) =>
-		setHobbySelection((prevState) =>
-			prevState.map((value, i) => (i === index ? !value : value))
-		);
+  const toggleProgrammingLanguageSelection = (index: number) =>
+    setProgrammingLanguageSelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
+  const toggleHobbySelection = (index: number) =>
+    setHobbySelection((prevState) =>
+      prevState.map((value, i) => (i === index ? !value : value)),
+    );
   const togglePronounSelection = (index: number) =>
     setPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePreferredLanguageSelection = (index: number) =>
     setPreferredLanguageSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
   const togglePreferredPronounSelection = (index: number) =>
     setPreferredPronounSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   const [imgRefresh, setImgRefresh] = useState(0);
@@ -138,8 +139,8 @@ const Profile = () => {
         // await sleep(3000);
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
-				programmingLanguagesRef.current = staticData.programmingLanguages;
-				hobbiesRef.current = staticData.hobbies;
+        programmingLanguagesRef.current = staticData.programmingLanguages;
+        hobbiesRef.current = staticData.hobbies;
         pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         coursesRef.current = staticData.courses;
@@ -154,46 +155,44 @@ const Profile = () => {
         setPreferredAgeRange(selfData.preferredAgeRange);
         setPreferredWamRange(selfData.preferredWamRange);
         setCourseSelection(
-          coursesRef.current.map((course) => selfData.courses.includes(course))
+          coursesRef.current.map((course) => selfData.courses.includes(course)),
         );
         setFutureCourseSelection(
           coursesRef.current.map((course) =>
-            selfData.futureCourses.includes(course)
-          )
+            selfData.futureCourses.includes(course),
+          ),
         );
         setLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.languages.includes(language)
-          )
+            selfData.languages.includes(language),
+          ),
         );
-				setProgrammingLanguageSelection(
-					programmingLanguagesRef.current.map((language) =>
-						selfData.programmingLanguages.includes(language)
-					)
-				);
-				setHobbySelection(
-					hobbiesRef.current.map((hobby) =>
-						selfData.hobbies.includes(hobby)
-					)
-				);
+        setProgrammingLanguageSelection(
+          programmingLanguagesRef.current.map((language) =>
+            selfData.programmingLanguages.includes(language),
+          ),
+        );
+        setHobbySelection(
+          hobbiesRef.current.map((hobby) => selfData.hobbies.includes(hobby)),
+        );
         setPreferredLanguageSelection(
           languagesRef.current.map((language) =>
-            selfData.preferredLanguages.includes(language)
-          )
+            selfData.preferredLanguages.includes(language),
+          ),
         );
         setPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.pronouns.includes(pronoun)
-          )
+            selfData.pronouns.includes(pronoun),
+          ),
         );
         setPreferredPronounSelection(
           pronounsRef.current.map((pronoun) =>
-            selfData.preferredPronouns.includes(pronoun)
-          )
+            selfData.preferredPronouns.includes(pronoun),
+          ),
         );
       } catch (e) {
         setErrorMessage(
-          "There was a problem retrieving your data. Please try again."
+          "There was a problem retrieving your data. Please try again.",
         );
       } finally {
         setLoading(false);
@@ -355,30 +354,26 @@ const Profile = () => {
 
             {seeMore && (
               <>
-								<div className={spacerStyle} />
-                <div className={groupTitleStyle}>
-                  Programming Languages
-                </div>
-								<LoadContainer loading={loading} className="h-[45px] w-[350px]">
-									<ListView
-										contents={programmingLanguagesRef.current}
-										selected={programmingLanguageSelection}
-										onSelect={toggleProgrammingLanguageSelection}
-									/>
-								</LoadContainer>
+                <div className={spacerStyle} />
+                <div className={groupTitleStyle}>Programming Languages</div>
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={programmingLanguagesRef.current}
+                    selected={programmingLanguageSelection}
+                    onSelect={toggleProgrammingLanguageSelection}
+                  />
+                </LoadContainer>
 
-								<div className={spacerStyle} />
-                <div className={groupTitleStyle}>
-                  Hobbies
-                </div>
-								<LoadContainer loading={loading} className="h-[45px] w-[350px]">
-									<ListView
-										contents={hobbiesRef.current}
-										selected={hobbySelection}
-										onSelect={toggleHobbySelection}
-									/>
-								</LoadContainer>
-							
+                <div className={spacerStyle} />
+                <div className={groupTitleStyle}>Hobbies</div>
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={hobbiesRef.current}
+                    selected={hobbySelection}
+                    onSelect={toggleHobbySelection}
+                  />
+                </LoadContainer>
+
                 <div className={spacerStyle} />
                 <div className={groupTitleStyle}>
                   Preferred Matched Languages
@@ -453,43 +448,43 @@ const Profile = () => {
                   !preferredLanguageSelection.some((selection) => selection)
                 ) {
                   setErrorMessage(
-                    "Please select at least one preferred language"
+                    "Please select at least one preferred language",
                   );
                   return;
                 }
 
                 if (!preferredPronounSelection.some((selection) => selection)) {
                   setErrorMessage(
-                    "Please select at least one preferred pronoun"
+                    "Please select at least one preferred pronoun",
                   );
                   return;
                 }
 
-								if (!programmingLanguageSelection.some((selection) => selection)) {
-									setErrorMessage(
-										"Please select at least one programming language"
-									);
-									return;
-								}
+                if (
+                  !programmingLanguageSelection.some((selection) => selection)
+                ) {
+                  setErrorMessage(
+                    "Please select at least one programming language",
+                  );
+                  return;
+                }
 
-								if (!hobbySelection.some((selection) => selection)) {
-									setErrorMessage(
-										"Pleaase select at least one hobby"
-									);
-								}
-									
+                if (!hobbySelection.some((selection) => selection)) {
+                  setErrorMessage("Pleaase select at least one hobby");
+                }
+
                 if (
                   !preferredLanguageSelection.some((selection) => selection)
                 ) {
                   setErrorMessage(
-                    "Please select at least one preferred language"
+                    "Please select at least one preferred language",
                   );
                   return;
                 }
 
                 if (!preferredPronounSelection.some((selection) => selection)) {
                   setErrorMessage(
-                    "Please select at least one preferred pronoun"
+                    "Please select at least one preferred pronoun",
                   );
                   return;
                 }
@@ -499,9 +494,12 @@ const Profile = () => {
                   return;
                 }
 
-                if (preferredWamRange[0] >= preferredWamRange[1]) {
+                if (
+                  wamsRef.current.indexOf(preferredWamRange[0]) >
+                  wamsRef.current.indexOf(preferredWamRange[1])
+                ) {
                   setErrorMessage(
-                    "Please select a valid WAM range in ascending order"
+                    "Please select a valid WAM range in ascending order",
                   );
                   return;
                 }
@@ -516,28 +514,29 @@ const Profile = () => {
                     academicSocialRatio: asr,
                     wam: wamsRef.current[wam],
                     pronouns: pronounsRef.current.filter(
-                      (_, i) => pronounSelection[i]
+                      (_, i) => pronounSelection[i],
                     ),
                     courses: coursesRef.current.filter(
-                      (_, i) => courseSelection[i]
+                      (_, i) => courseSelection[i],
                     ),
                     futureCourses: coursesRef.current.filter(
-                      (_, i) => futureCourseSelection[i]
+                      (_, i) => futureCourseSelection[i],
                     ),
                     languages: languagesRef.current.filter(
-                      (_, i) => languageSelection[i]
+                      (_, i) => languageSelection[i],
                     ),
-										programmingLanguages: programmingLanguagesRef.current.filter(
-											(_, i) => programmingLanguageSelection[i]
-										),
-										hobbies: hobbiesRef.current.filter(
-											(_, i) => hobbySelection[i]
-										),
+                    programmingLanguages:
+                      programmingLanguagesRef.current.filter(
+                        (_, i) => programmingLanguageSelection[i],
+                      ),
+                    hobbies: hobbiesRef.current.filter(
+                      (_, i) => hobbySelection[i],
+                    ),
                     preferredLanguages: languagesRef.current.filter(
-                      (_, i) => preferredLanguageSelection[i]
+                      (_, i) => preferredLanguageSelection[i],
                     ),
                     preferredPronouns: pronounsRef.current.filter(
-                      (_, i) => preferredPronounSelection[i]
+                      (_, i) => preferredPronounSelection[i],
                     ),
                     preferredAgeRange: preferredAgeRange,
                     preferredWamRange: preferredWamRange,
@@ -677,7 +676,7 @@ const Profile = () => {
               value={preferredAgeRange[0]}
               onSlide={(newValue) =>
                 setPreferredAgeRange((prev) =>
-                  prev.map((_, i) => (i === 0 ? newValue : _))
+                  prev.map((_, i) => (i === 0 ? newValue : _)),
                 )
               }
               label={
@@ -695,7 +694,7 @@ const Profile = () => {
               value={preferredAgeRange[1]}
               onSlide={(newValue) =>
                 setPreferredAgeRange((prev) =>
-                  prev.map((_, i) => (i === 1 ? newValue : _))
+                  prev.map((_, i) => (i === 1 ? newValue : _)),
                 )
               }
               label={
@@ -721,7 +720,7 @@ const Profile = () => {
               value={wamsRef.current.indexOf(preferredWamRange[0])}
               onSlide={(newValue) =>
                 setPreferredWamRange((prev) =>
-                  prev.map((_, i) => (i === 0 ? wamsRef.current[newValue] : _))
+                  prev.map((_, i) => (i === 0 ? wamsRef.current[newValue] : _)),
                 )
               }
               label={preferredWamRange[0]}
@@ -737,7 +736,7 @@ const Profile = () => {
               value={wamsRef.current.indexOf(preferredWamRange[1])}
               onSlide={(newValue) =>
                 setPreferredWamRange((prev) =>
-                  prev.map((_, i) => (i === 1 ? wamsRef.current[newValue] : _))
+                  prev.map((_, i) => (i === 1 ? wamsRef.current[newValue] : _)),
                 )
               }
               label={preferredWamRange[1]}

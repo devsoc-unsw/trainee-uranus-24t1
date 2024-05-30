@@ -35,6 +35,14 @@ const assertValidHelper = {
     }
   },
 
+  programmingLanguage: (input: string) => {
+    if (input == undefined || input.length === 0 || input.length > 30) {
+      throw new BadRequestError({
+        message: "Invalid programming language",
+      });
+    }
+  },
+
   default: (input: string) => {
     if (!/^[\w ,.'-/]{2,}$/.test(input)) {
       throw new BadRequestError({
@@ -97,7 +105,7 @@ export const assertValid = {
   },
 
   programmingLanguages: (input: string[]) => {
-    input.forEach(assertValidHelper.default);
+    input.forEach(assertValidHelper.programmingLanguage);
   },
 
   pronouns: (input: string[]) => {

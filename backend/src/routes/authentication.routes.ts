@@ -14,7 +14,7 @@ authenticationRouter.use(express.json());
 
 authenticationRouter.post("/register", async (req: Request, res: Response) => {
   let { firstName, lastName, email, password } = req.body;
-	email = (email as string).toLocaleLowerCase()
+  email = (email as string).toLocaleLowerCase();
   assertValid.firstName(firstName);
   assertValid.lastName(lastName);
   assertValid.email(email);
@@ -43,7 +43,7 @@ authenticationRouter.post("/register", async (req: Request, res: Response) => {
 
 authenticationRouter.post("/login", async (req: Request, res: Response) => {
   let { email, password } = req.body;
-	email = (email as string).toLocaleLowerCase()
+  email = (email as string).toLocaleLowerCase();
   const user: User = (await collections.users?.findOne({
     email,
   })) as unknown as User;

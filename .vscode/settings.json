@@ -1,8 +1,8 @@
 {
-	"prettier.tabWidth": 2,
-	"editor.detectIndentation": false,
-	"editor.insertSpaces": false,
-	"editor.tabSize": 2,
-	"prettier.useTabs": false,
-	"prettier.withNodeModules": true,
+  "prettier.tabWidth": 2,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": false,
+  "editor.tabSize": 2,
+  "prettier.useTabs": false,
+  "prettier.withNodeModules": true
 }

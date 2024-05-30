@@ -4,7 +4,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../contexts/AppContext";
 import ErrorModal from "../../components/ErrorModal";
-import {  column, row } from "../../resources";
+import { column, row } from "../../resources";
 import BackButton from "../../components/BackButton";
 import {
   Message,
@@ -58,9 +58,9 @@ const MessageUser = () => {
             .filter(
               (message) =>
                 message.members.includes(user._id) &&
-                message.members.includes(self._id)
+                message.members.includes(self._id),
             )
-            .sort(messagesByMongodbTimestamp)
+            .sort(messagesByMongodbTimestamp),
         );
         if (!isMounted) {
           socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
@@ -85,7 +85,7 @@ const MessageUser = () => {
         }
       } catch {
         setErrorMessage(
-          "There was a problem retrieving your data. Please try again."
+          "There was a problem retrieving your data. Please try again.",
         );
       } finally {
         setLoading(false);
@@ -142,7 +142,7 @@ const MessageUser = () => {
               .reverse()
               .find(
                 (m) =>
-                  m.sender !== selfIdRef.current && m.type === MessageType.Seen
+                  m.sender !== selfIdRef.current && m.type === MessageType.Seen,
               ) === message
           ) {
             return (
@@ -201,15 +201,15 @@ const MessageUser = () => {
         </LoadContainer>
         <LoadContainer loading={loading} className="aspect-square h-full">
           <button type="submit" className="aspect-square h-full">
-						<PiPaperPlaneRightFill
-							className="
+            <PiPaperPlaneRightFill
+              className="
 							rounded-full
 							bg-secondary-bg-400
 							p-2
 							text-white
 							w-full
 							h-full"
-						/>
+            />
           </button>
         </LoadContainer>
       </form>

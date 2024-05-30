@@ -23,13 +23,13 @@ const RegisterFutureCoursesPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [futureCourseSelection, setFutureCourseSelection] = useState(
-    [] as boolean[]
+    [] as boolean[],
   );
 
   const futureCoursesRef = useRef([] as string[]);
   const toggleFutureCourseSelection = (index: number) =>
     setFutureCourseSelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -41,16 +41,16 @@ const RegisterFutureCoursesPage = () => {
         const selfData = await getSelfData(token);
         const courses = selfData.courses || [];
         futureCoursesRef.current = staticData.courses.filter(
-          (course: string) => !courses.includes(course)
+          (course: string) => !courses.includes(course),
         );
         setFutureCourseSelection(
           futureCoursesRef.current.map((course) =>
-            selfData.futureCourses?.includes(course)
-          )
+            selfData.futureCourses?.includes(course),
+          ),
         );
       } catch {
         setErrorMessage(
-          "There was a problem retrieving your data. Please try again."
+          "There was a problem retrieving your data. Please try again.",
         );
       } finally {
         setLoading(false);
@@ -119,7 +119,7 @@ const RegisterFutureCoursesPage = () => {
 
               await putSelfData(token, {
                 futureCourses: futureCoursesRef.current.filter(
-                  (_, i) => futureCourseSelection[i]
+                  (_, i) => futureCourseSelection[i],
                 ),
               });
               navigate("/register-hobbies");

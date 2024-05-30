@@ -7,7 +7,9 @@ import { collections } from "./database.service";
 import { ObjectId } from "mongodb";
 import User from "../models/user";
 
-export const socket = (server: Server<typeof IncomingMessage, typeof ServerResponse>) => {
+export const socket = (
+  server: Server<typeof IncomingMessage, typeof ServerResponse>,
+) => {
   const io = new SocketIOServer(server, {
     path: "/socket.io",
     cors: {
@@ -16,7 +18,7 @@ export const socket = (server: Server<typeof IncomingMessage, typeof ServerRespo
     },
   });
   const sendTo = new Map<string, Set<(arg0: Message) => void>>();
-  
+
   io.on("connection", async (socket) => {
     socket.on("token", async (token) => {
       const decoded = jwt.verify(token, SECRET_KEY);
@@ -30,12 +32,13 @@ export const socket = (server: Server<typeof IncomingMessage, typeof ServerRespo
         return;
       }
 
-      const send = (message: Message) => socket.emit("chat message out", message);
+      const send = (message: Message) =>
+        socket.emit("chat message out", message);
       if (!sendTo.has(_id)) {
         sendTo.set(_id, new Set());
       }
       sendTo.get(_id)?.add(send);
-      
+
       socket.on("chat message in", async (data) => {
         const packet: {
           sender: string;
@@ -48,7 +51,7 @@ export const socket = (server: Server<typeof IncomingMessage, typeof ServerRespo
           [new ObjectId(packet.sender), new ObjectId(packet.receiver)],
           new ObjectId(packet.sender),
           packet.type,
-          packet.content
+          packet.content,
         );
         const result = await collections.messages?.insertOne(message);
         if (!result) {
@@ -57,15 +60,18 @@ export const socket = (server: Server<typeof IncomingMessage, typeof ServerRespo
         }
         message._id = result.insertedId;
 
-        sendTo.get(packet.sender)?.forEach(send => send(message));
-        if (sendTo.has(packet.receiver) && (sendTo.get(packet.receiver)?.size ?? 0 > 0)) {
-          sendTo.get(packet.receiver)?.forEach(send => send(message));
+        sendTo.get(packet.sender)?.forEach((send) => send(message));
+        if (
+          sendTo.has(packet.receiver) &&
+          (sendTo.get(packet.receiver)?.size ?? 0 > 0)
+        ) {
+          sendTo.get(packet.receiver)?.forEach((send) => send(message));
         }
       });
 
       socket.on("disconnect", () => {
         sendTo.delete(_id);
-      }); 
+      });
     });
   });
 };
