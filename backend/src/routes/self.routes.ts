@@ -162,7 +162,9 @@ selfRouter.get("/matches", async (req: Request, res: Response) => {
     users.map((user) => (wamInRange(user.wam, self.preferredWamRange) ? 1 : 0)),
     users.map((user) => (ageInRange(self.age, user.preferredAgeRange) ? 1 : 0)),
     users.map((user) => (ageInRange(user.age, self.preferredAgeRange) ? 1 : 0)),
-		users.map((user) => Math.abs(user.academicSocialRatio - self.academicSocialRatio)),
+    users.map((user) =>
+      Math.abs(user.academicSocialRatio - self.academicSocialRatio),
+    ),
   ].map(standardized);
   const secondaryVectors = [
     sets.map((user) =>
@@ -179,8 +181,9 @@ selfRouter.get("/matches", async (req: Request, res: Response) => {
     vectorNorm(vectors.map((v) => v[i])),
   );
 
-  const order = Array.from(users.keys()).sort((i, j) => 
-    rank[j] - rank[i] || secondaryRank[j] - secondaryRank[i]);
+  const order = Array.from(users.keys()).sort(
+    (i, j) => rank[j] - rank[i] || secondaryRank[j] - secondaryRank[i],
+  );
   const orderedUsers = order.map((i) => users[i]);
 
   return res.status(200).json(orderedUsers?.map(filterPublic));

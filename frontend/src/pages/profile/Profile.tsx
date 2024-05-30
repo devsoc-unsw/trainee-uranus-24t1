@@ -595,9 +595,11 @@ const Profile = () => {
             </button>
           </LoadContainer>
         </div>
+
+        <div className="h-[150px] w-[1px]" />
       </div>
 
-      <div className="w-full">
+      <div className="w-full fixed bottom-0">
         <NavBar navigate={navigate} index={1} />
       </div>
 

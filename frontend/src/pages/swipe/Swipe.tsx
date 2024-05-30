@@ -47,7 +47,7 @@ const Swipe = () => {
 
   return (
     <div className="relative flex flex-col h-svh w-svw">
-      <div className="content-center grow overflow-auto w-full">
+      <div className="content-center w-full overflow-auto w-full">
         <div
           className="mt-5 mb-2 w-full flex justify-center items-center"
           ref={pageTopRef}
@@ -82,9 +82,9 @@ const Swipe = () => {
             />
           ))
         )}
+        <div className="h-[150px] w-[1px]" />
       </div>
-
-      <div className="w-full">
+      <div className="w-full fixed bottom-0">
         <NavBar navigate={navigate} index={0} />
       </div>
 
