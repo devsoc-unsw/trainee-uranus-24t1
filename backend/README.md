@@ -135,7 +135,6 @@ Returns: {
 
   preferredCourses: string[]
   preferredLanguages: string[]
-  preferredProgrammingLanguages: string[]
   preferredPronouns: string[]
   preferredAgeRange: [number, number]
   preferredWamRange: [string, string]
@@ -167,7 +166,6 @@ Body: {
 
   preferredCourses: string[]
   preferredLanguages: string[]
-  preferredProgrammingLanguages: string[]
   preferredPronouns: string[]
   preferredAgeRange: [number, number]
   preferredWamRange: [string, string]

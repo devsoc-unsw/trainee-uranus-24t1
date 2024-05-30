@@ -124,10 +124,6 @@ export const assertValid = {
     input.forEach(assertValidHelper.default);
   },
 
-  preferredProgrammingLanguages: (input: string[]) => {
-    input.forEach(assertValidHelper.default);
-  },
-
   preferredPronouns: (input: string[]) => {
     input.forEach(assertValidHelper.default);
   },
@@ -159,9 +155,6 @@ export const assertValid = {
 
     assertValid.preferredCourses(user.preferredCourses);
     assertValid.preferredLanguages(user.preferredLanguages);
-    assertValid.preferredProgrammingLanguages(
-      user.preferredProgrammingLanguages,
-    );
     assertValid.preferredPronouns(user.preferredPronouns);
     assertValid.preferredAgeRange(user.preferredAgeRange);
     assertValid.preferredWamRange(user.preferredWamRange);
@@ -191,10 +184,6 @@ export const assertValid = {
       assertValid.preferredCourses(user.preferredCourses);
     if (user.preferredLanguages != undefined)
       assertValid.preferredLanguages(user.preferredLanguages);
-    if (user.preferredProgrammingLanguages != undefined)
-      assertValid.preferredProgrammingLanguages(
-        user.preferredProgrammingLanguages,
-      );
     if (user.preferredPronouns != undefined)
       assertValid.preferredPronouns(user.preferredPronouns);
     if (user.preferredAgeRange != undefined)
