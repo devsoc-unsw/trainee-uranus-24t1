@@ -148,7 +148,6 @@ selfRouter.get("/matches", async (req: Request, res: Response) => {
     preferredLanguages: new Set(user.preferredLanguages),
     preferredPronouns: new Set(user.preferredPronouns),
   }));
-	// asr
 
   const vectors = [
     sets.map((user) => similarity(self.preferredCourses, user.futureCourses)),
@@ -163,6 +162,7 @@ selfRouter.get("/matches", async (req: Request, res: Response) => {
     users.map((user) => (wamInRange(user.wam, self.preferredWamRange) ? 1 : 0)),
     users.map((user) => (ageInRange(self.age, user.preferredAgeRange) ? 1 : 0)),
     users.map((user) => (ageInRange(user.age, self.preferredAgeRange) ? 1 : 0)),
+		users.map((user) => Math.abs(user.academicSocialRatio - self.academicSocialRatio)),
   ].map(standardized);
   const secondaryVectors = [
     sets.map((user) =>
