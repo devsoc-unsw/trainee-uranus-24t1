@@ -15,23 +15,24 @@ const Dropdown: React.FC<DropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left flex items-center mt-[12px]">
       <button
         className="
           rounded-full
-          my-[10px]
           mx-2
           bg-secondary-bg-500
           text-primary-50
-          w-[25px]
-          h-[25px]
+          w-6
+          h-6
           flex
           items-center
           justify-center
+					self-start
         "
         onClick={() => setIsOpen(!isOpen)}
       >
-        +
+        {/* There's a weird offset without this */}
+        <div className="mt-[-10%]">+</div>
       </button>
 
       {isOpen && (

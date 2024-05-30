@@ -20,7 +20,10 @@ const NavBar: FC<NavBarProps> = ({ navigate, index }) => {
   };
 
   const dynamicStyleFactory = (index: number) => {
-    return index === activeIndex ? "text-primary-500" : "text-white";
+    return (
+      (index === activeIndex ? "text-primary-500" : "text-white") +
+      " w-[30px] h-[30px]"
+    );
   };
 
   return (
@@ -31,22 +34,27 @@ const NavBar: FC<NavBarProps> = ({ navigate, index }) => {
       justify-around
       bg-secondary-bg-200
       w-full
-      p-3
-      [&>*]:w-[30px]
-      [&>*]:h-[30px]"
+      p-3"
     >
-      <FaHouse
+      <button
         onClick={handleClickFactory(0)}
-        className={dynamicStyleFactory(0)}
-      />
-      <FaUser
+        className="flex-1 h-full flex justify-center"
+      >
+        <FaHouse className={dynamicStyleFactory(0)} />
+      </button>
+      <button
         onClick={handleClickFactory(1)}
-        className={dynamicStyleFactory(1)}
-      />
-      <FaMessage
+        className="flex-1 h-full flex justify-center"
+      >
+        <FaUser className={dynamicStyleFactory(1)} />
+      </button>
+
+      <button
         onClick={handleClickFactory(2)}
-        className={dynamicStyleFactory(2)}
-      />
+        className="flex-1 h-full flex justify-center"
+      >
+        <FaMessage className={dynamicStyleFactory(2)} />
+      </button>
     </div>
   );
 };

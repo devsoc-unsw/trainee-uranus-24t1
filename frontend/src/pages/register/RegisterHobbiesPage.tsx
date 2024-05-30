@@ -12,6 +12,7 @@ import {
 } from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
+import Heading from "../../components/Heading";
 import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterHobbies = () => {
@@ -26,7 +27,7 @@ const RegisterHobbies = () => {
   const hobbiesRef = useRef([] as string[]);
   const toggleHobbySelection = (index: number) =>
     setHobbySelection((prevState) =>
-      prevState.map((value, i) => (i === index ? !value : value))
+      prevState.map((value, i) => (i === index ? !value : value)),
     );
 
   useEffect(() => {
@@ -38,11 +39,11 @@ const RegisterHobbies = () => {
         hobbiesRef.current = staticData.hobbies;
         const selfData = await getSelfData(token);
         setHobbySelection(
-          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby))
+          hobbiesRef.current.map((hobby) => selfData.hobbies?.includes(hobby)),
         );
       } catch {
         setErrorMessage(
-          "There was a problem retrieving your data. Please try again."
+          "There was a problem retrieving your data. Please try again.",
         );
       } finally {
         setLoading(false);
@@ -70,10 +71,12 @@ const RegisterHobbies = () => {
         <ProgressBar progress={60} />
       </div>
 
-      <div className="text-[2.5rem] font-extrabold text-primary-500">
-        Hobbies?
-      </div>
-      <div className="pb-3">What do you like doing in your free time?</div>
+      <div className="h-[30px]" />
+
+      <Heading>Hobbies?</Heading>
+      <div>What do you like doing in your free time?</div>
+
+      <div className="h-[60px]" />
 
       <input
         className={`${searchBar} mb-4`}

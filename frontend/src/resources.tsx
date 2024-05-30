@@ -29,7 +29,12 @@ export const searchBar = `
   w-full
   text-center
   p-2
+	transition-all
+	duration-500
+	ease-[cubic-bezier(0.0,0.95,0.795,1.0)]
   bg-primary-50
+	focus:outline-none focus:ring-2 ring-offset-2
+	focus:ring-primary-500
 `;
 
 export const cardStyle = `
