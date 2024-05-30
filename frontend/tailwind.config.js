@@ -1,10 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require("tailwindcss/colors");
+import colors from "tailwindcss/colors";
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      animation: {
+        "ping-slow": "ping 2s linear infinite",
+      },
       colors: {
         primary: {
           50: "#eee8ed",

@@ -20,7 +20,6 @@ export default class User {
 
     public preferredCourses: string[],
     public preferredLanguages: string[],
-    public preferredProgrammingLanguages: string[],
     public preferredPronouns: string[],
     public preferredAgeRange: [number, number],
     public preferredWamRange: [string, string],

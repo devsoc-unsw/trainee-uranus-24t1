@@ -22,10 +22,14 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({
       <input
         className="
           bg-secondary-bg-500
+					rounded-full
           appearance-none
           cursor-pointer
           h-2
           my-3
+          touch-none
+          bg-gray-300
+          rounded-full
         "
         type="range"
         min={min}
@@ -41,7 +45,7 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({
         relative
         mx-2
         mb-3
-      "
+				"
       >
         <div
           className="
@@ -52,6 +56,8 @@ const LabelledSlider: React.FC<LabelledSliderProps> = ({
             translate-x-[-50%]
             translate-y-[-50%]
             text-secondary-bg-500
+            font-bold
+            text-sm
           "
           style={{ left: `${((value - min) / (max - min)) * 100}%` }}
         >
