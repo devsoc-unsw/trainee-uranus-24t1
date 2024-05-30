@@ -71,7 +71,6 @@ const Profile = () => {
   const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
   const coursesRef = useRef([] as string[]);
-  const hobbiesRef = useRef([] as string[]);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -97,7 +96,6 @@ const Profile = () => {
   );
   const [preferredAgeRange, setPreferredAgeRange] = useState([] as number[]);
   const [preferredWamRange, setPreferredWamRange] = useState([] as string[]);
-  const [hobbySelection, setHobbySelection] = useState([] as boolean[]);
 
   const toggleCourseSelection = (index: number) =>
     setCourseSelection((prevState) =>
@@ -561,13 +559,6 @@ const Profile = () => {
                     hobbies: hobbiesRef.current.filter(
                       (_, i) => hobbySelection[i]
                     ),
-                    programmingLanguages:
-                      programmingLanguagesRef.current.filter(
-                        (_, i) => programmingLanguageSelection[i]
-                      ),
-                    hobbies: hobbiesRef.current.filter(
-                      (_, i) => hobbySelection[i]
-                    ),
                     preferredLanguages: languagesRef.current.filter(
                       (_, i) => preferredLanguageSelection[i]
                     ),
@@ -576,9 +567,6 @@ const Profile = () => {
                     ),
                     preferredAgeRange: preferredAgeRange,
                     preferredWamRange: preferredWamRange,
-                    hobbies: hobbiesRef.current.filter(
-                      (_, i) => hobbySelection[i]
-                    ),
                   });
                 } catch (e: unknown) {
                   if (e instanceof AxiosError) {
