@@ -4,8 +4,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../contexts/AppContext";
 import ErrorModal from "../../components/ErrorModal";
-import { /*center,*/ column, row } from "../../resources";
-// import { Spinner } from "react-bootstrap";
+import {  column, row } from "../../resources";
 import BackButton from "../../components/BackButton";
 import {
   Message,
@@ -201,18 +200,16 @@ const MessageUser = () => {
           />
         </LoadContainer>
         <LoadContainer loading={loading} className="aspect-square h-full">
-          <button type="submit">
-            <div className="aspect-square h-full">
-              <PiPaperPlaneRightFill
-                className="
-                rounded-full
-                bg-secondary-bg-400
-                p-2
-                text-white
-                w-full
-                h-full"
-              />
-            </div>
+          <button type="submit" className="aspect-square h-full">
+						<PiPaperPlaneRightFill
+							className="
+							rounded-full
+							bg-secondary-bg-400
+							p-2
+							text-white
+							w-full
+							h-full"
+						/>
           </button>
         </LoadContainer>
       </form>
