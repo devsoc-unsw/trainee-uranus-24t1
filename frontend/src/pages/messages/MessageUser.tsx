@@ -9,6 +9,7 @@ import BackButton from "../../components/BackButton";
 import {
   Message,
   MessageType,
+  UserInfo,
   getSelfData,
   getSelfMessages,
   getUsersFromId,
@@ -17,12 +18,19 @@ import { messagesByMongodbTimestamp } from "../../sorting";
 import { Socket, io } from "socket.io-client";
 import { LOCAL_HOST, SOCKET_PATH } from "../../utils/constants";
 import LoadContainer from "../../components/LoadContainer";
+import ConfettiExplosion from "react-confetti-explosion";
+import InputModal from "../../components/InputModal";
+import UserCard from "../../components/UserCard";
 
 const MessageUser = () => {
   const navigate = useNavigate();
   const { user: userId } = useParams<{ user: string }>();
   const { token } = useContext(AppContext);
 
+  const [userInfo, setUserInfo] = useState(null as null | UserInfo);
+  const [userInfoModalShow, setInfoUserModalShow] = useState(false);
+
+  const [confetti, setConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [inputContent, setInputContent] = useState("");
@@ -42,11 +50,11 @@ const MessageUser = () => {
     (async () => {
       try {
         setLoading(true);
-
         const users = await getUsersFromId(token, [userId]);
         const user = users[0];
         setName(`${user.firstName} ${user.lastName}`);
         setAvatarUrl(user.avatarUrl);
+        setUserInfo(user);
 
         const self = await getSelfData(token);
         selfIdRef.current = self._id;
@@ -106,7 +114,20 @@ const MessageUser = () => {
       messageContainerEndRef.current?.scrollIntoView({
         behavior: "smooth",
       });
+
+    const lastTextMessage = messages
+      .slice()
+      .reverse()
+      .find((m) => m.type === MessageType.Default);
+    if (lastTextMessage?.content === "Hi!") {
+      setConfetti(true);
+    }
   }, [messages]);
+
+  const lastSeenMessage = messages
+    .slice()
+    .reverse()
+    .find((m) => m.sender !== selfIdRef.current && m.type === MessageType.Seen);
 
   return (
     <div className={`${column} relative w-svw h-svh p-4 overflow-clip`}>
@@ -116,17 +137,35 @@ const MessageUser = () => {
           loading={loading}
           className="w-[55px] h-[55px] rounded-full object-cover overflow-clip"
         >
+          <div className="w-0">
+            {confetti && (
+              <ConfettiExplosion
+                particleCount={250}
+                force={0.8}
+                duration={2000}
+                width={1600}
+                onComplete={() => setConfetti(false)}
+              />
+            )}
+          </div>
           <img
             src={avatarUrl}
             className="w-[55px] h-[55px] rounded-full object-cover"
           />
         </LoadContainer>
         <div className="grow">
-          <LoadContainer loading={loading} className="h-[25px] w-[200px]">
+          <LoadContainer loading={loading} className="h-[25px] w-[100px]">
             <div className="font-bold">{name}</div>
           </LoadContainer>
         </div>
-        <button onClick={() => setErrorMessage("🛠️")}>
+
+        <button
+          onClick={async () => {
+            // setErrorMessage("🛠️");
+            // setConfetti(true);
+            setInfoUserModalShow(true);
+          }}
+        >
           <IoMdInformationCircleOutline className="text-4xl text-secondary-bg-400" />
         </button>
       </div>
@@ -136,20 +175,12 @@ const MessageUser = () => {
         ref={messageContainerRef}
       >
         {messages.map((message) => {
-          if (
-            messages
-              .slice()
-              .reverse()
-              .find(
-                (m) =>
-                  m.sender !== selfIdRef.current && m.type === MessageType.Seen,
-              ) === message
-          ) {
+          if (lastSeenMessage === message) {
             return (
               <img
                 key={message._id}
                 src={avatarUrl}
-                className="w-[20px] h-[20px] rounded-full object-cover my-3"
+                className="w-[20px] h-[20px] rounded-full object-cover my-1"
               />
             );
           }
@@ -177,7 +208,7 @@ const MessageUser = () => {
         className={`${row} items-center h-[40px] gap-2 mt-2`}
         onSubmit={async (e) => {
           e.preventDefault();
-          if (inputContent.length === 0) {
+          if (inputContent.trim().length === 0) {
             return;
           }
 
@@ -185,7 +216,7 @@ const MessageUser = () => {
             sender: selfIdRef.current,
             receiver: userId,
             type: MessageType.Default,
-            content: inputContent,
+            content: inputContent.trim(),
           });
           setInputContent("");
         }}
@@ -203,16 +234,37 @@ const MessageUser = () => {
           <button type="submit" className="aspect-square h-full">
             <PiPaperPlaneRightFill
               className="
-							rounded-full
-							bg-secondary-bg-400
-							p-2
-							text-white
-							w-full
-							h-full"
+              rounded-full
+              bg-secondary-bg-400
+              p-2
+              text-white
+              w-full
+              h-full"
             />
           </button>
         </LoadContainer>
       </form>
+
+      <InputModal
+        title="Profile"
+        show={userInfoModalShow}
+        onHide={() => setInfoUserModalShow(false)}
+      >
+        <UserCard
+          avatarUrl={userInfo?.avatarUrl}
+          name={name}
+          currentCourses={userInfo?.courses}
+          untakenCourses={userInfo?.futureCourses}
+          languages={userInfo?.languages}
+          wam={userInfo?.wam}
+          academicSocialRatio={userInfo?.academicSocialRatio}
+          age={userInfo?.age}
+          hobbies={userInfo?.hobbies}
+          programmingLanguages={userInfo?.programmingLanguages}
+          pronouns={userInfo?.pronouns}
+          loading={loading}
+        />
+      </InputModal>
 
       <ErrorModal
         errorMessage={errorMessage}
