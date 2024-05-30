@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 export enum MessageType {
   Default,
-  Seen
+  Seen,
 }
 
 export default class Message {

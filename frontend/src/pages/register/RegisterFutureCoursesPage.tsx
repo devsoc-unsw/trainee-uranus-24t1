@@ -1,7 +1,6 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { center, column, bigButton, searchBar } from "../../resources";
-import { Spinner } from "react-bootstrap";
 import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
 import ErrorModal from "../../components/ErrorModal";
@@ -13,6 +12,8 @@ import {
 } from "../../backendCommunication";
 import { AxiosError } from "axios";
 import ListSearch from "../../components/ListSearch";
+import Heading from "../../components/Heading";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
 
 const RegisterFutureCoursesPage = () => {
   const navigate = useNavigate();
@@ -48,8 +49,9 @@ const RegisterFutureCoursesPage = () => {
           ),
         );
       } catch {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again.",
+        );
       } finally {
         setLoading(false);
       }
@@ -57,42 +59,34 @@ const RegisterFutureCoursesPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
-    <div className={`${column} relative w-svw h-svh p-4`}>
+    <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
           <BackButton onBack={() => navigate("/register-courses")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
+          <img className="w-[100px]" src={UNSWipeCat} />
         </div>
       </div>
 
-      <div className="flex justify-end">2 of 5</div>
+      <div className="flex justify-end opacity-60 text-sm pb-[10px]">
+        2 of 5
+      </div>
 
-      <div className="h-[10px]" />
-
-      <div className={center}>
+      <div className={`${center} pb-[20px]`}>
         <ProgressBar progress={40} />
       </div>
 
       <div className="h-[30px]" />
 
-      <div className="text-[2.5rem] font-bold">Future Courses?</div>
+      <Heading>Future Courses?</Heading>
       <div>Select all the courses you are doing in the future</div>
 
       <div className="h-[60px]" />
 
       <input
-        className={searchBar}
+        className={`${searchBar} mb-4`}
         onChange={(e) => {
           e.preventDefault();
           setSearchInput(e.target.value);
@@ -101,13 +95,12 @@ const RegisterFutureCoursesPage = () => {
         type="input"
       />
 
-      <div className="h-[90px]" />
-
       <ListSearch
         contents={futureCoursesRef.current}
         selected={futureCourseSelection}
         searchInput={searchInput}
         onSelect={(i) => toggleFutureCourseSelection(i)}
+        loading={loading}
       />
 
       <div className={`${center}`}>

@@ -12,7 +12,6 @@ const ListView: React.FC<ListViewProps> = ({
   selected,
   onSelect,
 }) => {
-  
   return (
     <div className={`${row} flex-wrap`}>
       {contents.map((content, index) => {
@@ -20,7 +19,7 @@ const ListView: React.FC<ListViewProps> = ({
           return undefined;
         }
         return (
-          <div className="relative inline-block">
+          <div className="relative inline-block" key={index}>
             <div className={cardStyle}>{content}</div>
             <button
               className="
@@ -31,15 +30,16 @@ const ListView: React.FC<ListViewProps> = ({
                 text-primary-50
                 text-[1rem]
                 rounded-full
-                w-[20px]
-                h-[20px]
+                w-5
+                h-5
                 flex
                 items-center
                 justify-center
               "
               onClick={() => onSelect(index)}
             >
-              -
+              {/* There's a weird offset without this */}
+              <div className="mt-[-10%]">-</div>
             </button>
           </div>
         );

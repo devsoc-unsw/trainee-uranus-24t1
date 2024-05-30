@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import { getSelfData } from "../backendCommunication";
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -25,6 +26,19 @@ const AppProvider = ({ children }: AppProviderProps) => {
       : localStorage.removeItem("token");
     newToken ? setToken(newToken) : setToken(null);
   };
+
+  useEffect(() => {
+    const checkValidToken = async () => {
+      if (token) {
+        try {
+          await getSelfData(token);
+        } catch {
+          updateToken(null);
+        }
+      }
+    };
+    checkValidToken();
+  }, [token]);
 
   return (
     <AppContext.Provider value={{ token, updateToken }}>

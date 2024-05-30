@@ -1,3 +1,4 @@
+// export const LOCAL_HOST = "http://localhost:8008/";
 export const LOCAL_HOST = "https://backend-3y9ja.ondigitalocean.app/";
 
 export const AUTH_PATH = "authentication/";

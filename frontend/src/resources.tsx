@@ -13,12 +13,28 @@ export const bigButton = `
   text-2xl
 `;
 
+export const bigButtonEmphasised = `
+  my-4
+  px-5
+  py-2
+  rounded-md
+  font-extrabold
+  text-2xl
+  bg-primary-500
+  text-primary-bg-500
+`;
+
 export const searchBar = `
   rounded-full
   w-full
   text-center
   p-2
+	transition-all
+	duration-500
+	ease-[cubic-bezier(0.0,0.95,0.795,1.0)]
   bg-primary-50
+	focus:outline-none focus:ring-2 ring-offset-2
+	focus:ring-primary-500
 `;
 
 export const cardStyle = `

@@ -8,9 +8,8 @@ import {
   getSelfMatches,
   startConversation,
 } from "../../backendCommunication";
-import { Spinner } from "react-bootstrap";
-import { center } from "../../resources";
 import ErrorModal from "../../components/ErrorModal";
+import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 
 const Swipe = () => {
   const navigate = useNavigate();
@@ -27,8 +26,9 @@ const Swipe = () => {
         setLoading(true);
         setMatches(await getSelfMatches(token));
       } catch {
-        localStorage.clear();
-        location.reload();
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again.",
+        );
       } finally {
         setLoading(false);
       }
@@ -36,29 +36,34 @@ const Swipe = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
     <div className="relative flex flex-col h-svh w-svw">
       <div className="content-center grow overflow-auto w-full">
-        {matches.map((match) => (
-          <UserCard
-            avatarUrl={match.avatarUrl ?? ""}
-            currentCourses={match.courses ?? []}
-            untakenCourses={match.futureCourses ?? []}
-            languages={match.languages ?? []}
-            onMatch={async () => {
-              await startConversation(token, match._id);
-              navigate(`/messages/${match._id}`);
-            }}
-          />
-        ))}
+        <div className="mt-5 mb-2 w-full flex justify-center items-center">
+          <img src={UNSWipeLogo} alt="UNSWipe Logo" />
+        </div>
+        {loading ? (
+          <UserCard loading={true} />
+        ) : (
+          matches.map((match) => (
+            <UserCard
+              key={match._id}
+              avatarUrl={match.avatarUrl ?? ""}
+              name={
+                match.firstName && match.lastName
+                  ? `${match.firstName} ${match.lastName}`
+                  : ""
+              }
+              currentCourses={match.courses ?? []}
+              untakenCourses={match.futureCourses ?? []}
+              languages={match.languages ?? []}
+              onMatch={async () => {
+                await startConversation(token, match._id);
+                navigate(`/messages/${match._id}`);
+              }}
+            />
+          ))
+        )}
       </div>
 
       <div className="w-full">

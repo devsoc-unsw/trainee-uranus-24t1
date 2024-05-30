@@ -4,14 +4,14 @@
 <CourseButton course='COMP1511' disabled={true}/>
 */
 }
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface CourseButtonProps {
-  course: string;
+  children: React.ReactNode;
   disabled: boolean;
 }
 
-const CourseButton: React.FC<CourseButtonProps> = ({ course, disabled }) => {
+const CourseButton: React.FC<CourseButtonProps> = ({ disabled, children }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
@@ -31,7 +31,7 @@ const CourseButton: React.FC<CourseButtonProps> = ({ course, disabled }) => {
       className={`rounded-full  transition-all duration-250  px-6 py-2  border-2 border-secondary-bg-500 outline-none ${dynamicStyle}`}
       onClick={!disabled ? handleClick : undefined}
     >
-      {course}
+      {children}
     </button>
   );
 };
