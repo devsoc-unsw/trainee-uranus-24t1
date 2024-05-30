@@ -144,6 +144,7 @@ const Profile = () => {
         pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         coursesRef.current = staticData.courses;
+        hobbiesRef.current = staticData.hobbies;
 
         const selfData = await getSelfData(token);
         setFirstName(selfData.firstName);
@@ -175,6 +176,14 @@ const Profile = () => {
         setHobbySelection(
           hobbiesRef.current.map((hobby) => selfData.hobbies.includes(hobby)),
         );
+        setProgrammingLanguageSelection(
+          programmingLanguagesRef.current.map((language) =>
+            selfData.programmingLanguages.includes(language),
+          ),
+        );
+        setHobbySelection(
+          hobbiesRef.current.map((hobby) => selfData.hobbies.includes(hobby)),
+        );
         setPreferredLanguageSelection(
           languagesRef.current.map((language) =>
             selfData.preferredLanguages.includes(language),
@@ -189,6 +198,9 @@ const Profile = () => {
           pronounsRef.current.map((pronoun) =>
             selfData.preferredPronouns.includes(pronoun),
           ),
+        );
+        setHobbySelection(
+          hobbiesRef.current.map((hobby) => selfData.hobbies.includes(hobby)),
         );
       } catch (e) {
         setErrorMessage(
@@ -399,6 +411,16 @@ const Profile = () => {
                 </LoadContainer>
 
                 <div className={spacerStyle} />
+                <div className={groupTitleStyle}>Hobbies</div>
+                <LoadContainer loading={loading} className="h-[45px] w-[350px]">
+                  <ListView
+                    contents={hobbiesRef.current}
+                    selected={hobbySelection}
+                    onSelect={toggleHobbySelection}
+                  />
+                </LoadContainer>
+
+                <div className={spacerStyle} />
                 <div className={`${row} justify-between w-full`}>
                   <PencilEntry
                     descriptor="Preferred Age Range"
@@ -504,6 +526,11 @@ const Profile = () => {
                   return;
                 }
 
+                if (!hobbySelection.some((selection) => selection)) {
+                  setErrorMessage("Please select at least one hobby");
+                  return;
+                }
+
                 try {
                   setUpdateLoading(true);
 
@@ -568,9 +595,11 @@ const Profile = () => {
             </button>
           </LoadContainer>
         </div>
+
+        <div className="h-[150px] w-[1px]" />
       </div>
 
-      <div className="w-full">
+      <div className="w-full fixed bottom-0">
         <NavBar navigate={navigate} index={1} />
       </div>
 
