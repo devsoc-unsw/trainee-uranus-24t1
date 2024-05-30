@@ -15,7 +15,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative inline-block text-left flex items-center">
+    <div className="relative inline-block text-left flex items-center mt-[12px]">
       <button
         className="
           rounded-full
@@ -27,6 +27,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           flex
           items-center
           justify-center
+					self-start
         "
         onClick={() => setIsOpen(!isOpen)}
       >
