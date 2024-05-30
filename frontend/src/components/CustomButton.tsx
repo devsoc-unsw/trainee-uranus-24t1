@@ -2,7 +2,7 @@ type CustomButtonProps = {
   children: React.ReactNode;
   disabled: boolean;
   type: "button" | "submit" | "reset";
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const CustomButton = ({
