@@ -66,9 +66,15 @@ const Swipe = () => {
                   ? `${match.firstName} ${match.lastName}`
                   : ""
               }
-              currentCourses={match.courses ?? []}
-              untakenCourses={match.futureCourses ?? []}
-              languages={match.languages ?? []}
+              currentCourses={match.courses}
+              untakenCourses={match.futureCourses}
+              languages={match.languages}
+              wam={match.wam}
+              academicSocialRatio={match.academicSocialRatio}
+              age={match.age}
+              pronouns={match.pronouns}
+              hobbies={match.hobbies}
+              programmingLanguages={match.programmingLanguages}
               onMatch={async () => {
                 await startConversation(token, match._id);
                 navigate(`/messages/${match._id}`);

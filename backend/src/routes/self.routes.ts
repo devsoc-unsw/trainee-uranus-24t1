@@ -148,6 +148,7 @@ selfRouter.get("/matches", async (req: Request, res: Response) => {
     preferredLanguages: new Set(user.preferredLanguages),
     preferredPronouns: new Set(user.preferredPronouns),
   }));
+	// asr
 
   const vectors = [
     sets.map((user) => similarity(self.preferredCourses, user.futureCourses)),
@@ -178,13 +179,8 @@ selfRouter.get("/matches", async (req: Request, res: Response) => {
     vectorNorm(vectors.map((v) => v[i])),
   );
 
-  const order = Array.from(users.keys()).sort((i, j) => {
-    if (rank[i] !== rank[j]) {
-      return rank[j] - rank[i];
-    }
-    return secondaryRank[j] - secondaryRank[i];
-  });
-
+  const order = Array.from(users.keys()).sort((i, j) => 
+    rank[j] - rank[i] || secondaryRank[j] - secondaryRank[i]);
   const orderedUsers = order.map((i) => users[i]);
 
   return res.status(200).json(orderedUsers?.map(filterPublic));
