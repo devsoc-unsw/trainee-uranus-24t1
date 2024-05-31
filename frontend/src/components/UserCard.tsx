@@ -1,6 +1,7 @@
 import { cardStyle, column, row } from "../resources";
 import CustomButton from "./CustomButton";
 import LoadContainer from "./LoadContainer";
+import frenchman from "../assets/frenchman.jpeg";
 
 interface UserCardProps {
   avatarUrl?: string;
@@ -94,7 +95,7 @@ const UserCard: React.FC<UserCardProps> = ({
             object-cover
             w-full
             "
-            src={avatarUrl || "/src/assets/frenchman.jpeg"}
+            src={avatarUrl || frenchman}
           />
         </LoadContainer>
 
