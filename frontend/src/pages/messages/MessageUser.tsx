@@ -46,7 +46,6 @@ const MessageUser = () => {
   const messageContainerEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
     (async () => {
       try {
         setLoading(true);
@@ -70,7 +69,6 @@ const MessageUser = () => {
             )
             .sort(messagesByMongodbTimestamp),
         );
-        if (!isMounted) {
           socketRef.current = io(`${LOCAL_HOST}`, { path: SOCKET_PATH });
           socketRef.current.emit("token", token);
           socketRef.current.on("chat message out", (message) => {
@@ -90,7 +88,6 @@ const MessageUser = () => {
             type: MessageType.Seen,
             content: "",
           });
-        }
       } catch {
         setErrorMessage(
           "There was a problem retrieving your data. Please try again.",
@@ -101,7 +98,6 @@ const MessageUser = () => {
     })();
 
     return () => {
-      isMounted = false;
       if (socketRef.current) {
         socketRef.current.close();
       }
