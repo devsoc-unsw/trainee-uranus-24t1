@@ -33,6 +33,7 @@ import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import LoadContainer from "../../components/LoadContainer";
 import { Spinner } from "react-bootstrap";
 import PasswordResetModal from "../../components/PasswordResetModal";
+import frenchman from "../../assets/frenchman.jpeg";
 
 const groupTitleStyle = `
   font-bold
@@ -281,7 +282,7 @@ const Profile = () => {
                 object-cover
               "
                 src={
-                  `${avatarUrl}?${imgRefresh}` || "/src/assets/frenchman.jpeg"
+                  `${avatarUrl}?${imgRefresh}` || frenchman
                 }
               />
             </button>
