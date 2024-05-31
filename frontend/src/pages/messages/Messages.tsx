@@ -86,14 +86,6 @@ const Messages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // if (loading) {
-  //   return (
-  //     <div className={`h-svh w-svw ${center}`}>
-  //       <Spinner />
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="relative flex flex-col h-svh w-svw">
       <div className={`${column} content-center grow h-full p-4 overflow-clip`}>
@@ -182,9 +174,11 @@ const Messages = () => {
             </div>
           </LoadContainer>
         </div>
+
+        <div className="h-[150px] w-[1px]" />
       </div>
 
-      <div className="w-full">
+      <div className="w-full fixed bottom-0">
         <NavBar navigate={navigate} index={2} />
       </div>
 
