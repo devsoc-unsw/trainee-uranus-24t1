@@ -40,7 +40,6 @@ const LoginPage = () => {
         password,
       });
       updateToken(response.data.token);
-      console.log(response.data.token);
     } catch {
       setErrorMessage("Invalid email or password.");
     } finally {

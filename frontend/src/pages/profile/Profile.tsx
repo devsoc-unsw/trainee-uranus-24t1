@@ -32,6 +32,7 @@ import { AxiosError } from "axios";
 import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 import LoadContainer from "../../components/LoadContainer";
 import { Spinner } from "react-bootstrap";
+import PasswordResetModal from "../../components/PasswordResetModal";
 
 const groupTitleStyle = `
   font-bold
@@ -53,6 +54,7 @@ const Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [nameInputModalShow, setNameInputModalShow] = useState(false);
+  const [passwordInputModalShow, setPasswordInputModalShow] = useState(false);
   const [ageInputModalShow, setAgeInputModalShow] = useState(false);
   const [pronounsModalInputShow, setPronounsModalInputShow] = useState(false);
   const [asrInputModalShow, setAsrInputModalShow] = useState(false);
@@ -291,6 +293,14 @@ const Profile = () => {
               descriptor="Name"
               text={`${firstName} ${lastName}`}
               onEdit={() => setNameInputModalShow(true)}
+              loading={loading}
+            />
+
+            <div className={subSpacerStyle} />
+            <PencilEntry
+              descriptor="Password"
+              text="*********"
+              onEdit={() => setPasswordInputModalShow(true)}
               loading={loading}
             />
 
@@ -623,6 +633,10 @@ const Profile = () => {
           />
         </div>
       </InputModal>
+      <PasswordResetModal
+        show={passwordInputModalShow}
+        onHide={() => setPasswordInputModalShow(false)}
+      />
       <InputModal
         title="Age"
         show={ageInputModalShow}
