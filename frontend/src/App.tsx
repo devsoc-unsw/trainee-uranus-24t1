@@ -13,6 +13,7 @@ import RegisterHobbies from "./pages/register/RegisterHobbiesPage";
 import RegisterPreferencesPage from "./pages/register/RegisterPreferencesPage";
 import RegisterInfoPage from "./pages/register/RegisterInfoPage";
 import MessageUser from "./pages/messages/MessageUser";
+import React from "react";
 
 const router = createBrowserRouter([
   {
@@ -69,9 +70,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AppProvider>
-      <RouterProvider router={router} />
-    </AppProvider>
+		// Strict mode is used for deployment disable this when dev'ing
+    <React.StrictMode> 
+			<AppProvider>
+				<RouterProvider router={router} />
+			</AppProvider>
+		</React.StrictMode>
   );
 }
 
