@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { column, inputStyle } from "../resources";
 import InputModalAction from "./InputModalAction";
 import { Alert } from "react-bootstrap";
