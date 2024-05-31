@@ -104,9 +104,9 @@ const Messages = () => {
           }}
         />
 
-        <div className="grow">
+        <div className="grow overflow-auto">
           <LoadContainer loading={loading} className="mt-4 w-full h-[75px]">
-            <div className={`${column} gap-2 mt-4 overflow-auto`}>
+            <div className={`${column} gap-2 mt-4 overflow-y-auto`}>
               {Object.keys(conversations)
                 .sort((a, b) =>
                   messagesByMongodbTimestamp(
@@ -170,12 +170,11 @@ const Messages = () => {
                       </div>
                     </button>
                   );
-                })}
+								})}
+							<div className="h-[150px] w-[1px]" />
             </div>
           </LoadContainer>
         </div>
-
-        <div className="h-[150px] w-[1px]" />
       </div>
 
       <div className="w-full fixed bottom-0">
