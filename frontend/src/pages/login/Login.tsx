@@ -2,7 +2,7 @@ import Input from "../../components/Input";
 import Heading from "../../components/Heading";
 import { Link, Navigate } from "react-router-dom";
 import CatMascot from "../../assets/UNSWipe-cat.png";
-import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
+import { UNSWipeLogo } from "../../components/Logo";
 import { FormEvent, useContext, useRef, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
 import { AUTH_PATH, LOCAL_HOST, LOGIN_PATH } from "../../utils/constants";
@@ -40,7 +40,6 @@ const LoginPage = () => {
         password,
       });
       updateToken(response.data.token);
-      console.log(response.data.token);
     } catch {
       setErrorMessage("Invalid email or password.");
     } finally {
@@ -52,7 +51,8 @@ const LoginPage = () => {
     <>
       <div className="flex flex-col h-svh w-svw items-center p-10">
         <div className="flex w-full mt-5 mb-20">
-          <img src={UNSWipeLogo} alt="UNSWipe Logo Design" />
+          {/* <img src={UNSWipeLogo} alt="UNSWipe Logo Design" /> */}
+          <UNSWipeLogo />
         </div>
         <div className="flex justify-center items-center flex-col w-full">
           <Heading>Log in</Heading>

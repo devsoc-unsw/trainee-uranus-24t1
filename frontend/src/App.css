@@ -7,3 +7,17 @@
 .card {
   padding: 2em;
 }
+
+input:focus::placeholder {
+  color: transparent;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  height: 15px;
+  width: 15px;
+  border-radius: 100%;
+  background: #6b539f;
+  cursor: pointer;
+  -webkit-appearance: none;
+}

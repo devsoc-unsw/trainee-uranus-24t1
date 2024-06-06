@@ -45,21 +45,27 @@ export const putSelfAvatar = async (token: string | null, file: File) => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
-    },
+    }
   );
 
   return response.data;
 };
 
+export enum MessageType {
+  Default,
+  Seen,
+}
+
 export type Message = {
   _id: string;
   members: string[];
   sender: string;
+  type: MessageType;
   content: string;
 };
 
 export const getSelfMessages = async (
-  token: string | null,
+  token: string | null
 ): Promise<Message[]> => {
   return (
     await axios.get(`${LOCAL_HOST}${SELF_PATH}${MESSAGES_PATH}`, {
@@ -76,7 +82,7 @@ export type UserInfo = {
   hobbies: string[];
   languages: string[];
   programmingLanguages: string[];
-  gender: string;
+  pronouns: string[];
   age: number;
   wam: string;
   academicSocialRatio: number;
@@ -86,19 +92,19 @@ export type UserInfo = {
 
 export const getUsersFromId = async (
   token: string | null,
-  ids: (string | undefined)[],
+  ids: (string | undefined)[]
 ): Promise<UserInfo[]> => {
   return (
     await axios.post(
       `${LOCAL_HOST}${USERS_PATH}${FROM_ID_PATH}`,
       { ids },
-      { headers: { Authorization: `Bearer ${token}` } },
+      { headers: { Authorization: `Bearer ${token}` } }
     )
   ).data;
 };
 
 export const getSelfMatches = async (
-  token: string | null,
+  token: string | null
 ): Promise<UserInfo[]> => {
   return (
     await axios.get(`${LOCAL_HOST}${SELF_PATH}${MATCHES_PATH}`, {
@@ -109,11 +115,11 @@ export const getSelfMatches = async (
 
 export const startConversation = async (
   token: string | null,
-  id: string | undefined,
+  id: string | undefined
 ) => {
   await axios.post(
     `${LOCAL_HOST}${USERS_PATH}${id}/${START_CONVERSATION_PATH}`,
     undefined,
-    { headers: { Authorization: `Bearer ${token}` } },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 };

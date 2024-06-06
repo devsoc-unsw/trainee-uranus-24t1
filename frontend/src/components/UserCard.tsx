@@ -1,19 +1,38 @@
-import { bigButton, cardStyle, column, row } from "../resources";
+import { cardStyle, column, row } from "../resources";
+import CustomButton from "./CustomButton";
+import LoadContainer from "./LoadContainer";
+import frenchman from "../assets/frenchman.jpeg";
 
 interface UserCardProps {
-  avatarUrl: string;
-  currentCourses: string[];
-  untakenCourses: string[];
-  languages: string[];
-  onMatch: () => void;
+  avatarUrl?: string;
+  name?: string;
+  currentCourses?: string[];
+  untakenCourses?: string[];
+  languages?: string[];
+  wam?: string;
+  academicSocialRatio?: number;
+  age?: number;
+  hobbies?: string[];
+  programmingLanguages?: string[];
+  pronouns?: string[];
+  onMatch?: () => void;
+  loading?: boolean;
 }
 
 const UserCard: React.FC<UserCardProps> = ({
   avatarUrl,
+  name,
   currentCourses,
   untakenCourses,
   languages,
+  wam,
+  academicSocialRatio,
+  age,
+  hobbies,
+  programmingLanguages,
+  pronouns,
   onMatch,
+  loading,
 }) => {
   const sectionStyle = `
     font-bold
@@ -24,67 +43,107 @@ const UserCard: React.FC<UserCardProps> = ({
     h-[20px]
   `;
 
+  const list = (section: string, values: string[] | undefined) =>
+    (values || loading) && (
+      <>
+        <div className={sectionStyle}>{section}</div>
+        <LoadContainer loading={loading} className="h-[40px] w-full">
+          <div className={`${row} max-w-full flex-wrap`}>
+            {values &&
+              values.map((value) => (
+                <div className={cardStyle} key={value}>
+                  {value}
+                </div>
+              ))}
+          </div>
+        </LoadContainer>
+        <div className={spacerStyle} />
+      </>
+    );
+  const box = (section: string, value: string | undefined) =>
+    value && (
+      <div className={`${column} w-full`}>
+        <div className="text-primary-300">{section}</div>
+        <div className="font-bold text-2xl">{value}</div>
+      </div>
+    );
+
   return (
     <div
       className="
-      h-full
-      w-full
-      bg-secondary-bg-100
       flex
       justify-center
-      items-center 
+      items-center
     "
     >
       <div
         className={`
         ${column}
-        bg-primary-50
+        bg-white
         rounded-2xl
         w-full
-        m-4
+        mx-4
+        my-3
+        shadow-xl
       `}
       >
-        <img
-          className="
-          rounded-t-2xl
-          h-[40vh]
-          object-cover
-          "
-          src={avatarUrl || "/src/assets/frenchman.jpeg"}
-        />
+        <LoadContainer loading={loading} className="h-[30vh] rounded-t-2xl">
+          <img
+            className="
+            rounded-t-2xl
+            h-[30vh]
+            object-cover
+            w-full
+            "
+            src={avatarUrl || frenchman}
+          />
+        </LoadContainer>
+
+        <LoadContainer
+          loading={loading}
+          className="h-[40px] w-[200px] mx-3 mt-3"
+        >
+          <div className={`${column} px-3 pt-3`}>
+            <p className={`${sectionStyle} text-2xl`}>{name}</p>
+          </div>
+        </LoadContainer>
 
         <div className={`${column} p-3`}>
-          <div className={sectionStyle}>Current Courses</div>
-          <div className={row}>
-            {currentCourses.map((course) => (
-              <div className={cardStyle}>{course}</div>
-            ))}
-          </div>
+          <LoadContainer loading={loading} className="h-[40px] w-[300px] mb-3">
+            <div className={row}>
+              {box("Age", age?.toString())}
+              {box("Pronouns", pronouns?.join(", "))}
+            </div>
+            <div className={spacerStyle} />
+          </LoadContainer>
+          <LoadContainer loading={loading} className="h-[40px] w-[300px] mb-3">
+            <div className={row}>
+              {box(
+                "Academic Social Ratio",
+                `${Math.round(academicSocialRatio! * 100)}%`,
+              )}
+              {box("WAM", wam)}
+            </div>
+            <div className={spacerStyle} />
+          </LoadContainer>
 
-          <div className={spacerStyle} />
+          {list("Current Courses", currentCourses)}
+          {list("Untaken Courses", untakenCourses)}
+          {list("Languages", languages)}
+          {list("Hobbies", hobbies)}
+          {list("Programming Languages", programmingLanguages)}
 
-          <div className={sectionStyle}>Untaken Courses</div>
-          <div className={row}>
-            {untakenCourses.map((course) => (
-              <div className={cardStyle}>{course}</div>
-            ))}
-          </div>
-
-          <div className={spacerStyle} />
-
-          <div className={sectionStyle}>Languages</div>
-          <div className={row}>
-            {languages.map((language) => (
-              <div className={cardStyle}>{language}</div>
-            ))}
-          </div>
-
-          <button
-            className={`${bigButton} w-[350px] self-center`}
-            onClick={onMatch}
-          >
-            I have a crush on you
-          </button>
+          <LoadContainer loading={loading} className="h-[40px] w-full mt-2">
+            {onMatch && (
+              <CustomButton
+                type="button"
+                onClick={onMatch ?? (() => {})}
+                disabled={false}
+              >
+                Message
+              </CustomButton>
+            )}
+          </LoadContainer>
         </div>
       </div>
     </div>

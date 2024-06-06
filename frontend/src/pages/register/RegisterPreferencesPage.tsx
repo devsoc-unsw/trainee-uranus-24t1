@@ -1,6 +1,5 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
-import { Spinner } from "react-bootstrap";
 import { center, column, bigButton } from "../../resources";
 import BackButton from "../../components/BackButton";
 import ProgressBar from "../../components/ProgressBar";
@@ -14,6 +13,9 @@ import {
 import { AxiosError } from "axios";
 import ListView from "../../components/ListView";
 import LabelledSlider from "../../components/LabelledSlider";
+import Heading from "../../components/Heading";
+import UNSWipeCat from "../../assets/UNSWipe-cat.png";
+import LoadContainer from "../../components/LoadContainer";
 
 const RegisterPreferencesPage = () => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const RegisterPreferencesPage = () => {
   const [preferredLanguageSelection, setPreferredLanguageSelection] = useState(
     [] as boolean[],
   );
-  const [preferredGenderSelection, setPreferredGenderSelection] = useState(
+  const [preferredPronounSelection, setPreferredPronounSelection] = useState(
     [] as boolean[],
   );
   const [preferredAgeRangeMin, setPreferredAgeRangeMin] = useState(17);
@@ -34,15 +36,15 @@ const RegisterPreferencesPage = () => {
   const [socialAcademicRatio, setSocialAcademicRatio] = useState(0.5);
 
   const languagesRef = useRef([] as string[]);
-  const gendersRef = useRef([] as string[]);
+  const pronounsRef = useRef([] as string[]);
   const wamsRef = useRef([] as string[]);
 
   const togglePreferredLanguageSelection = (index: number) =>
     setPreferredLanguageSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
-  const togglePreferredGenderSelection = (index: number) =>
-    setPreferredGenderSelection((prevState) =>
+  const togglePreferredPronounSelection = (index: number) =>
+    setPreferredPronounSelection((prevState) =>
       prevState.map((value, i) => (i === index ? !value : value)),
     );
 
@@ -52,7 +54,7 @@ const RegisterPreferencesPage = () => {
         setLoading(true);
         const staticData = await getStaticData(token);
         languagesRef.current = staticData.languages;
-        gendersRef.current = staticData.genders;
+        pronounsRef.current = staticData.pronouns;
         wamsRef.current = staticData.wams;
         const selfData = await getSelfData(token);
         setPreferredLanguageSelection(
@@ -60,9 +62,9 @@ const RegisterPreferencesPage = () => {
             selfData.preferredLanguages?.includes(language),
           ),
         );
-        setPreferredGenderSelection(
-          gendersRef.current.map((gender) =>
-            selfData.preferredGenders?.includes(gender),
+        setPreferredPronounSelection(
+          pronounsRef.current.map((pronoun) =>
+            selfData.preferredPronouns?.includes(pronoun),
           ),
         );
         setPreferredAgeRangeMin(selfData.preferredAgeRange?.[0] || 17);
@@ -75,7 +77,9 @@ const RegisterPreferencesPage = () => {
         );
         setSocialAcademicRatio(selfData.academicSocialRatio || 0.5);
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again.",
+        );
       } finally {
         setLoading(false);
       }
@@ -83,106 +87,133 @@ const RegisterPreferencesPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
-    <div className={`${column} relative w-svw h-svh p-4`}>
+    <div className={`${column} relative w-svw h-svh px-4 pb-4`}>
       <div className="w-full relative flex items-center justify-center">
         <div className="absolute left-0">
           <BackButton onBack={() => navigate("/register-hobbies")} />
         </div>
         <div className={center}>
-          <img className="w-[120px]" src="/src/assets/UNSWipe-cat.png" />
+          <img className="w-[100px]" src={UNSWipeCat} />
         </div>
       </div>
 
-      <div className="flex justify-end">4 of 5</div>
+      <div className="flex justify-end opacity-60 text-sm pb-[10px]">
+        4 of 5
+      </div>
 
-      <div className="h-[10px]" />
-
-      <div className={center}>
+      <div className={`${center} pb-[20px]`}>
         <ProgressBar progress={80} />
       </div>
 
       <div className="h-[30px]" />
 
-      <div className="text-[2.5rem] font-bold">Preferences?</div>
+      <Heading>Preferences?</Heading>
       <div>What are you looking for in someone?</div>
 
-      <div className="h-[60px]" />
+      <div className={column}>
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Languages:</div>
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={languagesRef.current}
+              selected={preferredLanguageSelection}
+              onSelect={togglePreferredLanguageSelection}
+            />
+          </LoadContainer>
+        </div>
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Pronouns:</div>
+          <LoadContainer loading={loading} className="w-[250px] h-[40px]">
+            <ListView
+              contents={pronounsRef.current}
+              selected={preferredPronounSelection}
+              onSelect={togglePreferredPronounSelection}
+            />
+          </LoadContainer>
+        </div>
 
-      <div className={`${column} h-full`}>
-        <div>Preferred Languages:</div>
-        <ListView
-          contents={languagesRef.current}
-          selected={preferredLanguageSelection}
-          onSelect={togglePreferredLanguageSelection}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Minimum Age:</div>
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={preferredAgeRangeMin}
+              onSlide={setPreferredAgeRangeMin}
+              label={preferredAgeRangeMin.toString()}
+            />
+          </LoadContainer>
+        </div>
 
-        <div>Preferred Gender:</div>
-        <ListView
-          contents={gendersRef.current}
-          selected={preferredGenderSelection}
-          onSelect={togglePreferredGenderSelection}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Maximum Age:</div>
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={15}
+              max={30}
+              value={preferredAgeRangeMax}
+              onSlide={setPreferredAgeRangeMax}
+              label={preferredAgeRangeMax.toString()}
+            />
+          </LoadContainer>
+        </div>
 
-        <div>Preferred Minimum Age:</div>
-        <LabelledSlider
-          min={15}
-          max={30}
-          value={preferredAgeRangeMin}
-          onSlide={setPreferredAgeRangeMin}
-          label={preferredAgeRangeMin.toString()}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Minimum WAM:</div>
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={preferredWamRangeMin}
+              onSlide={setPreferredWamRangeMin}
+              label={wamsRef.current[preferredWamRangeMin]}
+            />
+          </LoadContainer>
+        </div>
 
-        <div>Preferred Maximum Age:</div>
-        <LabelledSlider
-          min={15}
-          max={30}
-          value={preferredAgeRangeMax}
-          onSlide={setPreferredAgeRangeMax}
-          label={preferredAgeRangeMax.toString()}
-        />
+        <div className="pb-3">
+          <div className="text-lg font-bold">Preferred Maximum WAM:</div>
+          <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+            <LabelledSlider
+              min={0}
+              max={wamsRef.current.length - 1}
+              value={preferredWamRangeMax}
+              onSlide={setPreferredWamRangeMax}
+              label={wamsRef.current[preferredWamRangeMax]}
+            />
+          </LoadContainer>
+        </div>
 
-        <div>Preferred Minimum WAM:</div>
-        <LabelledSlider
-          min={0}
-          max={wamsRef.current.length - 1}
-          value={preferredWamRangeMin}
-          onSlide={setPreferredWamRangeMin}
-          label={wamsRef.current[preferredWamRangeMin]}
-        />
-
-        <div>Preferred Maximum WAM:</div>
-        <LabelledSlider
-          min={0}
-          max={wamsRef.current.length - 1}
-          value={preferredWamRangeMax}
-          onSlide={setPreferredWamRangeMax}
-          label={wamsRef.current[preferredWamRangeMax]}
-        />
-
-        <div>Academic vs Social Ratio:</div>
-        <div>What do you value?</div>
-        <div>
+        <div className="text-lg font-bold pb-1">Academic vs Social Ratio:</div>
+        <div className="text-xs">
+          <b>What do you value?</b>
+        </div>
+        <div className="text-xs">
           With 0% being that you are completely looking for someone to fulfil
           your academic goals and 100% being you are looking for someone that
           matches your social aspirations!
         </div>
-        <LabelledSlider
-          min={0}
-          max={1}
-          step={0.01}
-          value={socialAcademicRatio}
-          onSlide={setSocialAcademicRatio}
-          label={`${Math.round(socialAcademicRatio * 100)}%`}
-        />
+        <LoadContainer loading={loading} className="w-[100%] h-[40px]">
+          <div className="flex flex-row justify-between items-center w-full">
+            <p className="text-primary-500 font-bold text-sm opacity-75">
+              Academic
+            </p>
+            <div className="w-[60%]">
+              <LabelledSlider
+                min={0}
+                max={1}
+                step={0.01}
+                value={socialAcademicRatio}
+                onSlide={setSocialAcademicRatio}
+                label={`${Math.round(socialAcademicRatio * 100)}%`}
+              />
+            </div>
+            <p className="text-primary-500 font-bold text-sm opacity-75">
+              Social
+            </p>
+          </div>
+        </LoadContainer>
       </div>
 
       <div className={center}>
@@ -196,8 +227,10 @@ const RegisterPreferencesPage = () => {
               return;
             }
 
-            if (preferredGenderSelection.every((selection) => !selection)) {
-              setErrorMessage("Please select at least one preferred gender");
+            if (preferredPronounSelection.every((selection) => !selection)) {
+              setErrorMessage(
+                "Please select at least one preferred pronoun pair",
+              );
               return;
             }
 
@@ -218,8 +251,8 @@ const RegisterPreferencesPage = () => {
                 preferredLanguages: languagesRef.current.filter(
                   (_, i) => preferredLanguageSelection[i],
                 ),
-                preferredGenders: gendersRef.current.filter(
-                  (_, i) => preferredGenderSelection[i],
+                preferredPronouns: pronounsRef.current.filter(
+                  (_, i) => preferredPronounSelection[i],
                 ),
                 preferredAgeRange: [preferredAgeRangeMin, preferredAgeRangeMax],
                 preferredWamRange: [

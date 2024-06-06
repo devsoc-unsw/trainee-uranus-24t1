@@ -28,18 +28,26 @@ const assertValidHelper = {
   },
 
   academicSocialRatio: (input: number) => {
-    if (!input || input < 0 || input > 1) {
+    if (input == undefined || input < 0 || input > 1) {
       throw new BadRequestError({
         message: "Academic social ratio should range from 0 to 1",
       });
     }
   },
 
+  programmingLanguage: (input: string) => {
+    if (input == undefined || input.length === 0 || input.length > 30) {
+      throw new BadRequestError({
+        message: "Invalid programming language",
+      });
+    }
+  },
+
   default: (input: string) => {
-    if (!/^[\w ,.'-]{2,}$/.test(input)) {
+    if (!/^[\w ,.'-/]{2,}$/.test(input)) {
       throw new BadRequestError({
         message:
-          'Should be at least two characters consisting of letters, numbers, and "_ ,.\'-"',
+          'Should be at least two characters consisting of letters, numbers, and "_ ,.\'-/"',
       });
     }
   },
@@ -97,11 +105,11 @@ export const assertValid = {
   },
 
   programmingLanguages: (input: string[]) => {
-    input.forEach(assertValidHelper.default);
+    input.forEach(assertValidHelper.programmingLanguage);
   },
 
-  gender: (input: string) => {
-    assertValidHelper.default(input);
+  pronouns: (input: string[]) => {
+    input.forEach(assertValidHelper.default);
   },
 
   age: (input: number) => {
@@ -124,11 +132,7 @@ export const assertValid = {
     input.forEach(assertValidHelper.default);
   },
 
-  preferredProgrammingLanguages: (input: string[]) => {
-    input.forEach(assertValidHelper.default);
-  },
-
-  preferredGenders: (input: string[]) => {
+  preferredPronouns: (input: string[]) => {
     input.forEach(assertValidHelper.default);
   },
 
@@ -152,17 +156,14 @@ export const assertValid = {
     assertValid.hobbies(user.hobbies);
     assertValid.languages(user.languages);
     assertValid.programmingLanguages(user.programmingLanguages);
-    assertValid.gender(user.gender);
+    assertValid.pronouns(user.pronouns);
     assertValid.age(user.age);
     assertValid.wam(user.wam);
     assertValid.academicSocialRatio(user.academicSocialRatio);
 
     assertValid.preferredCourses(user.preferredCourses);
     assertValid.preferredLanguages(user.preferredLanguages);
-    assertValid.preferredProgrammingLanguages(
-      user.preferredProgrammingLanguages,
-    );
-    assertValid.preferredGenders(user.preferredGenders);
+    assertValid.preferredPronouns(user.preferredPronouns);
     assertValid.preferredAgeRange(user.preferredAgeRange);
     assertValid.preferredWamRange(user.preferredWamRange);
   },
@@ -181,7 +182,7 @@ export const assertValid = {
     if (user.languages != undefined) assertValid.languages(user.languages);
     if (user.programmingLanguages != undefined)
       assertValid.programmingLanguages(user.programmingLanguages);
-    if (user.gender != undefined) assertValid.gender(user.gender);
+    if (user.pronouns != undefined) assertValid.pronouns(user.pronouns);
     if (user.age != undefined) assertValid.age(user.age);
     if (user.wam != undefined) assertValid.wam(user.wam);
     if (user.academicSocialRatio != undefined)
@@ -191,12 +192,8 @@ export const assertValid = {
       assertValid.preferredCourses(user.preferredCourses);
     if (user.preferredLanguages != undefined)
       assertValid.preferredLanguages(user.preferredLanguages);
-    if (user.preferredProgrammingLanguages != undefined)
-      assertValid.preferredProgrammingLanguages(
-        user.preferredProgrammingLanguages,
-      );
-    if (user.preferredGenders != undefined)
-      assertValid.preferredGenders(user.preferredGenders);
+    if (user.preferredPronouns != undefined)
+      assertValid.preferredPronouns(user.preferredPronouns);
     if (user.preferredAgeRange != undefined)
       assertValid.preferredAgeRange(user.preferredAgeRange);
     if (user.preferredWamRange != undefined)

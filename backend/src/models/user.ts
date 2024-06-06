@@ -13,15 +13,14 @@ export default class User {
     public hobbies: string[],
     public languages: string[],
     public programmingLanguages: string[],
-    public gender: string,
+    public pronouns: string[],
     public age: number,
     public wam: string,
     public academicSocialRatio: number,
 
     public preferredCourses: string[],
     public preferredLanguages: string[],
-    public preferredProgrammingLanguages: string[],
-    public preferredGenders: string[],
+    public preferredPronouns: string[],
     public preferredAgeRange: [number, number],
     public preferredWamRange: [string, string],
 

@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import UserCard from "../../components/UserCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import {
   UserInfo,
   getSelfMatches,
   startConversation,
 } from "../../backendCommunication";
-import { Spinner } from "react-bootstrap";
-import { center } from "../../resources";
 import ErrorModal from "../../components/ErrorModal";
+import UNSWipeLogo from "../../assets/UNSWipe-logo-md.png";
 
 const Swipe = () => {
   const navigate = useNavigate();
@@ -19,15 +18,19 @@ const Swipe = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [matches, setMatcehs] = useState([] as UserInfo[]);
+  const [matches, setMatches] = useState([] as UserInfo[]);
+
+  const pageTopRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        setMatcehs(await getSelfMatches(token));
+        setMatches(await getSelfMatches(token));
       } catch {
-        setErrorMessage("Could not retrieve server data");
+        setErrorMessage(
+          "There was a problem retrieving your data. Please try again.",
+        );
       } finally {
         setLoading(false);
       }
@@ -35,32 +38,53 @@ const Swipe = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className={`h-svh w-svw ${center}`}>
-        <Spinner />
-      </div>
-    );
-  }
+  useEffect(() => {
+    pageTopRef &&
+      pageTopRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+  }, [matches]);
 
   return (
     <div className="relative flex flex-col h-svh w-svw">
-      <div className="content-center grow overflow-auto w-full">
-        {matches.map((match) => (
-          <UserCard
-            avatarUrl={match.avatarUrl}
-            currentCourses={match.courses}
-            untakenCourses={match.futureCourses}
-            languages={match.languages}
-            onMatch={async () => {
-              await startConversation(token, match._id);
-              navigate(`/messages/${match._id}`);
-            }}
-          />
-        ))}
+      <div className="content-center w-full overflow-auto w-full">
+        <div
+          className="mt-5 mb-2 w-full flex justify-center items-center"
+          ref={pageTopRef}
+        >
+          <img src={UNSWipeLogo} alt="UNSWipe Logo" />
+        </div>
+        {loading ? (
+          <UserCard loading={true} />
+        ) : (
+          matches.map((match) => (
+            <UserCard
+              key={match._id}
+              avatarUrl={match.avatarUrl ?? ""}
+              name={
+                match.firstName && match.lastName
+                  ? `${match.firstName} ${match.lastName}`
+                  : ""
+              }
+              currentCourses={match.courses}
+              untakenCourses={match.futureCourses}
+              languages={match.languages}
+              wam={match.wam}
+              academicSocialRatio={match.academicSocialRatio}
+              age={match.age}
+              pronouns={match.pronouns}
+              hobbies={match.hobbies}
+              programmingLanguages={match.programmingLanguages}
+              onMatch={async () => {
+                await startConversation(token, match._id);
+                navigate(`/messages/${match._id}`);
+              }}
+            />
+          ))
+        )}
+        <div className="h-[150px] w-[1px]" />
       </div>
-
-      <div className="w-full">
+      <div className="w-full fixed bottom-0">
         <NavBar navigate={navigate} index={0} />
       </div>
 
